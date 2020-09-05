@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "employees")
 @Data
 public class Employee {
 
@@ -30,6 +30,6 @@ public class Employee {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "employee")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<WorkDay> workDays;
 }
