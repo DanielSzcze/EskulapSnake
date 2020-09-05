@@ -1,4 +1,4 @@
 package pl.EskulapSnake.repository;
 
-public class RoleRepository {
+public interface RoleRepository {
 }
