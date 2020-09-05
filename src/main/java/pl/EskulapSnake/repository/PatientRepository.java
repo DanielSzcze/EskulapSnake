@@ -1,8 +1,7 @@
 package pl.EskulapSnake.repository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import pl.EskulapSnake.model.Patient;
 
-public interface PatientRepository extends PagingAndSortingRepository<Patient, Long> {
+public interface PatientRepository extends JpaRepository<Patient, Long> {
 }
