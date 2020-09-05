@@ -13,6 +13,7 @@ import pl.EskulapSnake.service.AuthService;
 @RestController
 @RequestMapping("/auth")
 public class AuthorizationController {
+
     private AuthService authService;
 
     @Autowired
