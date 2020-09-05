@@ -1,4 +1,7 @@
 package pl.EskulapSnake.repository;
 
-public interface EmployeeRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+import pl.EskulapSnake.model.Employee;
+
+public interface EmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
 }

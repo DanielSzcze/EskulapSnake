@@ -1,4 +1,7 @@
 package pl.EskulapSnake.repository;
 
-public class WorkDayRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+import pl.EskulapSnake.model.WorkDay;
+
+public interface WorkDayRepository extends PagingAndSortingRepository<WorkDay, Long> {
 }

@@ -1,4 +1,7 @@
 package pl.EskulapSnake.repository;
 
-public interface SpecializationRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+import pl.EskulapSnake.model.Specialization;
+
+public interface SpecializationRepository extends PagingAndSortingRepository<Specialization, Long> {
 }
