@@ -1,4 +1,7 @@
 package pl.EskulapSnake.repository;
 
-public class UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.EskulapSnake.model.User;
+
+public interface UserRepository implements JpaRepository<User, Long> {
 }
