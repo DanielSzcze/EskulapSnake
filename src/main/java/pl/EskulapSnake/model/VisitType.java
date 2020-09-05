@@ -7,8 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table
 @Data
-public class Role {
-
+public class VisitType {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +15,4 @@ public class Role {
 
     @Column
     private  String name;
-
-
 }
