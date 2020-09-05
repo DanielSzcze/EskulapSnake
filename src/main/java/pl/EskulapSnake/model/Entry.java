@@ -16,6 +16,7 @@ public class Entry {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
     @Column
+    @Lob
     private String text;
     @Column
     private LocalDateTime localDateTime;
