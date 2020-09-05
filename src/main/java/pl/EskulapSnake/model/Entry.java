@@ -11,16 +11,13 @@ import java.time.LocalDateTime;
 @Data
 public class Entry {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
     @Lob
     private String text;
-    @Column
+
     private LocalDateTime localDateTime;
 
-    @Column
     private String examination;
 
     @OneToOne

@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class WorkDay {
 
     @Id
-    @Column
     @GeneratedValue(strategy =  GenerationType.AUTO)
     private Long id;
 
@@ -19,10 +18,8 @@ public class WorkDay {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @Column
-    private LocalDateTime from;
+    private LocalDateTime from_date;
 
-    @Column
-    private LocalDateTime to;
+    private LocalDateTime to_date;
 
 }

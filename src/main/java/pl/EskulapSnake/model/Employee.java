@@ -24,7 +24,6 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
-    @Column
     private String pesel;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
