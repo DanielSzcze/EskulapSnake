@@ -2,5 +2,5 @@ package pl.EskulapSnake.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VistiTypeService {
+public interface VisitTypeService {
 }
