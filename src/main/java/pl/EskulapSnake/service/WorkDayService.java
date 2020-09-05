@@ -3,5 +3,5 @@ package pl.EskulapSnake.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface WorkDayService {
+public class WorkDayService {
 }
