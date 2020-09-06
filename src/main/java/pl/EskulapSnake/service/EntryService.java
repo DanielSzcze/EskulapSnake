@@ -45,7 +45,7 @@ public class EntryService {
         entryRepository.save(entryToSave);
         return entryToSave;
     }
-
+@Transactional
     public Entry update(Long id, EntryDto entryDto) {
         Entry entryToUpdate = setFields(entryDto);
         entryToUpdate.setId(id);
