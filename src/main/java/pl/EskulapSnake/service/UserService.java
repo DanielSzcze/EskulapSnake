@@ -7,6 +7,7 @@ import pl.EskulapSnake.repository.UserRepository;
 @Service
 public class UserService {
     private UserRepository userRepository;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -14,3 +15,4 @@ public class UserService {
     public User findByUserName(String username) {
         return userRepository.findUserByUserName(username).orElseThrow(() -> new RuntimeException("in db is no user with this username"));
     }
+}
