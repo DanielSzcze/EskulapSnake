@@ -50,9 +50,7 @@ public class EntryController {
 
     @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Entry post( String identification,
-                      @RequestBody EntryDto entryDto, Authentication authentication) {
-        long patientId = Long.parseLong(identification);
+    public Entry post( @RequestBody EntryDto entryDto, Authentication authentication) {
         Employee loggedEmployee = Utility.findloggedEmployee(authentication, userService, employeeService);
         return entryService.createNew(entryDto, loggedEmployee);
     }
