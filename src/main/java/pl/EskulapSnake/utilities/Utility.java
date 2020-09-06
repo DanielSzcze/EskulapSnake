@@ -4,20 +4,20 @@ import org.springframework.security.core.Authentication;
 import pl.EskulapSnake.model.Employee;
 import pl.EskulapSnake.model.User;
 import pl.EskulapSnake.service.EmployeeService;
-import pl.EskulapSnake.service.UserServise;
+import pl.EskulapSnake.service.UserService;
 
 public class Utility {
 
-    public static User findLoggedUser(Authentication authentication, UserServise userServise) {
+    public static User findLoggedUser(Authentication authentication, UserService userService) {
         final String username = authentication.getName();
-        final User loggedUsername = userServise.findByUserName(username);
+        final User loggedUsername = userService.findByUserName(username);
         return loggedUsername;
 
     }
 
     public  static Employee findloggedEmployee(Authentication authentication,
-                                               UserServise userServise, EmployeeService employeeService){
-        User loggedUser = findLoggedUser(authentication, userServise);
+                                               UserService userService, EmployeeService employeeService){
+        User loggedUser = findLoggedUser(authentication, userService);
         Employee loggedEmployee =employeeService.findbyUser(loggedUser);
     }
 }
