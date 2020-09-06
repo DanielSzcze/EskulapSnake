@@ -18,6 +18,6 @@ public class Utility {
     public  static Employee findloggedEmployee(Authentication authentication,
                                                UserServise userServise, EmployeeService employeeService){
         User loggedUser = findLoggedUser(authentication, userServise);
-        Employee logged Employee =employeeService.findbyUser(loggedUser);
+        Employee loggedEmployee =employeeService.findbyUser(loggedUser);
     }
 }
