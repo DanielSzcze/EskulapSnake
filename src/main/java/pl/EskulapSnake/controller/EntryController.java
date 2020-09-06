@@ -48,9 +48,9 @@ public class EntryController {
 
     }
 
-    @PostMapping("/{id.patient}")
+    @PostMapping("/{id_patient}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Entry post(@PathVariable("id.patient") String identification,
+    public Entry post(@PathVariable("id_patient") String identification,
                       @RequestBody EntryDto entryDto, Authentication authentication) {
         long patientId = Long.parseLong(identification);
         Employee loggedEmployee = Utility.findloggedEmployee(authentication, userServise, employeeService);
