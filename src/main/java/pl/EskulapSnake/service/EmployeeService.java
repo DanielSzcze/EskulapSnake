@@ -50,6 +50,12 @@ public class EmployeeService {
         return employeeToSave;
     }
 
+    public Employee findByUser ( User user ) {
+        Optional<Employee > employee = employeeRepository.findByUser(user);
+        employee.orElseThrow(()-> new EntityNotFoundException("Employee not found"));
+        return employee.get();
+    }
+
     private Employee setFields(EmployeeDto employeeDto) {
         Employee employee = new Employee();
         employee.setFirstName(employeeDto.getFirstName());
