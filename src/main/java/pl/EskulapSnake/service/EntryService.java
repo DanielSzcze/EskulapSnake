@@ -50,8 +50,8 @@ public class EntryService {
     }
 
     @Transactional
-    public Entry createNew(EntryDto entryDto, Long patientId, Employee author) {
-        Patient owner = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("In db is no patient with this id"));
+    public Entry createNew(EntryDto entryDto, Employee author) {
+        Patient owner = patientRepository.findById(entryDto.getPatientId()).orElseThrow(() -> new EntityNotFoundException("In db is no patient with this id"));
         Entry entryToSave = getEntityFromDto(entryDto);
         owner.getEntries().add(entryToSave);
         patientRepository.save(owner);

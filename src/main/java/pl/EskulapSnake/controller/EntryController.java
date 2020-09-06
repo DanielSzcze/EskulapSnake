@@ -48,13 +48,13 @@ public class EntryController {
 
     }
 
-    @PostMapping("/{id_patient}")
+    @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Entry post(@PathVariable("id_patient") String identification,
+    public Entry post( String identification,
                       @RequestBody EntryDto entryDto, Authentication authentication) {
         long patientId = Long.parseLong(identification);
         Employee loggedEmployee = Utility.findloggedEmployee(authentication, userService, employeeService);
-        return entryService.createNew(entryDto, patientId, loggedEmployee);
+        return entryService.createNew(entryDto, loggedEmployee);
     }
 
     @PutMapping("/{id}")
