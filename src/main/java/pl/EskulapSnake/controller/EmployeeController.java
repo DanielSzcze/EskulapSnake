@@ -43,11 +43,6 @@ public class EmployeeController {
         return employeeService.update(employeeDto, Long.parseLong(id));
     }
 
-    @DeleteMapping
-    @ResponseStatus(HttpStatus.GONE)
-    public void deleteAll () {
-        employeeService.deleteAll();
-    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.GONE)
