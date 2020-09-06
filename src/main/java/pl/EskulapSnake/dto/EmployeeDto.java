@@ -14,11 +14,10 @@ public class EmployeeDto {
     private String lastName;
     private String pesel;
 
-    public EmployeeDto(String firstName, String lastName, Optional<String> pesel) {
+    public EmployeeDto(String firstName, String lastName, String pesel) {
         this.firstName = firstName;
         this.lastName = lastName;
-        if (pesel.isPresent()){
-            this.pesel = pesel.get();
-        }
+        this.pesel = pesel;
     }
+
 }
