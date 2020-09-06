@@ -15,10 +15,12 @@ public class MailService {
     private final JavaMailSender mailSender;
     private final MailContentBuilder mailContentBuilder;
 
+
     @Autowired
     public MailService(JavaMailSender mailSender, MailContentBuilder mailContentBuilder) {
         this.mailSender = mailSender;
         this.mailContentBuilder = mailContentBuilder;
+
     }
 
     public void sendMessage(NotificationEmail notificationEmail) {
@@ -35,4 +37,5 @@ public class MailService {
             throw new MailSendException("There was a trouble sending mail");
         }
     }
+
 }

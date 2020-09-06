@@ -1,6 +1,7 @@
 package pl.EskulapSnake.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,11 @@ public class AuthorizationController {
         authService.verifyAccount(code);
         return new ResponseEntity<>(code, HttpStatus.ACCEPTED);
     }
+
+    @Value("${connection.address}")
+    public static String connAddr;
+
+    @Value("${connection.port}")
+    public static String port;
 
 }
