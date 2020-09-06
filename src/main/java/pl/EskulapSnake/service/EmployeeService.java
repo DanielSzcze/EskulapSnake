@@ -30,23 +30,25 @@ public class EmployeeService {
 
     public Employee findById(Long id) {
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("In DB no entry with this id"));
+                .orElseThrow(() -> new EntityNotFoundException("Employee with this id not found!"));
     }
 
     @Transactional
     public void deleteById(Long id) {
         employeeRepository.deleteById(id);
     }
+
     @Transactional
     public Employee createNew(EmployeeDto employeeDto) {
         Employee employeeToSave = setFields(employeeDto);
         employeeRepository.save(employeeToSave);
         return employeeToSave;
     }
+
     @Transactional
     public Employee update(EmployeeDto employeeDto, long id) {
         Optional<Employee> employeeToUpdate = employeeRepository.findById(id);
-        employeeToUpdate.orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        employeeToUpdate.orElseThrow(() -> new EntityNotFoundException("Employee not found!"));
         setFields(employeeToUpdate.get(), employeeDto);
         employeeRepository.save(employeeToUpdate.get());
         return employeeToUpdate.get();
@@ -54,7 +56,7 @@ public class EmployeeService {
 
     public Employee findByUser ( User user ) {
         Optional<Employee > employee = employeeRepository.findByUser(user);
-        employee.orElseThrow(()-> new EntityNotFoundException("Employee not found"));
+        employee.orElseThrow(()-> new EntityNotFoundException("Employee not found!"));
         return employee.get();
     }
 
