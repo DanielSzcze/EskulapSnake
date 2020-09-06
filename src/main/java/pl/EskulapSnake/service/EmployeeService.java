@@ -33,20 +33,16 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void deleteAll() {
-        employeeRepository.deleteAll();
-    }
-
     public void deleteById(Long id) {
         employeeRepository.deleteById(id);
     }
-
+    @Transactional
     public Employee createNew(EmployeeDto employeeDto) {
         Employee employeeToSave = setFields(employeeDto);
         employeeRepository.save(employeeToSave);
         return employeeToSave;
     }
-
+    @Transactional
     public Employee update(EmployeeDto employeeDto, long id) {
         Employee employeeToSave = setFields(employeeDto);
         employeeToSave.setId(id);
