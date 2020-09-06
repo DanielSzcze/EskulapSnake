@@ -1,6 +1,8 @@
 package pl.EskulapSnake.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +24,15 @@ public class AuthService {
     private final UserRepository userRepository;
     private final VerificationCodeRepository verificationCodeRepository;
     private final MailService mailService;
+    private final ApplicationContext applicationContext;
 
     @Autowired
-    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, VerificationCodeRepository verificationCodeRepository, MailService mailService) {
+    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, VerificationCodeRepository verificationCodeRepository, MailService mailService, ApplicationContext applicationContext) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.verificationCodeRepository = verificationCodeRepository;
         this.mailService = mailService;
+        this.applicationContext = applicationContext;
     }
 
     @Transactional
@@ -44,7 +48,9 @@ public class AuthService {
                 user.getEmail(),
                 "Hey " + user.getUsername() + ", thanks for joining our app! \n" +
                         "Please click the link below to confirm your e-mail: \b" +
-                        "http://localhost:8080/auth/verifyAccount/" + code.getCode()
+                        "http://" + applicationContext.getEnvironment().getProperty("connection.address") +
+                        ":" + applicationContext.getEnvironment().getProperty("connection.port") +
+                        "/auth/verifyAccount/" + code.getCode()
         ));
     }
 
