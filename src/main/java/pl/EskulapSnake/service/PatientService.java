@@ -45,10 +45,17 @@ public class PatientService {
 
     @Transactional
     public Patient update(Long id, PatientDto patientDto) {
-        Patient patientToUpdate = getEntityFromDto(patientDto);
-        patientToUpdate.setId(id);
-        patientRepository.save(patientToUpdate);
+        Patient patientToUpdate = this.findById(id);
+
+        patientToUpdate=setFields(patientDto, patientToUpdate);
         return patientToUpdate;
+    }
+
+    private Patient setFields(PatientDto patientDto, Patient patientToUpdate) {
+        if(patientDto.getFirstName()!=null)patientToUpdate.setFirstName(patientDto.getFirstName());
+        if(patientDto.getLastName()!=null)patientToUpdate.setLastName(patientDto.getLastName());
+        if(patientDto.getPesel()!=null)patientToUpdate.setPesel(patientDto.getPesel());
+        return  patientToUpdate;
     }
 
 
