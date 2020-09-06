@@ -41,19 +41,19 @@ public class EntryService {
 
     @Transactional
     public Entry createNew(EntryDto entryDto) {
-        Entry entryToSave = setFields(entryDto);
+        Entry entryToSave = getEntityFromDto(entryDto);
         entryRepository.save(entryToSave);
         return entryToSave;
     }
 @Transactional
     public Entry update(Long id, EntryDto entryDto) {
-        Entry entryToUpdate = setFields(entryDto);
+        Entry entryToUpdate = getEntityFromDto(entryDto);
         entryToUpdate.setId(id);
         entryRepository.save(entryToUpdate);
         return entryToUpdate;
     }
 
-    private Entry setFields(EntryDto entryDto) {
+    private Entry getEntityFromDto(EntryDto entryDto) {
         Entry entryToUpdate = new Entry();
         entryToUpdate.setExamination(entryDto.getExamination());
         entryToUpdate.setRecommendations(entryDto.getRecommendations());
