@@ -15,10 +15,13 @@ public class Utility {
 
     }
 
-    public  static Employee findloggedEmployee(Authentication authentication,
-                                               UserService userService, EmployeeService employeeService){
+    public static Employee findloggedEmployee(Authentication authentication,
+                                              UserService userService, EmployeeService employeeService) {
         User loggedUser = findLoggedUser(authentication, userService);
+
         Employee loggedEmployee =employeeService.findByUser(loggedUser);
-        return null;
+   
+        return loggedEmployee;
+
     }
 }
