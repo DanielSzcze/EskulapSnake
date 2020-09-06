@@ -2,10 +2,15 @@ package pl.EskulapSnake.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.EskulapSnake.dto.EntryDto;
+import pl.EskulapSnake.model.Employee;
 import pl.EskulapSnake.model.Entry;
+import pl.EskulapSnake.service.EmployeeService;
 import pl.EskulapSnake.service.EntryService;
+import pl.EskulapSnake.service.UserServise;
+import pl.EskulapSnake.utilities.Utility;
 
 import java.util.List;
 
@@ -14,9 +19,16 @@ import java.util.List;
 public class EntryController {
 
     private EntryService entryService;
+    private Authentication authentication;
+    private UserServise userServise;
+    private EmployeeService employeeService;
 
     @Autowired
-    public EntryController(EntryService entryService) {
+    public EntryController(EntryService entryService,
+                           UserServise userServise,
+                           EmployeeService employeeService) {
+        this.entryService = entryService;
+        this.userServise = userServise;
         this.entryService = entryService;
     }
 
@@ -36,10 +48,12 @@ public class EntryController {
 
     }
 
-    @PostMapping
+    @PostMapping("/{id.patient}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Entry post(@RequestBody EntryDto entryDto) {
-        return entryService.createNew(entryDto);
+    public Entry post(@PathVariable("id.patient") String identification,@RequestBody EntryDto entryDto) {
+        long patientId = Long.parseLong(identification);
+        Employee loggedEmployee = Utility.findloggedEmployee(authentication, userServise, employeeService);
+        return entryService.createNew(entryDto, patientId, loggedEmployee);
     }
 
     @PutMapping("/{id}")
