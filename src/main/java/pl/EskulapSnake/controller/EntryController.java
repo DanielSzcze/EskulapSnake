@@ -9,7 +9,7 @@ import pl.EskulapSnake.model.Employee;
 import pl.EskulapSnake.model.Entry;
 import pl.EskulapSnake.service.EmployeeService;
 import pl.EskulapSnake.service.EntryService;
-import pl.EskulapSnake.service.UserServise;
+import pl.EskulapSnake.service.UserService;
 import pl.EskulapSnake.utilities.Utility;
 
 import java.util.List;
@@ -20,15 +20,15 @@ public class EntryController {
 
     private EntryService entryService;
     private Authentication authentication;
-    private UserServise userServise;
+    private UserService userService;
     private EmployeeService employeeService;
 
     @Autowired
     public EntryController(EntryService entryService,
-                           UserServise userServise,
+                           UserService userService,
                            EmployeeService employeeService) {
         this.entryService = entryService;
-        this.userServise = userServise;
+        this.userService = userService;
         this.entryService = entryService;
     }
 
@@ -53,7 +53,7 @@ public class EntryController {
     public Entry post(@PathVariable("id_patient") String identification,
                       @RequestBody EntryDto entryDto, Authentication authentication) {
         long patientId = Long.parseLong(identification);
-        Employee loggedEmployee = Utility.findloggedEmployee(authentication, userServise, employeeService);
+        Employee loggedEmployee = Utility.findloggedEmployee(authentication, userService, employeeService);
         return entryService.createNew(entryDto, patientId, loggedEmployee);
     }
 
