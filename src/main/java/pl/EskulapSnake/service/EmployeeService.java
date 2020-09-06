@@ -1,5 +1,6 @@
 package pl.EskulapSnake.service;
 
+import org.hibernate.annotations.NotFound;
 import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,17 +45,34 @@ public class EmployeeService {
     }
     @Transactional
     public Employee update(EmployeeDto employeeDto, long id) {
-        Employee employeeToSave = setFields(employeeDto);
-        employeeToSave.setId(id);
-        employeeRepository.save(employeeToSave);
-        return employeeToSave;
+        Optional<Employee> employeeToUpdate = employeeRepository.findById(id);
+        employeeToUpdate.orElseThrow(() -> new EntityNotFoundException("Employee not found"));
+        setFields(employeeToUpdate.get(), employeeDto);
+        employeeRepository.save(employeeToUpdate.get());
+        return employeeToUpdate.get();
+    }
+
+    public Employee findByUser ( User user ) {
+        Optional<Employee > employee = employeeRepository.findByUser(user);
+        employee.orElseThrow(()-> new EntityNotFoundException("Employee not found"));
+        return employee.get();
     }
 
     private Employee setFields(EmployeeDto employeeDto) {
         Employee employee = new Employee();
-        employee.setFirstName(employeeDto.getFirstName());
-        employee.setLastName(employeeDto.getLastName());
-        employee.setPesel(employeeDto.getPesel());
+        return  setFields(employee, employeeDto);
+    }
+
+    private Employee setFields(Employee employee, EmployeeDto employeeDto) {
+        if(!employeeDto.getFirstName().isEmpty() && employeeDto.getFirstName() != null ){
+            employee.setFirstName(employeeDto.getFirstName());
+        }
+        if(!employeeDto.getLastName().isEmpty() && employeeDto.getLastName() != null ){
+            employee.setLastName(employeeDto.getLastName());
+        }
+        if(!employeeDto.getPesel().isEmpty() && employeeDto.getPesel() != null ){
+            employee.setPesel(employeeDto.getPesel());
+        }
         return employee;
     }
 
