@@ -1,9 +1,11 @@
 package pl.EskulapSnake.model;
 
 import lombok.Data;
+import pl.EskulapSnake.dto.EmployeeDto;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "employees")
@@ -14,6 +16,7 @@ public class Employee {
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @OneToOne
     @JoinColumn
     private User user;
@@ -31,4 +34,5 @@ public class Employee {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<WorkDay> workDays;
+
 }

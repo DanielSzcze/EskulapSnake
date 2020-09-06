@@ -1,4 +1,5 @@
 package pl.EskulapSnake.service;
+
 import org.springframework.stereotype.Service;
 import pl.EskulapSnake.model.User;
 import pl.EskulapSnake.repository.UserRepository;
@@ -13,4 +14,3 @@ public class UserService {
     public User findByUserName(String username) {
         return userRepository.findUserByUserName(username).orElseThrow(() -> new RuntimeException("in db is no user with this username"));
     }
-}
