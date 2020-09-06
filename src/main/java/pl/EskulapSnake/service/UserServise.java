@@ -4,9 +4,9 @@ import pl.EskulapSnake.model.User;
 import pl.EskulapSnake.repository.UserRepository;
 
 @Service
-public class UserServise {
+public class UserService {
     private UserRepository userRepository;
-    public UserServise(UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
