@@ -1,6 +1,8 @@
 package pl.EskulapSnake.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -8,6 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "employees")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
 
     @Id
@@ -25,6 +29,7 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
+    @Column
     private String pesel;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
