@@ -18,11 +18,11 @@ import java.util.Optional;
 public class WorkDayService {
 
     private WorkDayRepository workDayRepository;
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
 
-    public  WorkDayService(WorkDayRepository  workDayRepository, EmployeeRepository employeeRepository) {
+    public  WorkDayService(WorkDayRepository  workDayRepository, EmployeeService employeeService) {
         this.workDayRepository = workDayRepository;
-        this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
     }
 
     public List<WorkDay> findAll() {
@@ -34,9 +34,7 @@ public class WorkDayService {
     }
 
     public List<WorkDay> findByEmployee(Long employeeId){
-        Optional<Employee> employeeToFind = employeeRepository.findById(employeeId);
-        employeeToFind.orElseThrow(() -> new EntityNotFoundException("Employee not found!"));
-        return workDayRepository.findByEmployee(employeeToFind.get());
+        return workDayRepository.findByEmployee(employeeService.findById(employeeId));
     }
 
     @Transactional
@@ -55,12 +53,22 @@ public class WorkDayService {
         return workDayRepository.save(workDay);
     }
 
-
-    private WorkDay setFields (WorkDay workDay, WorkDayDto workDayDto){
-
-
-        return workDay;
+    @Transactional
+    public void deleteByWorkDayId (Long id){
+        workDayRepository.deleteById(id);
     }
 
+    private WorkDay setFields (WorkDay workDay, WorkDayDto workDayDto){
+        if (workDayDto.getFromWorkTime() != null) {
+            workDay.setFromWorkTime(workDayDto.getFromWorkTime());
+        }
+        if (workDayDto.getToWorkTime() != null){
+            workDay.setToWorkTime(workDayDto.getToWorkTime());
+        }
+        if (workDayDto.getEmployeeId() != null && employeeService.findById(workDayDto.getEmployeeId()) != null){
+            workDay.setEmployee(employeeService.findById(workDayDto.getEmployeeId()));
+        }
+        return workDay;
+    }
 
 }

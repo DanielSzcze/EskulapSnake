@@ -1,7 +1,5 @@
 package pl.EskulapSnake.service;
 
-import org.hibernate.annotations.NotFound;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.EmployeeDto;
@@ -22,11 +20,9 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-
     public List<Employee> findAll() {
         return employeeRepository.findAll();
     }
-
 
     public Employee findById(Long id) {
         return employeeRepository.findById(id)

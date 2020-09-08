@@ -3,7 +3,6 @@ package pl.EskulapSnake.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.EskulapSnake.model.Employee;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class WorkDayDto {
 
-    private Long employee_id;
+    private Long employeeId;
     private LocalDateTime fromWorkTime;
     private LocalDateTime toWorkTime;
 

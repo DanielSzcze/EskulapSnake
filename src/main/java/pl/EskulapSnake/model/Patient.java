@@ -25,6 +25,7 @@ public class Patient {
     @Column(nullable = false)
     private String lastName;
 
+    @Column
     private String pesel;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

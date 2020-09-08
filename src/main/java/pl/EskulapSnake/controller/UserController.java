@@ -9,11 +9,11 @@ import pl.EskulapSnake.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userServise;
+    private UserService userService;
 
     @Autowired
-    public UserController(UserService userServise) {
-        this.userServise = userServise;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
 
