@@ -3,6 +3,8 @@ package pl.EskulapSnake.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,6 +20,14 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String email;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
 
-    private int enabled;
+    private boolean enabled;
 }
