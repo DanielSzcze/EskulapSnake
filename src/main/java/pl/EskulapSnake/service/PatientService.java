@@ -55,7 +55,6 @@ public class PatientService {
         return patientToUpdate;
     }
 
-
     private Patient getEntityFromDto(PatientDto patientDto) {
         Patient result = new Patient();
         result.setFirstName(patientDto.getFirstName());

@@ -1,23 +1,23 @@
 package pl.EskulapSnake.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "verification_codes")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class VerificationCode {
+
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column
     private String code;
+
     @OneToOne
     private User user;
 }

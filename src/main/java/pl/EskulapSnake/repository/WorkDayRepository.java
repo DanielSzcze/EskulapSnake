@@ -11,9 +11,9 @@ import java.util.List;
 public interface WorkDayRepository extends JpaRepository<WorkDay, Long> {
 
     List<WorkDay> findByEmployee(Employee employee);
-    @Query("SELECT w FROM  WorkDay  w join Employee  e WHERE e.id= :user_id AND w.from_date BETWEEN :begin_date AND :end_date")
-    List<WorkDay> findByUserAndMonth(@Param("user_id") Long EmployeeId,
-                                     @Param("begin_date") String BeginMonth,
-                                     @Param("end_date") String EndMonth);
+    @Query("SELECT w FROM  WorkDay  w join Employee  e WHERE e.id= :employee AND w.fromWorkTime BETWEEN :from_date AND :end_date")
+   public List<WorkDay> getAllByEmployeeIdAndTimeInterval(@Param("employee") Long EmployeeId,
+                                                          @Param("from_date") String BeginMonth,
+                                                          @Param("end_date") String EndMonth);
 }
 

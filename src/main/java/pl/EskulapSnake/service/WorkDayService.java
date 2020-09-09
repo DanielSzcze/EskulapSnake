@@ -1,18 +1,13 @@
 package pl.EskulapSnake.service;
 
-import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.WorkDayDto;
-import pl.EskulapSnake.model.Employee;
 import pl.EskulapSnake.model.WorkDay;
-import pl.EskulapSnake.repository.EmployeeRepository;
 import pl.EskulapSnake.repository.WorkDayRepository;
 
 import javax.persistence.EntityNotFoundException;
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +15,11 @@ import java.util.Optional;
 public class WorkDayService {
 
     private WorkDayRepository workDayRepository;
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
 
-    public  WorkDayService(WorkDayRepository  workDayRepository, EmployeeRepository employeeRepository) {
+    public  WorkDayService(WorkDayRepository  workDayRepository, EmployeeService employeeService) {
         this.workDayRepository = workDayRepository;
-        this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
     }
 
     public List<WorkDay> findAll() {
@@ -41,7 +36,7 @@ public class WorkDayService {
         int year = Integer.parseInt(dateInArray[1]);
         String beginOfMonth = this.getBeginOfMonth(month, year);
         String endOfMonth = this.getEndOfMonth(month, year);
-        return workDayRepository.findByUserAndMonth(employeeId, beginOfMonth, endOfMonth);
+        return workDayRepository.getAllByEmployeeIdAndTimeInterval(employeeId, beginOfMonth, endOfMonth);
 
     }
     private String getBeginOfMonth(Integer month, Integer year) {
@@ -56,9 +51,7 @@ public class WorkDayService {
     }
 
     public List<WorkDay> findByEmployee(Long employeeId){
-        Optional<Employee> employeeToFind = employeeRepository.findById(employeeId);
-        employeeToFind.orElseThrow(() -> new EntityNotFoundException("Employee not found!"));
-        return workDayRepository.findByEmployee(employeeToFind.get());
+        return workDayRepository.findByEmployee(employeeService.findById(employeeId));
     }
 
     @Transactional
@@ -77,12 +70,22 @@ public class WorkDayService {
         return workDayRepository.save(workDay);
     }
 
-
-    private WorkDay setFields (WorkDay workDay, WorkDayDto workDayDto){
-
-
-        return workDay;
+    @Transactional
+    public void deleteByWorkDayId (Long id){
+        workDayRepository.deleteById(id);
     }
 
+    private WorkDay setFields (WorkDay workDay, WorkDayDto workDayDto){
+        if (workDayDto.getFromWorkTime() != null) {
+            workDay.setFromWorkTime(workDayDto.getFromWorkTime());
+        }
+        if (workDayDto.getToWorkTime() != null){
+            workDay.setToWorkTime(workDayDto.getToWorkTime());
+        }
+        if (workDayDto.getEmployee() != null && employeeService.findById(workDayDto.getEmployee().getId())  != null){
+            workDay.setEmployee(workDayDto.getEmployee());
+        }
+        return workDay;
+    }
 
 }

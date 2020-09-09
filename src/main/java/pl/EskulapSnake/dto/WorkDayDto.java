@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class WorkDayDto {
 
-    private Long employee_id;
+    private Employee employee;
     private LocalDateTime fromWorkTime;
     private LocalDateTime toWorkTime;
 
