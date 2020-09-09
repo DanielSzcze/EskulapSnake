@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "work_day")
+@Table(name = "work_days")
 @Data
 public class WorkDay {
 
@@ -15,11 +15,13 @@ public class WorkDay {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn
     private Employee employee;
 
-    private LocalDateTime from_date;
+    @Column
+    private LocalDateTime fromWorkTime;
 
-    private LocalDateTime to_date;
+    @Column
+    private LocalDateTime toWorkTime;
 
 }

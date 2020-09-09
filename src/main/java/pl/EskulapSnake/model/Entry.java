@@ -2,7 +2,6 @@ package pl.EskulapSnake.model;
 
 
 import lombok.Data;
-import pl.EskulapSnake.dto.EntryDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,8 +10,6 @@ import java.time.LocalDateTime;
 @Table(name = "entries")
 @Data
 public class Entry {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,6 +28,5 @@ public class Entry {
     @OneToOne
     @JoinColumn
     private VisitType visitType;
-
 
 }
