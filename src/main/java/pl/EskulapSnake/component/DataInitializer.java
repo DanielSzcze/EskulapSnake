@@ -3,9 +3,16 @@ package pl.EskulapSnake.component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import pl.EskulapSnake.model.Entry;
+import pl.EskulapSnake.model.Patient;
+import pl.EskulapSnake.model.WorkDay;
 import pl.EskulapSnake.repository.EntryRepository;
+import pl.EskulapSnake.repository.PatientRepository;
+import pl.EskulapSnake.repository.WorkDayRepository;
+
+import java.time.LocalDateTime;
 
 /**
  * Tu możesz zainicializować dane do bazy by sprawdzić to w postmanie
@@ -17,6 +24,10 @@ public class DataInitializer implements ApplicationRunner {
 
     @Autowired
     EntryRepository entryRepository;
+    @Autowired
+    PatientRepository patientRepository;
+    @Autowired
+    WorkDayRepository workDayRepository;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -24,6 +35,15 @@ public class DataInitializer implements ApplicationRunner {
             Entry entry = new Entry();
             entry.setRecommendations("bla");
             entry.setExamination("lol");
+            Patient patient = new Patient();
+            patient.setLastName("lool");
+            patient.setFirstName("kuba");
+            patientRepository.save(patient);
+            WorkDay workDay = new WorkDay();
+            workDay.setFrom_date(LocalDateTime.of(2020,8,25,12,00));
+            workDay.setTo_date((LocalDateTime.of(2020,8,25,20,00)));
+            workDayRepository.save(workDay);
+            System.out.println(LocalDateTime.now());
 
             entryRepository.save(entry);
         }

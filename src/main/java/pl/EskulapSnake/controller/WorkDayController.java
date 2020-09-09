@@ -24,9 +24,16 @@ public class WorkDayController {
         return workDayService.findAll();
     }
 
-    @GetMapping("/{id_employee}")
+    @GetMapping("/{id_employee}") // tu jest coś namieszane :)
     public List<WorkDay> getAllByEmployee(@RequestBody String idEmployee){
         return workDayService.findByEmployee(Long.parseLong(idEmployee));
+    }
+
+    @GetMapping("/{id_employee}/{month_number}")
+    public  List<WorkDay> getAllByEmployeeAndMonth(@PathVariable("id_employee") String identification,
+                                                   @PathVariable("month_number") String monthAndYear){
+Long employeeId = Long.parseLong(identification);
+return workDayService.findByEmployeeAndMonth(employeeId, monthAndYear);
     }
 
 }

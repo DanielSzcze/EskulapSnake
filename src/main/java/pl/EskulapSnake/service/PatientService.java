@@ -24,6 +24,10 @@ public class PatientService {
     public Patient findById(Long id) {
         return patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("In db is no Patient with this id"));
+
+    }
+    public  List<Patient> findByPartOfDate(String partOfDate) {
+        return patientRepository.findByPartOfDate(partOfDate);
     }
 
     @Transactional

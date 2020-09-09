@@ -11,6 +11,8 @@ import pl.EskulapSnake.repository.WorkDayRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,26 @@ public class WorkDayService {
 
     public WorkDay findById(Long id) {
         return workDayRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Work day not found!"));
+    }
+
+    public List<WorkDay> findByEmployeeAndMonth(Long employeeId, String monthAndYear) {
+        String[] dateInArray = monthAndYear.split(".");
+        int month = Integer.parseInt(dateInArray[0]);
+        int year = Integer.parseInt(dateInArray[1]);
+        String beginOfMonth = this.getBeginOfMonth(month, year);
+        String endOfMonth = this.getEndOfMonth(month, year);
+        return workDayRepository.findByUserAndMonth(employeeId, beginOfMonth, endOfMonth);
+
+    }
+    private String getBeginOfMonth(Integer month, Integer year) {
+       LocalDate minDateOfMonth = LocalDate.of(year, month, 1);
+       return minDateOfMonth.toString();
+
+    }
+    private String getEndOfMonth(Integer month, Integer year) {
+        LocalDate maxDateOfMonth= LocalDate.of(year, month+1, 1).minusDays(1);
+        return maxDateOfMonth.toString();
+
     }
 
     public List<WorkDay> findByEmployee(Long employeeId){
