@@ -3,7 +3,24 @@ let findPatientForm = document.querySelector("#findPatientsForm");
 let findText = document.querySelector("#findText");
 let patientsList = document.querySelector("#patientsList");
 let employeesDataList = document.querySelector("#employeesDataList");
-setEmployeesList()
+
+
+let year = new Date().getFullYear();
+let month = new Date().getMonth();
+let yearField = document.querySelector("#yearField");
+let monthField = document.querySelector("#monthField");
+
+
+let minusMonthButton = document.querySelector("#minusMonth");
+let plusMonthButton = document.querySelector("#plusMonth");
+let minusYearButton = document.querySelector("#minusYear");
+let plusYearButton = document.querySelector("#plusYear");
+
+setMonth();
+setYear();
+{
+    setEmployeesList();
+}
 findText.addEventListener("input", function (event) {
     refreshPatientList();
 });
@@ -19,10 +36,11 @@ function setEmployeesList() {
         .then(response => response.json())
         .then(employees => fillEmployeesList(employees));
 }
-function  fillEmployeesList(employees) {
-    employees.forEach(employee =>{
+
+function fillEmployeesList(employees) {
+    employees.forEach(emp => {
         let option = document.createElement("option");
-        option.innerHTML = employee.id+ ". "+ employee.firstName+ +" "+ employee.lastName;
+        option.innerHTML = emp.id + ". " + (emp.firstName) + " " + emp.lastName;
         employeesDataList.appendChild(option);
     });
 
@@ -42,10 +60,60 @@ function fillPatientsList(patients) {
 
     patients.forEach(patient => {
         let option = document.createElement("option");
-        option.innerHTML = patient.id + ". " + patient.firstName + " " + patient.lastName + " " + patient.pesel;
+        option.innerHTML = patient.id + ". " + patient.firstName + "\ " + patient.lastName + " " + patient.pesel;
         patientsList.appendChild(option);
     });
 
 }
+
+//Calendar
+function setMonth() {
+    monthField.value = month;
+    console.log(month)
+}
+
+function setYear() {
+    yearField.value = year;
+    console.log(year)
+}
+minusMonthButton.addEventListener("click", function (event){
+    event.preventDefault();
+    if(month==1){
+        month=12;
+        year--;
+        setYear();
+        setMonth();
+    }
+    else {
+        month--;
+
+        setMonth();
+    }
+});
+plusMonthButton.addEventListener("click", function (event){
+    event.preventDefault();
+    if (month==12){
+        month=1;
+        year++;
+        setMonth();
+        setYear();
+    }
+    else{
+        month=month+1;
+        setMonth();
+    }
+});
+
+minusYearButton.addEventListener("click", function (event){
+    year--;
+    setYear();
+});
+
+plusYearButton.addEventListener("click", function (event){
+    year++;
+    setYear();
+});
+
+
 
 

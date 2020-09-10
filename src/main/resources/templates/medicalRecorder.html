@@ -16,11 +16,49 @@
 
 <form autocomplete="off" id="addEntry">
     <select id="patientsList" size="10"></select>
+    <br>
+    <input list="employeesDataList">
 <datalist id="employeesDataList">
 </datalist>
+</form><br>
+<div>
+    <div style="float: left">
+        <h3 style="text-align: center">Month</h3>
+        <form>
+        <input type="button" id="minusMonth", value="-">
+        <input type="text", id="monthField" disabled size="1 px" style=" text-align:  center">
+        <input type="button" id="plusMonth", value="+">
+    </form>
 
-    <input type="submit" value="Refresh">
-</form>
+</div >
+    <div style="float: left">
+        <h1 style="text-align: center">Calendar</h1>
+    </div>
+    <div style="float:  left">
+        <h3 style="text-align: center">Year</h3>
+        <form>
+        <input type="button" id="minusYear", value="-">
+        <input type="text", id="yearField" disabled size="2 px" style="text-align: center">
+        <input type="button" id="plusYear",   value="+">
+    </form></div>
+</div>
+<br>
+<br>
+<div style="clear: both;"></div>
+    <table>
+        <thead>
+        <tr> Mo</tr>
+        <tr> Tue</tr>
+        <tr> Wed</tr>
+        <tr> Thu</tr>
+        <tr> Fri</tr>
+        <tr> Sat</tr>
+        <tr> Sun</tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
 
 <script src="recorderScript.js"></script>
 </body>
