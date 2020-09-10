@@ -6,7 +6,7 @@ let employeesDataList = document.querySelector("#employeesDataList");
 
 
 let year = new Date().getFullYear();
-let month = new Date().getMonth();
+let month = new Date().getMonth() + 1;
 let yearField = document.querySelector("#yearField");
 let monthField = document.querySelector("#monthField");
 
@@ -15,9 +15,11 @@ let minusMonthButton = document.querySelector("#minusMonth");
 let plusMonthButton = document.querySelector("#plusMonth");
 let minusYearButton = document.querySelector("#minusYear");
 let plusYearButton = document.querySelector("#plusYear");
+let tbody = document.querySelector("tbody");
 
 setMonth();
 setYear();
+fillCalender();
 {
     setEmployeesList();
 }
@@ -76,43 +78,84 @@ function setYear() {
     yearField.value = year;
     console.log(year)
 }
-minusMonthButton.addEventListener("click", function (event){
+
+minusMonthButton.addEventListener("click", function (event) {
     event.preventDefault();
-    if(month==1){
-        month=12;
+    if (month == 1) {
+        month = 12;
         year--;
         setYear();
         setMonth();
-    }
-    else {
+    } else {
         month--;
 
         setMonth();
     }
 });
-plusMonthButton.addEventListener("click", function (event){
+plusMonthButton.addEventListener("click", function (event) {
     event.preventDefault();
-    if (month==12){
-        month=1;
+    if (month == 12) {
+        month = 1;
         year++;
         setMonth();
         setYear();
-    }
-    else{
-        month=month+1;
+    } else {
+        month = month + 1;
         setMonth();
     }
 });
 
-minusYearButton.addEventListener("click", function (event){
+minusYearButton.addEventListener("click", function (event) {
     year--;
     setYear();
 });
 
-plusYearButton.addEventListener("click", function (event){
+plusYearButton.addEventListener("click", function (event) {
     year++;
     setYear();
 });
+
+function fillCalender() {
+    let monthInJS = month - 1;
+    let row = document.createElement("tr");
+    let currentDay = 1;
+    let maxDayIMonth = new Date(year, monthInJS + 1, 0).getDate();
+    let firstDay = new Date(year, monthInJS, currentDay);
+    let dayOfFirstInMonth = firstDay.getDay();
+    let currentDayOfweek = dayOfFirstInMonth;
+
+    for (let i = 1; i < dayOfFirstInMonth; i++) {
+        let emptyHeader = document.createElement("th");
+        row.appendChild(emptyHeader);
+    }
+    while (currentDayOfweek <= 7) {
+        let dayHeader = document.createElement("th");
+        let dayDiv = document.createElement("div");
+        dayDiv.innerHTML = "<h2>" + currentDay + "</h2>";
+        dayHeader.appendChild(dayDiv);
+        row.appendChild(dayHeader);
+        currentDayOfweek++;
+        currentDay++
+    }
+    currentDayOfweek = 1;
+    tbody.appendChild(row);
+
+    while (currentDay <= maxDayIMonth) {
+        let row = document.createElement("tr");
+        while (currentDayOfweek <= 7) {
+            let dayHeader = document.createElement("th");
+            let dayDiv = document.createElement("div");
+            dayDiv.innerHTML = "<h2>" + currentDay + "</h2>";
+            dayHeader.appendChild(dayDiv);
+            row.appendChild(dayHeader);
+            currentDayOfweek++;
+            currentDay++;
+            if (currentDay > maxDayIMonth) break;
+
+        }
+        currentDayOfweek=1;
+    }
+}
 
 
 
