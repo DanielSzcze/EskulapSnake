@@ -36,7 +36,7 @@ public class Employee {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     List<WorkDay> workDays= new ArrayList<>();
 
 }

@@ -14,7 +14,7 @@ public class WorkDay {
     @GeneratedValue(strategy =  GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn
     private Employee employee;
 
