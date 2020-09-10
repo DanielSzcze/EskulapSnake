@@ -9,13 +9,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.EskulapSnake.model.Entry;
-import pl.EskulapSnake.model.Role;
-import pl.EskulapSnake.model.User;
-import pl.EskulapSnake.repository.EntryRepository;
-import pl.EskulapSnake.repository.RoleRepository;
-import pl.EskulapSnake.repository.UserRepository;
+import pl.EskulapSnake.model.*;
+import pl.EskulapSnake.repository.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,6 +33,9 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
     EntryRepository entryRepository;
     @Autowired
     ApplicationContext applicationContext;
+    WorkDayRepository workDayRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Override
     @Transactional
@@ -46,6 +46,18 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             entry.setExamination("lol");
 
             entryRepository.save(entry);
+
+            Employee employee = new Employee();
+//            employee.setId(Long.valueOf(i));
+            employee.setFirstName("firstName" + i);
+            employee.setLastName("lastName" + i);
+            employeeRepository.save(employee);
+
+            WorkDay workDay = new WorkDay();
+            workDay.setEmployee(employee);
+            workDay.setFromWorkTime(LocalDateTime.now());
+            workDay.setToWorkTime(LocalDateTime.now().plusHours(8l));
+            workDayRepository.save(workDay);
         }
     }
 

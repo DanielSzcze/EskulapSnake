@@ -74,7 +74,6 @@ public class EntryService {
         if(entryDto.getRecommendations()!=null)entryToUpdate.setRecommendations(entryDto.getRecommendations());
         entryToUpdate.setLocalDateTime(LocalDateTime.now());
         return  entryToUpdate;
-
     }
 
     private Entry getEntityFromDto(EntryDto entryDto) {
@@ -84,6 +83,5 @@ public class EntryService {
         entryToUpdate.setLocalDateTime(LocalDateTime.now());
         return entryToUpdate;
     }
-
 
 }

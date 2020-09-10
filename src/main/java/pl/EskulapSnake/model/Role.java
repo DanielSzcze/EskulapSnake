@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -16,9 +15,10 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @ManyToMany( cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "roles")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "roles")
     private List<User> users;
 
     public Role(String name) {
@@ -26,3 +26,4 @@ public class Role {
     }
 
 }
+

@@ -3,9 +3,6 @@ package pl.EskulapSnake.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.EskulapSnake.model.User;
-
-import java.util.Optional;
 
 @Data
 @NoArgsConstructor
