@@ -34,6 +34,7 @@ public class DataInitializer implements ApplicationRunner {
     @Autowired
     EmployeeRepository employeeRepository;
 
+
     @Override
     public void run(ApplicationArguments args) {
         for (int i =0; i<10; i++) {

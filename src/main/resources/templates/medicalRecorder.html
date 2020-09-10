@@ -4,13 +4,24 @@
     <meta charset="UTF-8">
     <title>MedicalRecorder</title>
 
-    <script src="recorderScript.js"></script>
+
 </head>
 <body>
-<form autocomplete="off">
-    <label for="find">Find Patient by part of date</label>
-    <input type="text" id="find">
-    <input type="submit" value="find">
+<form autocomplete="off" id="findPatientsForm">
+    <label for="findText">Find Patient by part of date</label><br>
+    <input type="text" id="findText">
+    <input type="submit" value="Refresh">
 </form>
+<br>
+
+<form autocomplete="off" id="addEntry">
+    <select id="patientsList" size="10"></select>
+<datalist id="employeesDataList">
+</datalist>
+
+    <input type="submit" value="Refresh">
+</form>
+
+<script src="recorderScript.js"></script>
 </body>
 </html>
