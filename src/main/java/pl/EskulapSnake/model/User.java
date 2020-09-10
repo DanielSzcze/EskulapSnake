@@ -3,7 +3,6 @@ package pl.EskulapSnake.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -14,13 +13,13 @@ public class User {
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique = true, nullable = false )
+    @Column(unique = true, nullable = false)
     private String username;
-    @Column( nullable = false )
+    @Column(nullable = false)
     private String password;
     @Column(nullable = false)
     private String email;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(

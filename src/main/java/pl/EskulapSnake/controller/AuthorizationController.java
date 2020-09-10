@@ -15,7 +15,7 @@ public class AuthorizationController {
     private final AuthService authService;
 
     @Autowired
-    public AuthorizationController(AuthService authService, VerificationCodeRepository codeRepository) {
+    public AuthorizationController(AuthService authService) {
         this.authService = authService;
     }
 
@@ -28,7 +28,7 @@ public class AuthorizationController {
     @GetMapping("verifyAccount/{code}")
     public ResponseEntity<String> verifyAccount(@PathVariable("code") String code) {
         authService.verifyAccount(code);
-        return new ResponseEntity<>(code, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("You have positively verified your account, congrats!", HttpStatus.ACCEPTED);
     }
 
 

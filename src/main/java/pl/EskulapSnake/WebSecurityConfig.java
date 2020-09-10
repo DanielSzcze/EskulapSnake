@@ -3,15 +3,12 @@ package pl.EskulapSnake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.EskulapSnake.service.CustomUserDetailService;
 
 import javax.sql.DataSource;
 
@@ -20,7 +17,12 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     DataSource dataSource;
+    String userQuery = "SELECT username, password, enabled FROM users WHERE username=?";
 
+    String authoritiesQuery = "SELECT username, r.name FROM users u\n" +
+            "JOIN users_roles ur ON u.id=ur.user_id \n" +
+            "JOIN roles r ON ur.role_id=r.id\n" +
+            "WHERE username=? ;";
 
     @Autowired
     public WebSecurityConfig(DataSource dataSource) {
@@ -30,32 +32,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
-                .dataSource(dataSource);
-        auth.authenticationProvider(authProvider());
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+                .dataSource(dataSource)
+                .usersByUsernameQuery(userQuery)
+                .authoritiesByUsernameQuery(authoritiesQuery);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().disable();
-        http.authorizeRequests().antMatchers("/database").permitAll()
-                .antMatchers("/login").permitAll().
-                anyRequest().authenticated();
+        http.authorizeRequests()
+                .antMatchers("/", "/login").permitAll()
+                .antMatchers("/auth/**").anonymous()
+                .antMatchers("/database").hasRole("ADMIN")
+                .anyRequest().authenticated();
         http.formLogin()
                 .loginPage("/login");
-
-    }
-@Bean
-public DaoAuthenticationProvider authProvider(){
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-}
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        return new CustomUserDetailService();
     }
 
     @Bean

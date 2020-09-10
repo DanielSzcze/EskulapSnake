@@ -5,9 +5,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "roles")
 @Data
 @NoArgsConstructor
 public class Role {
@@ -17,8 +18,8 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "roles")
-    private Collection<User> users;
+    @ManyToMany( cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "roles")
+    private List<User> users;
 
     public Role(String name) {
         this.name = name;
