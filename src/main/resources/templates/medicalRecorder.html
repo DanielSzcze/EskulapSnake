@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>MedicalRecorder</title>
 
-
+    <style src="recorder.css" type="text/css" id="styles"></style>
 </head>
 <body>
 <form autocomplete="off" id="findPatientsForm">
@@ -15,11 +15,10 @@
 <br>
 
 <form autocomplete="off" id="addEntry">
-    <select id="patientsList" size="10"></select>
+    <select id="patientsList" size="10" onselect="getWorkDays()"></select>
     <br>
-    <input list="employeesDataList">
-<datalist id="employeesDataList">
-</datalist>
+<select id="employeesSelect">
+</select>
 </form><br>
 <div>
     <div style="float: left">
@@ -63,5 +62,6 @@
     </table>
 
 <script src="recorderScript.js"></script>
+
 </body>
 </html>

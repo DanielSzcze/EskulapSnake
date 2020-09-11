@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.EskulapSnake.dto.EntryDto;
 import pl.EskulapSnake.model.Employee;
 import pl.EskulapSnake.model.Entry;
+import pl.EskulapSnake.model.WorkDay;
 import pl.EskulapSnake.service.EmployeeService;
 import pl.EskulapSnake.service.EntryService;
 import pl.EskulapSnake.service.UserService;
@@ -44,8 +45,13 @@ public class EntryController {
     public Entry findByid(@PathVariable("id") String identification) {
         long id = Long.parseLong(identification);
         return entryService.findById(id);
+    }
 
-
+    @GetMapping("/{id_employee}/{month_and_year}")
+    public  List<Entry> getAllByEmployeeAndDate(@PathVariable("id_employee") String identification,
+                                                  @PathVariable("month_and_year") String monthAndYear){
+        Long employeeId = Long.parseLong(identification);
+        return entryService.findByEmployeeIdAndDate(employeeId, monthAndYear);
     }
 
     @PostMapping()

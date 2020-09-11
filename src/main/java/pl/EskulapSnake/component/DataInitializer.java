@@ -41,7 +41,11 @@ public class DataInitializer implements ApplicationRunner {
             Entry entry = new Entry();
             entry.setRecommendations("bla");
             entry.setExamination("lol");
-            entryRepository.save(entry);
+            entry.setLocalDateTime(LocalDateTime.of(2020, 9, 8, 11, 15));
+            Entry entry1 = new Entry();
+            entry1.setRecommendations("bla");
+            entry1.setExamination("lol");
+            entry1.setLocalDateTime(LocalDateTime.of(2020, 6, 8, 11, 15));
             Patient patient = new Patient();
             patient.setLastName("lool");
             patient.setFirstName("kuba");
@@ -52,21 +56,24 @@ public class DataInitializer implements ApplicationRunner {
             patientRepository.save(patient1);
             WorkDay workDay = new WorkDay();
             WorkDay workDay1 = new WorkDay();
-            workDay.setFromWorkTime(LocalDateTime.of(2020, 8, 25, 12, 00));
-            workDay1.setFromWorkTime(LocalDateTime.of(2020, 6, 25, 12, 00));
-            workDay.setToWorkTime((LocalDateTime.of(2020, 8, 25, 20, 00)));
-            workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 25, 20, 00)));
+            workDay.setFromWorkTime(LocalDateTime.of(2020, 9, 8, 10, 00));
+            workDay1.setFromWorkTime(LocalDateTime.of(2020, 6, 8, 10, 00));
+            workDay.setToWorkTime((LocalDateTime.of(2020, 9, 8, 18, 00)));
+            workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 13, 18, 00)));
+
 
             Employee employee = new Employee();
             employee.setFirstName("firstName" + i);
             employee.setLastName("lastName" + i);
-
+            entry.setEmployee(employee);
+            entry1.setEmployee(employee);
 
             workDay.setEmployee(employee);
             workDay1.setEmployee(employee);
             employeeRepository.save(employee);
             workDayRepository.save(workDay);
-
+            entryRepository.save(entry);
+            entryRepository.save(entry1);
         }
     }
 }

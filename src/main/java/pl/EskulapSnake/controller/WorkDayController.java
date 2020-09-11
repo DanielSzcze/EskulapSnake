@@ -31,10 +31,10 @@ public class WorkDayController {
     }
 
     @GetMapping("/{id_employee}/{month_and_year}")
-    public  List<WorkDay> getAllByEmployeeAndMonth(@PathVariable("id_employee") String identification,
-                                                   @PathVariable("month_and_year") String monthAndYear){
+    public  List<WorkDay> getAllByEmployeeAndDate(@PathVariable("id_employee") String identification,
+                                                  @PathVariable("month_and_year") String monthAndYear){
 Long employeeId = Long.parseLong(identification);
-return workDayService.findByEmployeeAndMonth(employeeId, monthAndYear);
+return workDayService.findByEmployeeIdAndDate(employeeId, monthAndYear);
     }
 
     @PostMapping

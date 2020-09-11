@@ -38,6 +38,26 @@ public class EntryService {
                 .orElseThrow(() -> new EntityNotFoundException("In DB is no Entry with this id"));
     }
 
+        public List<Entry> findByEmployeeIdAndDate(Long employeeId, String monthAndYear){
+            String[] dateInArray = monthAndYear.split("\\.");
+            int month = Integer.parseInt(dateInArray[0]);
+            int year = Integer.parseInt(dateInArray[1]);
+            if(year<100) year+=2000;
+            LocalDateTime beginOfMonth = this.getBeginOfMonth(month, year);
+            LocalDateTime endOfMonth = this.getEndOfMonth(month, year);
+            return entryRepository.getByEmpIdAndTimeInterval(employeeId, beginOfMonth, endOfMonth);
+        }
+    private LocalDateTime getBeginOfMonth(Integer month, Integer year) {
+        LocalDateTime minDateOfMonth = LocalDateTime.of(year, month, 1, 00,00);
+        return minDateOfMonth;
+
+    }
+    private LocalDateTime getEndOfMonth(Integer month, Integer year) {
+
+        LocalDateTime maxDateOfMonth = LocalDateTime.of(year, month + 1, 1, 23, 59).minusDays(1);
+        return maxDateOfMonth;
+    }
+
     @Transactional
     public void deleteAll() {
         entryRepository.deleteAll();

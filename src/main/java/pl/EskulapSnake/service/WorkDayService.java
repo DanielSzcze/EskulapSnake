@@ -29,7 +29,7 @@ public class WorkDayService {
     public WorkDay findById(Long id) {
         return workDayRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Work day not found!"));
     }
-    public List<WorkDay> findByEmployeeAndMonth(Long employeeId, String monthAndYear) {
+    public List<WorkDay> findByEmployeeIdAndDate(Long employeeId, String monthAndYear) {
         String[] dateInArray = monthAndYear.split("\\.");
         int month = Integer.parseInt(dateInArray[0]);
         int year = Integer.parseInt(dateInArray[1]);
