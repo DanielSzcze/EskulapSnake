@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Ekulap Login Page</title>
+    <style>
+        body {font-family: Arial,serif;}
+
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tab">
+
+    <button class="tablinks" onclick="openMethod(onclick, 'sign in')">Sign in</button>
+    <button class="tablinks" onclick="openMethod(onclick, 'sign up')">Sign up</button>
+
+</div>
+
+<div id="sign in" class="tabcontent">
+    <form th:action="@{/login}" method="post">
+        <input type="text"
+               id="username"
+               name="username"
+               autofocus="autofocus"
+               placeholder="Username">
+        <input type="password"
+               id="password"
+               name="password"
+               placeholder="Password">
+        <input type="submit"
+               name="login-submit"
+               id="login-submit"
+               value="Sign in">
+    </form>
+</div>
+
+<div id="sign up"  class="tabcontent">
+    <form action="#" th:action="@{/auth/signup}" th:object="${user}"  method="post">
+        <input type="text"
+               id="username1"
+               name="username"
+               autofocus="autofocus"
+               placeholder="Username">
+        <input type="password"
+               id="password1"
+               name="password"
+               placeholder="Password">
+        <input type="email"
+               id="email"
+               name="email"
+               placeholder="Email">
+        <input type="submit"
+               name="login-submit1"
+               id="login-submit1"
+               value="Sign up">
+    </form>
+</div>
+
+
+<script>
+    function openMethod(evt, methodName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(methodName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+</body>
+</html>

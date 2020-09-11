@@ -13,6 +13,6 @@ public class UserService {
     }
 
     public User findByUserName(String username) {
-        return userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("in db is no user with this username"));
+        return userRepository.findUserByUsername(username);
     }
 }

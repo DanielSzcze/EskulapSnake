@@ -1,19 +1,25 @@
 package pl.EskulapSnake.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.RegisterRequest;
+import pl.EskulapSnake.exceptions.AlreadyExistsException;
 import pl.EskulapSnake.model.NotificationEmail;
+import pl.EskulapSnake.model.Role;
 import pl.EskulapSnake.model.User;
 import pl.EskulapSnake.model.VerificationCode;
 import pl.EskulapSnake.repository.UserRepository;
 import pl.EskulapSnake.repository.VerificationCodeRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,8 +42,14 @@ public class AuthService {
     }
 
     @Transactional
-    public void signup(RegisterRequest registerRequest) {
+    public void signup(RegisterRequest registerRequest) throws AlreadyExistsException {
         User user = userFromRegisterRequest(registerRequest);
+        if (emailExists(registerRequest.getEmail())) {
+            throw new AlreadyExistsException("There is account with that email address");
+        }
+        if (userExists(registerRequest.getUsername())) {
+            throw new AlreadyExistsException("There is already signed user with this name");
+        }
         userRepository.save(user);
 
         VerificationCode code = generateVerificationCode(user);
@@ -54,6 +66,15 @@ public class AuthService {
         ));
     }
 
+    private boolean userExists(String username) {
+        return userRepository.findUserByUsername(username) != null;
+    }
+
+    private boolean emailExists(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
+
     @Transactional
     VerificationCode generateVerificationCode(User user) {
         String code = UUID.randomUUID().toString();
@@ -69,7 +90,7 @@ public class AuthService {
         Optional<VerificationCode> verificationCode = verificationCodeRepository.findByCode(code);
         verificationCode.orElseThrow(() -> new EntityNotFoundException("Wrong code passed"));
         User user = verificationCode.get().getUser();
-        user.setEnabled(1);
+        user.setEnabled(true);
         userRepository.save(user);
     }
 
@@ -78,7 +99,8 @@ public class AuthService {
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setEnabled(0);
+        user.setEnabled(false);
+        user.setRoles(Collections.singletonList(new Role("ROLE_PATIENT")));
         return user;
     }
 }

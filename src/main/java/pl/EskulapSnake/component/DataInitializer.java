@@ -3,34 +3,54 @@ package pl.EskulapSnake.component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.EskulapSnake.model.Employee;
-import pl.EskulapSnake.model.Entry;
-import pl.EskulapSnake.model.WorkDay;
-import pl.EskulapSnake.repository.EmployeeRepository;
-import pl.EskulapSnake.repository.EntryRepository;
-import pl.EskulapSnake.repository.WorkDayRepository;
+import org.springframework.transaction.annotation.Transactional;
+import pl.EskulapSnake.model.*;
+import pl.EskulapSnake.repository.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Tu możesz zainicializować dane do bazy by sprawdzić to w postmanie
  * Wstrzyknij swoje repo lub/i serwis i w run działaj do oporu
  */
 @Component
-public class DataInitializer implements ApplicationRunner {
+public class DataInitializer implements ApplicationRunner, ApplicationListener<ContextRefreshedEvent> {
 
-
-    @Autowired
+    boolean alreadySetup = false;
+    UserRepository userRepository;
+    RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
     EntryRepository entryRepository;
-    @Autowired
+    ApplicationContext applicationContext;
     WorkDayRepository workDayRepository;
-    @Autowired
     EmployeeRepository employeeRepository;
+@Autowired
+    public DataInitializer( UserRepository userRepository,
+                            RoleRepository roleRepository,
+                            PasswordEncoder passwordEncoder,
+                            EntryRepository entryRepository,
+                            ApplicationContext applicationContext,
+                            WorkDayRepository workDayRepository,
+                            EmployeeRepository employeeRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.entryRepository = entryRepository;
+        this.applicationContext = applicationContext;
+        this.workDayRepository = workDayRepository;
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
+    @Transactional
     public void run(ApplicationArguments args) {
-        for (int i =0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             Entry entry = new Entry();
             entry.setRecommendations("bla");
             entry.setExamination("lol");
@@ -49,5 +69,35 @@ public class DataInitializer implements ApplicationRunner {
             workDay.setToWorkTime(LocalDateTime.now().plusHours(8l));
             workDayRepository.save(workDay);
         }
+    }
+
+    @Override
+    @Transactional
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (alreadySetup) return;
+        createRoleIfNotFound("ROLE_ADMIN");
+        createRoleIfNotFound("ROLE_MANAGER");
+        createRoleIfNotFound("ROLE_PHYSICIAN");
+        createRoleIfNotFound("ROLE_RECORDER");
+        createRoleIfNotFound("ROLE_PATIENT");
+        createRoleIfNotFound("ROLE_EMPLOYEE");
+        List<Role> adminRoles = roleRepository.findAll();
+        User user = new User();
+        user.setUsername(applicationContext.getEnvironment().getProperty("admin.username"));
+        user.setPassword(passwordEncoder.encode(applicationContext.getEnvironment().getProperty("admin.passwd")));
+        user.setEmail("eskulapsnake@gmail.com");
+        user.setRoles(adminRoles);
+        user.setEnabled(true);
+        userRepository.save(user);
+        alreadySetup = true;
+    }
+
+    private Role createRoleIfNotFound(String name) {
+        Role role = roleRepository.findByName(name);
+        if (role == null) {
+            role = new Role(name);
+            roleRepository.save(role);
+        }
+        return role;
     }
 }
