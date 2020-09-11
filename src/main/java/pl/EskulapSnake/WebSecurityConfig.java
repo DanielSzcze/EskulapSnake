@@ -48,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         http.formLogin()
                 .loginPage("/login");
+        http.logout().logoutUrl("/logout")
+                .logoutSuccessUrl("/logout/success");
     }
 
     @Bean

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°)<br>
+(ノಠ益ಠ)ノ彡┻━┻<br>
+┻━┻︵ \(°□°)/ ︵ ┻━┻<br>
+┏━┓┏━┓┏━┓ ︵ /(^.^/)<br>
+<div sec:authorize="isAnonymous()">
+    <button sec:authorize="isAnonymous()" type="button" onclick="location.href='/login'">Log in</button>
+</div>
+<div sec:authorize="isFullyAuthenticated()">
+    User: <p sec:authentication="name"></p>
+    Role: <p sec:authentication="principal.authorities"></p>
+    <button type="button" onclick="location.href='/logout'">Log out</button>
+</div>
+</body>
+</html>

@@ -23,19 +23,29 @@ import java.util.List;
 public class DataInitializer implements ApplicationRunner, ApplicationListener<ContextRefreshedEvent> {
 
     boolean alreadySetup = false;
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     RoleRepository roleRepository;
-    @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
     EntryRepository entryRepository;
-    @Autowired
     ApplicationContext applicationContext;
     WorkDayRepository workDayRepository;
-    @Autowired
     EmployeeRepository employeeRepository;
+@Autowired
+    public DataInitializer( UserRepository userRepository,
+                            RoleRepository roleRepository,
+                            PasswordEncoder passwordEncoder,
+                            EntryRepository entryRepository,
+                            ApplicationContext applicationContext,
+                            WorkDayRepository workDayRepository,
+                            EmployeeRepository employeeRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.entryRepository = entryRepository;
+        this.applicationContext = applicationContext;
+        this.workDayRepository = workDayRepository;
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     @Transactional
