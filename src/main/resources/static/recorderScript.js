@@ -1,4 +1,4 @@
-let adress = "http://localhost:8080/"
+let adress = "http://localhost:8080/";
 let findPatientForm = document.querySelector("#findPatientsForm");
 let findText = document.querySelector("#findText");
 let patientsList = document.querySelector("#patientsList");
@@ -65,11 +65,13 @@ function fillPatientsList(patients) {
     });
 
 }
+
 function getEmployeeId() {
     let employee = employeesSelect.value;
     let employeeId = employee.substr(0, employee.indexOf('.'));
     return employeeId;
 }
+
 //Calendar
 function setMonth() {
     monthField.value = month;
@@ -208,64 +210,70 @@ employeesSelect.addEventListener("change", function () {
 });
 
 function fillCalenderByWorkDays() {
+    Object.values(document.getElementsByName("EntryRadio"))
+        .forEach(function (radio) {
+            radio.remove();
+
+        });
     let employeeId = getEmployeeId();
     let date = String(month) + "." + String(year);
     let url = adress + "workdays/" + employeeId + "/" + date;
-    fetch(url)
+    if (employeeId != "") fetch(url)
         .then(response => response.json())
         .then(workDays => addWorkDays(workDays));
 }
 
 
-
 function addWorkDays(workDays) {
-    workDays.forEach(workDay => addWorkDayToCalender(workDay));
+    Object.values(workDays).forEach(workDay => addWorkDayToCalender(workDay));
 
 }
 
-function addWorkDayToCalender(workDay) {
 
-    let fromWorkTimeDay = workDay.fromWorkTime.substr(8, 2);
+function addWorkDayToCalender(workDay) {
+    let fromWorkTime = workDay.fromWorkTime;
+    let toWorkTime = workDay.toWorkTime;
+    let fromWorkTimeDay = fromWorkTime.substr(8, 2);
     if (fromWorkTimeDay.startsWith("0")) fromWorkTimeDay.substr(1, 1);
-    let toWorkTimeDay = workDay.toWorkTime.substr(8, 2);
+    let toWorkTimeDay = toWorkTime.substr(8, 2);
     if (toWorkTimeDay.startsWith("0")) toWorkTimeDay.substr(1, 1);
 
 
-    let fromWorkTimeHour = workDay.fromWorkTime.substr(11, 2);
+    let fromWorkTimeHour = fromWorkTime.substr(11, 2);
     if (fromWorkTimeHour.startsWith("0")) fromWorkTimeHour.substr(1, 1);
-    let toWorkTimeHour = workDay.toWorkTime.substr(11, 2);
+    let toWorkTimeHour = toWorkTime.substr(11, 2);
     if (toWorkTimeHour.startsWith("0")) toWorkTimeHour.substr(1, 1);
 
-    let listOfDivs = document.querySelectorAll("div");
-    Object.values(listOfDivs)
+    let allDivs = document.getElementsByTagName("div");
+    Object.values(allDivs)
         .forEach(div => setIfWorkDay(div, fromWorkTimeDay, toWorkTimeDay, fromWorkTimeHour, toWorkTimeHour));
 }
 
 function setIfWorkDay(div, fromWorkTimeDay, toWorkTimeDay, fromWorkTimeHour, toWorkTimeHour) {
+
     div.style = "background-color:white;";
     let day = div.getAttribute("day");
     let hour = div.getAttribute("hour");
+    let minutes = div.getAttribute("min");
     let isWorkDay = div.hasAttribute("day")
         && div.hasAttribute("hour")
         && (day >= Number(fromWorkTimeDay))
         && (day <= Number(toWorkTimeDay))
         && (hour >= Number(fromWorkTimeHour))
         && (hour < Number(toWorkTimeHour));
-
     if (isWorkDay) {
-        div.style = "background-color:yellow;";
-
-        div.addEventListener("onclick", function(){
-            postEntry();
-        });
+        let radio = document.createElement("input");
+        radio.setAttribute("day", day);
+        radio.setAttribute("hour", hour);
+        radio.setAttribute("minutes", minutes);
+        radio.setAttribute("type", "radio");
+        radio.setAttribute("name", "EntryRadio")
+        div.appendChild(radio);
+        div.style = "background-color:yellow";
     }
-
-
 }
 
-function postEntry() {
-    console.log("post")
-}
+
 
 //========================================ENTRIES=========================
 
@@ -273,24 +281,25 @@ function fillCalenderByEntries() {
     let employeeId = getEmployeeId();
     let date = String(month) + "." + String(year);
     let url = adress + "entries/" + employeeId + "/" + date;
-    fetch(url)
+    if (employeeId != "") fetch(url)
         .then(response => response.json())
         .then(entries => addEntries(entries));
 }
 
 function addEntries(entries) {
-    entries.forEach(entry => addEntryToCalender(entry));
+    Object.values(entries).forEach(entry => addEntryToCalender(entry));
 
 }
 
 function addEntryToCalender(entry) {
-    let entryDay = entry.localDateTime.substr(8, 2);
+    let entryLocalDateTime = String(entry.localDateTime);
+    let entryDay = entryLocalDateTime.substr(8, 2);
     if (entryDay.startsWith("0")) entryDay.substr(1, 1);
 
 
-    let entryHour = entry.localDateTime.substr(11, 2);
+    let entryHour = entryLocalDateTime.substr(11, 2);
     if (entryHour.startsWith("0")) enryHour.substr(1, 1);
-    let entryMinutes = entry.localDateTime.substr(14, 2)// szczeelamy!!!
+    let entryMinutes = entryLocalDateTime.substr(14, 2)
 
     let listOfDivs = document.querySelectorAll("div");
     Object.values(listOfDivs)
@@ -309,12 +318,21 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes) {
         && (minutes == Number(entryMinutes));
 
     if (isEntryTime) {
+let radio = div.querySelector("input");
+       if(radio!=null) radio.remove();
         div.style = "background-color:red;";
-
-        div.addEventListener("onclick", none())
     }
 }
 
-function none() {
-}
+function postEntry(event, div) {
+    event.preventDefault();
+    // let day = div.getAttribute("day");
+    // let hour = div.getAttribute("hour");
+    // let minutes = div.getAttribute("min");
 
+    console.log("post");
+    // console.log(day);
+    // console.log(hour);
+    // console.log(minutes);
+
+}
