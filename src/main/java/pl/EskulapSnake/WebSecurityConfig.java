@@ -40,13 +40,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+
         http
                 .headers()
                 .frameOptions()
                 .disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/logout", "logout/error").permitAll()
+                .antMatchers("/" ,"/login","/login/error", "/logout").permitAll()
                 .antMatchers("/auth/**").anonymous()
                 .antMatchers("/database").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -55,7 +56,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .loginProcessingUrl("/process_login")
-                .failureUrl("/login?error=true")
+                .failureUrl("/login/error")
+//                .failureHandler((httpServletRequest, httpServletResponse, e) -> {
+//                    httpServletResponse.sendRedirect("/login/error");
+//                })
                 .and()
                 .logout().logoutUrl("/logout")
                 .deleteCookies("JSESSIONID")

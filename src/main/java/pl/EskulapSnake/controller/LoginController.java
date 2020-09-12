@@ -17,11 +17,11 @@ public class LoginController {
 
     @GetMapping("/login/error")
     @ResponseBody
-    ResponseEntity<String> loginFailure(@RequestParam(name = "error") boolean error){
-        if(error){
+    ResponseEntity<String> loginFailure(){
+
             return new ResponseEntity<>("<h3>Failed to log in. Check if your password or username is correct</h3> " +
                     "<button type=\"button\" onclick=\"location.href='/login'\">Try again</button>"
                     , HttpStatus.CONFLICT);
-        } return null;
+
     }
 }
