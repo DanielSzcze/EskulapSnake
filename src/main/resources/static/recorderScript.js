@@ -3,6 +3,8 @@ let findPatientForm = document.querySelector("#findPatientsForm");
 let findText = document.querySelector("#findText");
 let patientsList = document.querySelector("#patientsList");
 let employeesSelect = document.querySelector("#employeesSelect");
+let visitTypesSelect = document.querySelector("#visitTypesSelect");
+let addEntryButton = document.querySelector("#postEntryButton");
 
 
 let year = new Date().getFullYear();
@@ -16,10 +18,12 @@ let plusMonthButton = document.querySelector("#plusMonth");
 let minusYearButton = document.querySelector("#minusYear");
 let plusYearButton = document.querySelector("#plusYear");
 let tbody = document.querySelector("tbody");
-
+setLists();
 setCalender();
-{
+
+function setLists(){
     setEmployeesList();
+    setVisTypeList();
 }
 findText.addEventListener("input", function (event) {
     refreshPatientList();
@@ -43,7 +47,22 @@ function fillEmployeesList(employees) {
         option.innerHTML = emp.id + ". " + (emp.firstName) + " " + emp.lastName;
         employeesSelect.appendChild(option);
     });
+}
 
+function setVisTypeList() {
+
+    let url = adress + "visits";
+    fetch(url)
+        .then(response => response.json())
+        .then(visitTypes => fillVisitTypeList(visitTypes));
+}
+
+function fillVisitTypeList(visitTypes) {
+    visitTypes.forEach(visit => {
+        let option = document.createElement("option");
+        option.innerHTML = visit.id + ". " + (visit.name);
+        visitTypesSelect.appendChild(option);
+    });
 }
 
 
@@ -70,6 +89,17 @@ function getEmployeeId() {
     let employee = employeesSelect.value;
     let employeeId = employee.substr(0, employee.indexOf('.'));
     return employeeId;
+}
+
+function getPatientId() {
+    let patient = patientsList.value;
+    let patientId = patient.substr(0, patient.indexOf('.'));
+    return patientId;
+}
+function getVisitTypeId() {
+    let visitType = visitTypesSelect.value;
+    let visitTypeId = visitType.substr(0, visitType.indexOf('.'));
+    return visitTypeId;
 }
 
 //Calendar
@@ -274,7 +304,6 @@ function setIfWorkDay(div, fromWorkTimeDay, toWorkTimeDay, fromWorkTimeHour, toW
 }
 
 
-
 //========================================ENTRIES=========================
 
 function fillCalenderByEntries() {
@@ -318,21 +347,72 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes) {
         && (minutes == Number(entryMinutes));
 
     if (isEntryTime) {
-let radio = div.querySelector("input");
-       if(radio!=null) radio.remove();
+        let radio = div.querySelector("input");
+        if (radio != null) radio.remove();
         div.style = "background-color:red;";
     }
 }
 
-function postEntry(event, div) {
+addEntryButton.addEventListener("click", function (event) {
+    postEntry(event);
+
+});
+
+function postEntry(event) {
     event.preventDefault();
-    // let day = div.getAttribute("day");
-    // let hour = div.getAttribute("hour");
-    // let minutes = div.getAttribute("min");
+    let employeeId = getEmployeeId();
+    let patientId = getPatientId();
+    let selectedRadio = document.querySelector("input[name=EntryRadio]:checked");
+    let vistTypeId = getVisitTypeId();
+    if (employeeId == "") alert("select employee");
+    else if (patientId == "") alert("select patient");
+    else if (selectedRadio == null) alert("select time");
+    else if(vistTypeId=="") alert("select visit type")
+    else {
+        let day = selectedRadio.getAttribute("day");
+        if(String(day).length==1) day="0"+day;
+        let hour = selectedRadio.getAttribute("hour");
+        if(String(hour).length==1) hour="0"+hour;
+        let minutes = selectedRadio.getAttribute("minutes");
+        if(String(minutes).length==1) minutes="0"+minutes;
+        let localMonth = month;
+        if(String(localMonth).length==1) localMonth="0"+localMonth;
 
-    console.log("post");
-    // console.log(day);
-    // console.log(hour);
-    // console.log(minutes);
 
+        console.log("post");
+        console.log(employeeId);
+        console.log(patientId);
+        console.log(day);
+        console.log(hour);
+        console.log(minutes);
+        console.log(month);
+        console.log(year)
+        let dateTime = year + "-" + localMonth + "-" + day + "T" + hour + ":" + minutes + ":00"
+        console.log(dateTime);
+        let json = "{" +
+            '"patientId": '+ patientId + ","
+            +'"visitTypeId": '+ vistTypeId + ","
+            + '"employeeId": ' + employeeId + ","
+            + '"localDateTime": ' + '"'+dateTime+'"'
+            + "}";
+        console.log(json)
+        let url = adress + "entries"
+        fetch(url, {
+
+            method: "post",
+            headers: {
+
+                "Content-Type": "application/json"
+            },
+            body:
+            json
+        })
+            .then(response => {
+                if (response.ok) {
+                    setCalender();
+                } else {
+                    alert("problem with creating entry")
+                }
+            });
+    }
 }

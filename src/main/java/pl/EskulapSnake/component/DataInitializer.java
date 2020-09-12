@@ -4,14 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import pl.EskulapSnake.model.Employee;
-import pl.EskulapSnake.model.Entry;
-import pl.EskulapSnake.model.Patient;
-import pl.EskulapSnake.model.WorkDay;
-import pl.EskulapSnake.repository.EmployeeRepository;
-import pl.EskulapSnake.repository.EntryRepository;
-import pl.EskulapSnake.repository.PatientRepository;
-import pl.EskulapSnake.repository.WorkDayRepository;
+import pl.EskulapSnake.model.*;
+import pl.EskulapSnake.repository.*;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +27,10 @@ public class DataInitializer implements ApplicationRunner {
 
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    VisitTypeRepository visitTypeRepository;
 
 
     @Override
@@ -57,9 +55,9 @@ public class DataInitializer implements ApplicationRunner {
             WorkDay workDay = new WorkDay();
             WorkDay workDay1 = new WorkDay();
             workDay.setFromWorkTime(LocalDateTime.of(2020, 9, 8, 10, 00));
-            workDay1.setFromWorkTime(LocalDateTime.of(2020, 6, 8, 10, 00));
+            workDay1.setFromWorkTime(LocalDateTime.of(2020, 6, 8, 8, 00));
             workDay.setToWorkTime((LocalDateTime.of(2020, 9, 8, 18, 00)));
-            workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 13, 18, 00)));
+            workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 8, 16, 00)));
 
 
             Employee employee = new Employee();
@@ -72,8 +70,15 @@ public class DataInitializer implements ApplicationRunner {
             workDay1.setEmployee(employee);
             employeeRepository.save(employee);
             workDayRepository.save(workDay);
+            workDayRepository.save(workDay1);
             entryRepository.save(entry);
             entryRepository.save(entry1);
+            Role role = new Role();
+            role.setName("role "+ i);
+            roleRepository.save(role);
+            VisitType visitType = new VisitType();
+            visitType.setName("visitType "+i);
+            visitTypeRepository.save(visitType);
         }
     }
 }

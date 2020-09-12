@@ -15,14 +15,17 @@
 <br>
 
 <form autocomplete="off" id="addEntry">
-    <select id="patientsList" size="10" onselect="getWorkDays()"></select>
+     <select id="patientsList" size="10" onselect="getWorkDays()"></select>
     <br>
-<select id="employeesSelect">
+    Select employee:<select id="employeesSelect">
+</select>
+    <br>
+    Select visiyt type: <select id="visitTypesSelect">
 </select>
 </form><br>
 <div>
-    <div style="float: left">
-        <h3 style="text-align: center">Month</h3>
+    <div style="float: left; text-align: center">
+        <h3>Month</h3>
         <form>
         <input type="button" id="minusMonth", value="-">
         <input type="text", id="monthField" disabled size="1 px" style=" text-align:  center">
@@ -30,10 +33,10 @@
     </form>
 
 </div >
-    <div style="float: left">
+    <div style="float: left; text-align: center">
         <h1 style="text-align: center">Calendar</h1>
     </div>
-    <div style="float:  left">
+    <div style="float:  left; text-align: center">
         <h3 style="text-align: center">Year</h3>
         <form>
         <input type="button" id="minusYear", value="-">
@@ -42,7 +45,9 @@
     </form></div>
 </div>
 <br>
-<br>
+<br><div style="clear: both;">
+    <button id="postEntryButton"><h2>Add entry</h2></button>
+</div>
 <div style="clear: both;"></div>
     <table border="1">
         <thead>

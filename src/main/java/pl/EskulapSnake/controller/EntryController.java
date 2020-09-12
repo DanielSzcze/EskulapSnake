@@ -56,9 +56,8 @@ public class EntryController {
 
     @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Entry post( @RequestBody EntryDto entryDto, Authentication authentication) {
-        Employee loggedEmployee = Utility.findloggedEmployee(authentication, userService, employeeService);
-        return entryService.createNew(entryDto, loggedEmployee);
+    public Entry post( @RequestBody EntryDto entryDto) {
+        return entryService.createNew(entryDto);
     }
 
     @PutMapping("/{id}")
