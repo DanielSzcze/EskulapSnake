@@ -18,10 +18,6 @@
     <button type="button" onclick="location.href='/logout'">Log out</button>
 </div>
 <div sec:authorize="hasRole('ADMIN') or hasRole('RECORDER')"  >
-    You are logged as: <p sec:authentication="name"></p>
-    Your roles: <p sec:authentication="principal.authorities"></p>
-
-    <button type="button" onclick="location.href='/logout'">Log out</button>
     <button type="button" onclick="location.href='/recorder'">Schedule visit</button>
 </div>
 </body>
