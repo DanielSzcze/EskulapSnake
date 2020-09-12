@@ -1,4 +1,4 @@
-let adress = "http://localhost:8080/";
+let adress = "[[$[server.address]]" + ":" + "[[$[server.port]]" ;
 let findPatientForm = document.querySelector("#findPatientsForm");
 let findText = document.querySelector("#findText");
 let patientsList = document.querySelector("#patientsList");
