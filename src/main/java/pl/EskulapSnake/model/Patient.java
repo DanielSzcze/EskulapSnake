@@ -28,6 +28,8 @@ public class Patient {
     @Column
     private String pesel;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Entry> entries = new HashSet<>();
+
+
 }

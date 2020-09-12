@@ -21,10 +21,11 @@ let tbody = document.querySelector("tbody");
 setLists();
 setCalender();
 
-function setLists(){
+function setLists() {
     setEmployeesList();
     setVisTypeList();
 }
+
 findText.addEventListener("input", function (event) {
     refreshPatientList();
 });
@@ -96,6 +97,7 @@ function getPatientId() {
     let patientId = patient.substr(0, patient.indexOf('.'));
     return patientId;
 }
+
 function getVisitTypeId() {
     let visitType = visitTypesSelect.value;
     let visitTypeId = visitType.substr(0, visitType.indexOf('.'));
@@ -243,6 +245,10 @@ function fillCalenderByWorkDays() {
     Object.values(document.getElementsByName("EntryRadio"))
         .forEach(function (radio) {
             radio.remove();
+        });
+    Object.values(document.getElementsByName("cancelButton"))
+        .forEach(function (button) {
+            button.remove();
 
         });
     let employeeId = getEmployeeId();
@@ -251,6 +257,7 @@ function fillCalenderByWorkDays() {
     if (employeeId != "") fetch(url)
         .then(response => response.json())
         .then(workDays => addWorkDays(workDays));
+
 }
 
 
@@ -328,14 +335,15 @@ function addEntryToCalender(entry) {
 
     let entryHour = entryLocalDateTime.substr(11, 2);
     if (entryHour.startsWith("0")) enryHour.substr(1, 1);
-    let entryMinutes = entryLocalDateTime.substr(14, 2)
+    let entryMinutes = entryLocalDateTime.substr(14, 2);
+    let entryId = entry.id
 
     let listOfDivs = document.querySelectorAll("div");
     Object.values(listOfDivs)
-        .forEach(div => setIfEntry(div, entryDay, entryHour, entryMinutes));
+        .forEach(div => setIfEntry(div, entryDay, entryHour, entryMinutes, entryId));
 }
 
-function setIfEntry(div, entryDay, entryHour, entryMinutes) {
+function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
 
     let day = div.getAttribute("day");
     let hour = div.getAttribute("hour");
@@ -348,17 +356,44 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes) {
 
     if (isEntryTime) {
         let radio = div.querySelector("input");
+
+        let cancelButton = document.createElement("button");
+        cancelButton.innerText = "cancel";
+        cancelButton.addEventListener("click", function (event) {
+            cancelEntry(event, entryId);
+
+        });
+        cancelButton.name = "cancelButton";
+        div.appendChild(cancelButton);
         if (radio != null) radio.remove();
         div.style = "background-color:red;";
     }
 }
 
-addEntryButton.addEventListener("click", function (event) {
-    postEntry(event);
+function cancelEntry(event, entryId) {
+    event.preventDefault();
+    let url = adress + "entries/" + entryId;
+    fetch(url, {
+
+        method: "delete",
+    })
+        .then(response => {
+            if (response.status == 202) {
+                setCalender();
+            } else {
+                alert("problem with delete entry")
+            }
+        });
+
+
+}
+
+addEntryButton.addEventListener("click", function () {
+    postEntry();
 
 });
 
-function postEntry(event) {
+function postEntry() {
     event.preventDefault();
     let employeeId = getEmployeeId();
     let patientId = getPatientId();
@@ -367,33 +402,24 @@ function postEntry(event) {
     if (employeeId == "") alert("select employee");
     else if (patientId == "") alert("select patient");
     else if (selectedRadio == null) alert("select time");
-    else if(vistTypeId=="") alert("select visit type")
+    else if (vistTypeId == "") alert("select visit type");
     else {
         let day = selectedRadio.getAttribute("day");
-        if(String(day).length==1) day="0"+day;
+        if (String(day).length == 1) day = "0" + day;
         let hour = selectedRadio.getAttribute("hour");
-        if(String(hour).length==1) hour="0"+hour;
+        if (String(hour).length == 1) hour = "0" + hour;
         let minutes = selectedRadio.getAttribute("minutes");
-        if(String(minutes).length==1) minutes="0"+minutes;
+        if (String(minutes).length == 1) minutes = "0" + minutes;
         let localMonth = month;
-        if(String(localMonth).length==1) localMonth="0"+localMonth;
+        if (String(localMonth).length == 1) localMonth = "0" + localMonth;
 
-
-        console.log("post");
-        console.log(employeeId);
-        console.log(patientId);
-        console.log(day);
-        console.log(hour);
-        console.log(minutes);
-        console.log(month);
-        console.log(year)
         let dateTime = year + "-" + localMonth + "-" + day + "T" + hour + ":" + minutes + ":00"
         console.log(dateTime);
         let json = "{" +
-            '"patientId": '+ patientId + ","
-            +'"visitTypeId": '+ vistTypeId + ","
+            '"patientId": ' + patientId + ","
+            + '"visitTypeId": ' + vistTypeId + ","
             + '"employeeId": ' + employeeId + ","
-            + '"localDateTime": ' + '"'+dateTime+'"'
+            + '"localDateTime": ' + '"' + dateTime + '"'
             + "}";
         console.log(json)
         let url = adress + "entries"
