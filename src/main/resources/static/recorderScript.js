@@ -360,6 +360,7 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
         let cancelButton = document.createElement("button");
         cancelButton.innerText = "cancel";
         cancelButton.addEventListener("click", function (event) {
+            confirm("Are you sure to delete it?");
             cancelEntry(event, entryId);
 
         });
