@@ -7,15 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.EskulapSnake.dto.RegisterRequest;
+import pl.EskulapSnake.exceptions.AlreadyExistsException;
 import pl.EskulapSnake.service.AuthService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthorizationController {
 
     private final AuthService authService;
+    private final String tryAgainButton = "<button type=\"button\" onclick=\"location.href='/login'\">Try again</button>";
 
     @Autowired
     public AuthorizationController(AuthService authService) {
@@ -30,15 +33,26 @@ public class AuthorizationController {
     }
 
     @PostMapping(path = "/signup", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public void signup(RegisterRequest registerRequest, HttpServletResponse response) throws Exception {
-        authService.signup(registerRequest);
-        response.sendRedirect("/auth/signup/success");
+    public ResponseEntity<String> signup(RegisterRequest registerRequest, HttpServletResponse response) {
+        try {
+            authService.signup(registerRequest);
+            response.sendRedirect("/auth/signup/success");
+        } catch (AlreadyExistsException e) {
+            return new ResponseEntity<>(
+                    "<h1>Username or email already exist</h1>" + tryAgainButton,
+                    HttpStatus.CONFLICT);
+        } catch (IOException e) {
+            return new ResponseEntity<>("<h1>There was an error during operation :(</h1>" + tryAgainButton,
+                    HttpStatus.BAD_GATEWAY);
+        }
+        return null;
+
     }
 
     @GetMapping("/signup/success")
     public ResponseEntity<String> getSuccess() {
         return new ResponseEntity<>(
-                "Registration succeded, check for your email for message to verify your account",
+                "Registration succeeded, check for your email for message to verify your account",
                 HttpStatus.OK);
     }
 
@@ -48,9 +62,5 @@ public class AuthorizationController {
         return new ResponseEntity<>("You have positively verified your account, congrats!", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/success")
-    public ResponseEntity<String> logoutSuccessful() {
-        return new ResponseEntity<>("Logout successful", HttpStatus.ACCEPTED);
-    }
 
 }

@@ -40,16 +40,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.headers().frameOptions().disable();
-        http.authorizeRequests()
-                .antMatchers("/", "/login").permitAll()
+
+        http
+                .headers()
+                .frameOptions()
+                .disable()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/" ,"/login","/login/error", "/logout").permitAll()
                 .antMatchers("/auth/**").anonymous()
                 .antMatchers("/database").hasRole("ADMIN")
-                .anyRequest().authenticated();
-        http.formLogin()
-                .loginPage("/login");
-        http.logout().logoutUrl("/logout")
-                .logoutSuccessUrl("/logout/success");
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .loginProcessingUrl("/process_login")
+                .failureUrl("/login/error")
+//                .failureHandler((httpServletRequest, httpServletResponse, e) -> {
+//                    httpServletResponse.sendRedirect("/login/error");
+//                })
+                .and()
+                .logout().logoutUrl("/logout")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/");
     }
 
     @Bean
