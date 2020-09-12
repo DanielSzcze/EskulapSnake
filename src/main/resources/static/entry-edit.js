@@ -1,7 +1,7 @@
+let address ='http://' + window.location.hostname + ':' + window.location.port + '/';
 console.log(location.hash);
-let patientId = location.hash.substring(1, location.hash.indexOf("%"));
-let entryId = location.hash.substring(location.hash.indexOf("%") + 1);
-let address = "http://localhost:8080";
+let patientId = window.location.hash.substring(1, window.location.hash.indexOf("%"));
+let entryId = window.location.hash.substring(window.location.hash.indexOf("%") + 1);
 console.log(patientId + " " + entryId);
 let entryForm = document.querySelector("#entryForm");
 let employeesSelectionList = document.querySelector("#employee");
@@ -15,8 +15,7 @@ function fillEmployeesSelectionList(employees) {
     employeesSelectionList.innerHTML = "";
     employeesSelectionList.appendChild(document.createElement("option"));
     employees.forEach(employee => {
-            //dodać warunek że role musza zaweirać pole medyk
-
+            //TODO dodanie do listy tylko medyków
             let option = document.createElement("option")
             option.value = employee;
             option.innerHTML = employee.id + " " + employee.firstName + " " + employee.lastName;
@@ -27,7 +26,7 @@ function fillEmployeesSelectionList(employees) {
 }
 
 function updateEmployeeList() {
-    let url = address + "/employees"
+    let url = address + "employees"
     fetch(url)
         .then(response => response.json())
         .then(employees => fillEmployeesSelectionList(employees));
@@ -38,8 +37,6 @@ function fillVisitTypeList(visitTypes) {
     visitTypeSelectionList.appendChild(document.createElement("option"));
     visitTypes.forEach(vt => {
             let option = document.createElement("option")
-            // option.value = employee;
-
             option.innerHTML = vt.name;
             visitTypeSelectionList.appendChild(option);
         }
@@ -47,7 +44,7 @@ function fillVisitTypeList(visitTypes) {
 }
 
 function updateVisitTypeList() {
-    let url = address + "/visits"
+    let url = address + "visits"
     fetch(url)
         .then(response => response.json())
         .then(visitTypes => fillVisitTypeList(visitTypes));
@@ -67,7 +64,7 @@ function fillPatientList(patients) {
 }
 
 function updatePatientList() {
-    let url =  address + "/patients"
+    let url =  address + "patients"
     fetch(url)
         .then(response => response.json())
         .then(patients => fillPatientList(patients));
@@ -94,4 +91,6 @@ updateEmployeeList();
 updateVisitTypeList();
 updatePatientList()
 setEntryDate();
+//TODO zaciąganie się danych
+
 // console.log(entryDate.value);

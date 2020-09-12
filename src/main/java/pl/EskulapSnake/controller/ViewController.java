@@ -13,9 +13,20 @@ public class ViewController {
         return "medicalRecorder";
     }
 
-@GetMapping("/patientsView")
+    @GetMapping("/patientsView")
     public String getPatients(){
         return "patientsView";
 }
+
+    @GetMapping("/entry-edit")
+    public String getEntryEdit(){
+        return "entry-edit";
+    }
+
+    @GetMapping("/entry-list")
+    public String getEntryList(){ return "entry-list"; }
+
+    @GetMapping("/entry-view")
+    public String getEntryView(){ return "entry-view"; }
 
 }

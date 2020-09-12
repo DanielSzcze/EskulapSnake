@@ -1,27 +1,26 @@
-let patientsTable = document.querySelector("#patients");
+let address ='http://' + window.location.hostname + ':' + window.location.port + '/';
+// let patientsTable = document.querySelector("#patients");
 let tbodyPatients = document.querySelector("#tbodyPatients");
 
 function updatePatientTable() {
-    fetch("http://localhost:8080/patients")
+    let url = address + "patients";
+    fetch(url)
         .then(response => response.json())
         .then(patients => filterPatients(patients))
         .then(patients => fillPatientsTable(patients))
-    // let filter = document.querySelector("#filter").value;
-    // console.log(filter);
-
 }
 
 function fillPatientsTable(patients) {
     tbodyPatients.innerHTML = "";
     patients.forEach(patient => {
         let tr = document.createElement("tr");
-        let linkList = "/entry-list.html#" + patient.id;
-        let linkAdd = "entry-edit.html#" + patient.id;
+        let linkList = address + "entry-list#" + patient.id;
+        let linkAdd = address + "entry-edit#" + patient.id;
         tr.innerHTML = "<td>" + patient.firstName + "</td>"
             + "<td>" + patient.lastName + ' ' + "</td>"
             + "<td>" + patient.pesel + "</td>"
-            + "<a href=" + linkList + "><button>Lista wpisów</button></a>"
-            + "<a href=" + linkAdd + "><button>Dodaj wpis</button></a>"
+            + "<a class=\"button\" href=" + linkList + ">Lista wpisów</a>" + "<br>" +
+            + "<a class=\"button\" href=" + linkAdd + ">Dodaj wpis</a>"
             tbodyPatients.appendChild(tr);
     })
 }
@@ -42,10 +41,3 @@ filterForm.addEventListener("submit", function (event) {
 
 
 //TODO obsługa przycisku "dodaj wpis"
-
-//TODO obsługa przycisky "lista wpisów pacjenta"
-
-//dla pacjenta wyszukiwanie wpisów dla pacjenta skąd wziąść id
-//dla lekarza lista pacjentów i następnie lista wpisów dla pacjenta
-//przycisk nowy wpis
-//czy lekarze na liście czy domyślny lekarz
