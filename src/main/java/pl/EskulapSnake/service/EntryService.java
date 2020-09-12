@@ -63,7 +63,7 @@ public class EntryService {
     @Transactional
     public Entry update(Long id, EntryDto entryDto) {
         Entry entryToUpdate = entryRepository.findById(id).orElseThrow(()
-                -> new  EntityNotFoundException("there is no entoty in db with this id"));
+                -> new  EntityNotFoundException("there is no entity in db with this id"));
         entryToUpdate=setFields( entryToUpdate, entryDto);
         entryRepository.save(entryToUpdate);
         return entryToUpdate;
@@ -78,9 +78,9 @@ public class EntryService {
 
     private Entry getEntityFromDto(EntryDto entryDto) {
         Entry entryToUpdate = new Entry();
-        entryToUpdate.setExamination(entryDto.getExamination());
-        entryToUpdate.setRecommendations(entryDto.getRecommendations());
-        entryToUpdate.setLocalDateTime(LocalDateTime.now());
+        if (entryDto.getExamination()!=null)entryToUpdate.setExamination(entryDto.getExamination());
+        if (entryDto.getRecommendations()!=null)entryToUpdate.setRecommendations(entryDto.getRecommendations());
+        if (entryDto.getLocalDateTime()!=null)entryToUpdate.setLocalDateTime(entryDto.getLocalDateTime());
         return entryToUpdate;
     }
 

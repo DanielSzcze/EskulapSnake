@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/visits")
+@CrossOrigin("*")
 public class VisitTypeController {
 
     private VisitTypeService visitTypeService;

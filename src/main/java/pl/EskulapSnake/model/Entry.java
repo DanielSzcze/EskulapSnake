@@ -16,8 +16,10 @@ public class Entry {
     private Long id;
 
     private LocalDateTime localDateTime;
+
     @Lob
     private String examination;
+
     @Lob
     private String recommendations;
 
@@ -28,5 +30,6 @@ public class Entry {
     @OneToOne
     @JoinColumn
     private VisitType visitType;
+
 
 }

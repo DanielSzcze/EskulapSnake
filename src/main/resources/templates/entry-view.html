@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wpis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h2>Wpis</h2><br>
+<form id="entryViewForm" >
+    <div>
+        <label for="entryDateEntry">Data: </label> <br>
+        <output id="entryDateEntry"></output><br><br>
+
+<!--        <label for="patientEntry">Pacjent:  </label><br>-->
+<!--        <output id="patientEntry" style="width: 50%;" disabled></output><br><br>-->
+
+        <label for="visitTypeEntry">Typ wizyty: </label><br>
+        <output id="visitTypeEntry" style="width: 50%;"></output>
+        <br><br>
+
+        <label for="examinationEntry">Opis badania: </label><br>
+        <output id="examinationEntry" style="width: 50%; height: 50px; " ></output><br><br>
+
+        <label for="recommendationsEntry">Zalecenia: </label><br>
+        <output id="recommendationsEntry" style="width: 50%; height: 50px; vertical-align: text-top;" ></output><br><br>
+
+        <label for="employeeEntry">Lekarz: </label><br>
+        <output id="employeeEntry" style="width: 50%;" ></output>
+        <br><br>
+
+    </div>
+    <a id="entryEdit">Edytuj</a>
+</form>
+<script src="entry-view.js"></script>
+
+</body>
+</html>
