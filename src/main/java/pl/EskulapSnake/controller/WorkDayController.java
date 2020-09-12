@@ -30,6 +30,13 @@ public class WorkDayController {
         return workDayService.findByEmployee(Long.parseLong(idEmployee));
     }
 
+    @GetMapping("/{id_employee}/{month_and_year}")
+    public  List<WorkDay> getAllByEmployeeAndDate(@PathVariable("id_employee") String identification,
+                                                  @PathVariable("month_and_year") String monthAndYear){
+Long employeeId = Long.parseLong(identification);
+return workDayService.findByEmployeeIdAndDate(employeeId, monthAndYear);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WorkDay addWorkDay (@RequestBody WorkDayDto workDayDto ) {

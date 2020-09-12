@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MedicalRecorder</title>
+
+    <style src="recorder.css" type="text/css" id="styles"></style>
+</head>
+<body>
+<form autocomplete="off" id="findPatientsForm">
+    <label for="findText">Find Patient by part of date</label><br>
+    <input type="text" id="findText">
+    <input type="submit" value="Refresh">
+</form>
+<br>
+
+<form autocomplete="off" id="addEntry">
+     <select id="patientsList" size="10" onselect="getWorkDays()"></select>
+    <br>
+    Select employee:<select id="employeesSelect">
+</select>
+    <br>
+    Select visiyt type: <select id="visitTypesSelect">
+</select>
+</form><br>
+<div>
+    <div style="float: left; text-align: center">
+        <h3>Month</h3>
+        <form>
+        <input type="button" id="minusMonth", value="-">
+        <input type="text", id="monthField" disabled size="1 px" style=" text-align:  center">
+        <input type="button" id="plusMonth", value="+">
+    </form>
+
+</div >
+    <div style="float: left; text-align: center">
+        <h1 style="text-align: center">Calendar</h1>
+    </div>
+    <div style="float:  left; text-align: center">
+        <h3 style="text-align: center">Year</h3>
+        <form>
+        <input type="button" id="minusYear", value="-">
+        <input type="text", id="yearField" disabled size="2 px" style="text-align: center">
+        <input type="button" id="plusYear",   value="+">
+    </form></div>
+</div>
+<br>
+<br><div style="clear: both;">
+    <button id="postEntryButton"><h2>Add entry</h2></button>
+</div>
+<div style="clear: both;"></div>
+    <table border="1">
+        <thead>
+        <tr>
+        <th> Mo</th>
+        <th> Tue</th>
+        <th> Wed</th>
+        <th> Thu</th>
+        <th> Fri</th>
+        <th> Sat</th>
+        <th> Sun</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+<script src="recorderScript.js"></script>
+
+</body>
+</html>

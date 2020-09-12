@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,8 +35,4 @@ public class Employee {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Role> roles;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    List<WorkDay> workDays;
-
 }
