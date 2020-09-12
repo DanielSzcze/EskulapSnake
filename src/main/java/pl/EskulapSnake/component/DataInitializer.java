@@ -13,7 +13,10 @@ import pl.EskulapSnake.model.*;
 import pl.EskulapSnake.repository.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Tu możesz zainicializować dane do bazy by sprawdzić to w postmanie
@@ -67,20 +70,14 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             entry1.setRecommendations("bla");
             entry1.setExamination("lol");
             entry1.setLocalDateTime(LocalDateTime.of(2020, 6, 8, 11, 15));
-            Patient patient = new Patient();
-            patient.setLastName("lool");
-            patient.setFirstName("kuba");
-            Patient patient1 = new Patient();
-            patient1.setFirstName("loki");
-            patient1.setLastName("ppp");
-            patientRepository.save(patient);
-            patientRepository.save(patient1);
+
             WorkDay workDay = new WorkDay();
             WorkDay workDay1 = new WorkDay();
             workDay.setFromWorkTime(LocalDateTime.of(2020, 9, 8, 10, 00));
             workDay1.setFromWorkTime(LocalDateTime.of(2020, 6, 8, 8, 00));
             workDay.setToWorkTime((LocalDateTime.of(2020, 9, 8, 18, 00)));
             workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 8, 16, 00)));
+
 
 
             Employee employee = new Employee();
@@ -99,9 +96,30 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             Role role = new Role();
             role.setName("role "+ i);
             roleRepository.save(role);
+
             VisitType visitType = new VisitType();
-            visitType.setName("visitType "+i);
+            visitType.setName("VisitType" + " " + i);
             visitTypeRepository.save(visitType);
+
+
+            Patient patient = new Patient();
+            patient.setFirstName("Patient name");
+            patient.setLastName("lastname" + i);
+            Set<Entry> entries = new HashSet<>();
+            for (int j = 0; j < 5; j++) {
+                Entry e = new Entry();
+                e.setLocalDateTime(LocalDateTime.now());
+                e.setExamination("zdfgdfgdfg" + j);
+                e.setRecommendations("sdnjfhsdjfsdkf" + j);
+                e.setEmployee(employee);
+                e.setVisitType(visitType);
+                entries.add(e);
+            }
+            patient.setEntries(entries);
+            Random random = new Random();
+            patient.setPesel(String.valueOf(random.nextInt(10000000)) + String.valueOf(random.nextInt(100)));
+            patientRepository.save(patient);
+
         }
     }
 

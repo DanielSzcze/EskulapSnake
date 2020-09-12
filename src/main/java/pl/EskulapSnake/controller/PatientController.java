@@ -3,14 +3,18 @@ package pl.EskulapSnake.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pl.EskulapSnake.dto.PatientDto;
+import pl.EskulapSnake.model.Entry;
 import pl.EskulapSnake.model.Patient;
 import pl.EskulapSnake.service.PatientService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/patients")
+@CrossOrigin("*")
 public class PatientController {
 
     private PatientService patientService;
@@ -25,7 +29,6 @@ public class PatientController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<Patient> findAll() {
         return patientService.findAll();
-
     }
 
     @GetMapping("/{id:\\d+}")
