@@ -13,5 +13,9 @@ public class ViewController {
         return "medicalRecorder";
     }
 
+@GetMapping("/patientsView")
+    public String getPatients(){
+        return "patientsView";
+}
 
 }

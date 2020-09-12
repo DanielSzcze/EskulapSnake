@@ -15,7 +15,7 @@ function fillPatientsTable(patients) {
     tbodyPatients.innerHTML = "";
     patients.forEach(patient => {
         let tr = document.createElement("tr");
-        let linkList = "entry-list.html#" + patient.id;
+        let linkList = "/entry-list.html#" + patient.id;
         let linkAdd = "entry-edit.html#" + patient.id;
         tr.innerHTML = "<td>" + patient.firstName + "</td>"
             + "<td>" + patient.lastName + ' ' + "</td>"
