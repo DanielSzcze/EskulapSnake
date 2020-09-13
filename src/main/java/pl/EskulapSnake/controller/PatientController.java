@@ -34,6 +34,12 @@ public class PatientController {
         long id = Long.parseLong(identification);
         return patientService.findById(id);
     }
+
+    @GetMapping("/user/{username}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Patient findByUsername(@PathVariable("username") String username) {
+       return patientService.findByUserName(username);
+    }
     @GetMapping("/{partOfDate:[a-z]+}")
     @ResponseStatus(value = HttpStatus.OK)
     public  List<Patient> getPapientsByPartOfDate(@PathVariable("partOfDate")String partOfdate) {

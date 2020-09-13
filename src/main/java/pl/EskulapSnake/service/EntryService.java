@@ -69,8 +69,8 @@ public class EntryService {
 
     @Transactional
     public void deleteAll() {
-t        entryRepository.deleteAll();
-    }t
+        entryRepository.deleteAll();
+    }
 
     @Transactional
     public void deleteById(Long id) {
@@ -81,11 +81,12 @@ t        entryRepository.deleteAll();
         patientRepository.save(owner);
         entryRepository.delete(entryToDelete);
     }
-//TODO  get this method to Patient repository and find by query
+
+    //TODO  get this method to Patient repository and find by query
     private Patient findOwnerOfEntryByEntry(Entry entry) {
         List<Patient> patients = patientRepository.findAll();
         return patients.stream()
-                .filter(p->p.getEntries().contains(entry))
+                .filter(p -> p.getEntries().contains(entry))
                 .findAny().get();
     }
 
@@ -102,29 +103,30 @@ t        entryRepository.deleteAll();
         patientRepository.save(patient);
 
         return entryToSave;
-
-    @Transactional
-    public Entry update(Long id, EntryDto entryDto) {
-        Entry entryToUpdate = entryRepository.findById(id).orElseThrow(()
-                -> new EntityNotFoundException("There is no entity with this id"));
-        entryToUpdate = setFields(entryToUpdate, entryDto);
-        entryRepository.save(entryToUpdate);
-        return entryToUpdate;
     }
 
-    private Entry setFields(Entry entryToUpdate, EntryDto entryDto) {
-        if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
-        if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
-        entryToUpdate.setLocalDateTime(LocalDateTime.now());
-        return entryToUpdate;
-    }
+        @Transactional
+        public Entry update (Long id, EntryDto entryDto){
+            Entry entryToUpdate = entryRepository.findById(id).orElseThrow(()
+                    -> new EntityNotFoundException("There is no entity with this id"));
+            entryToUpdate = setFields(entryToUpdate, entryDto);
+            entryRepository.save(entryToUpdate);
+            return entryToUpdate;
+        }
 
-    private Entry getEntityFromDto(EntryDto entryDto) {
-        Entry entryToUpdate = new Entry();
-        if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
-        if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
-        if (entryDto.getLocalDateTime() != null) entryToUpdate.setLocalDateTime(entryDto.getLocalDateTime());
-        return entryToUpdate;
-    }
+        private Entry setFields (Entry entryToUpdate, EntryDto entryDto){
+            if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
+            if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
+            entryToUpdate.setLocalDateTime(LocalDateTime.now());
+            return entryToUpdate;
+        }
 
-}
+        private Entry getEntityFromDto (EntryDto entryDto){
+            Entry entryToUpdate = new Entry();
+            if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
+            if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
+            if (entryDto.getLocalDateTime() != null) entryToUpdate.setLocalDateTime(entryDto.getLocalDateTime());
+            return entryToUpdate;
+        }
+
+    }

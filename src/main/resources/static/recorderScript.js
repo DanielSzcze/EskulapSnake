@@ -1,5 +1,7 @@
-let address ='http://' + window.location.hostname + ':' + window.location.port + '/';
+let address = 'http://' + window.location.hostname + ':' + window.location.port + '/';
 let findPatientForm = document.querySelector("#findPatientsForm");
+let loggedUserName = document.querySelector("#loggedUserName").textContent;
+console.log(loggedUserName);
 let findText = document.querySelector("#findText");
 let patientsList = document.querySelector("#patientsList");
 let employeesSelect = document.querySelector("#employeesSelect");
@@ -26,10 +28,10 @@ function setLists() {
     setVisTypeList();
 }
 
-findText.addEventListener("input", function (event) {
+if (findText != null) findText.addEventListener("input", function (event) {
     refreshPatientList();
 });
-findPatientForm.addEventListener("submit", function (event) {
+if (findPatientForm != null) findPatientForm.addEventListener("submit", function (event) {
     event.preventDefault();
     refreshPatientList();
 });
@@ -87,15 +89,49 @@ function fillPatientsList(patients) {
 }
 
 function getEmployeeId() {
-    let employee = employeesSelect.value;
-    let employeeId = employee.substr(0, employee.indexOf('.'));
+    let employeeId
+    if (employeesSelect != null) {
+        employee = employeesSelect.value;
+        let employeeId = employee.substr(0, employee.indexOf('.'));
+    } else {
+        employeeId = findEmployeeByUserName(loggedUserName);
+    }
+    return employeeId;
+}
+
+function findEmployeeByUserName(loggedUserName) {
+    let url = address + "employees/user/" + loggedUserName;
+    let employeeId = null;
+    fetch(url)
+        .then(response => response.json())
+        .then(loggedEmployee => {
+            employeeId=loggedEmployee.id;
+
+        });
     return employeeId;
 }
 
 function getPatientId() {
-    let patient = patientsList.value;
-    let patientId = patient.substr(0, patient.indexOf('.'));
+    let patientId
+    if (patientsList != null) {
+        let patient = patientsList.value;
+        patientId = patient.substr(0, patient.indexOf('.'));
+    } else {
+        patientId = findPatientIdByUserName(loggedUserName)
+    }
     return patientId;
+}
+
+function findPatientIdByUserName(loggedUserName) {
+    let url = address + "patients/user/" + loggedUserName;
+    let employeeId = null;
+    fetch(url)
+        .then(response => response.json())
+        .then(loggedPatient => {
+            employeeId=loggedPatient.id;
+
+        });
+    return employeeId;
 }
 
 function getVisitTypeId() {
@@ -373,7 +409,7 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
 
 function cancelEntry(event, entryId) {
     event.preventDefault();
-    let url = adress + "entries/" + entryId;
+    let url = address + "entries/" + entryId;
     fetch(url, {
 
         method: "delete",

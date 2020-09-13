@@ -116,7 +116,7 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
         createRoleIfNotFound("ROLE_MANAGER");
         createRoleIfNotFound("ROLE_PHYSICIAN");
         createRoleIfNotFound("ROLE_RECORDER");
-        createRoleIfNotFound("ROLE_PATIENT");
+//        createRoleIfNotFound("ROLE_PATIENT");
         createRoleIfNotFound("ROLE_EMPLOYEE");
         List<Role> adminRoles = roleRepository.findAll();
         User user = new User();
