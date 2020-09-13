@@ -42,7 +42,7 @@ public class EntryService {
 
     public Entry findById(Long id) {
         return entryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("In DB is no Entry with this id"));
+                .orElseThrow(() -> new EntityNotFoundException("There is no entry found with this id"));
     }
 
     public List<Entry> findByEmployeeIdAndDate(Long employeeId, String monthAndYear) {
@@ -69,12 +69,12 @@ public class EntryService {
 
     @Transactional
     public void deleteAll() {
-        entryRepository.deleteAll();
-    }
+t        entryRepository.deleteAll();
+    }t
 
     @Transactional
     public void deleteById(Long id) {
-        Entry entryToDelete = entryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("there is no entry with this id"));
+        Entry entryToDelete = entryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no entry with this id"));
         Patient owner = this.findOwnerOfEntryByEntry(entryToDelete);
 
         owner.getEntries().remove(entryToDelete);
@@ -91,9 +91,9 @@ public class EntryService {
 
     @Transactional
     public Entry createNew(EntryDto entryDto) {
-        Patient patient = patientRepository.findById(entryDto.getPatientId()).orElseThrow(() -> new EntityNotFoundException("In db is no patient with this id"));
-        Employee employee = employeeRepository.findById(entryDto.getEmployeeId()).orElseThrow(() -> new EntityNotFoundException("In db is no employee with this id"));
-        VisitType visitType = visitTypeRepository.findById(entryDto.getVisitTypeId()).orElseThrow(() -> new EntityNotFoundException("In db is no visit type with this id"));
+        Patient patient = patientRepository.findById(entryDto.getPatientId()).orElseThrow(() -> new EntityNotFoundException("There is no patient with this id"));
+        Employee employee = employeeRepository.findById(entryDto.getEmployeeId()).orElseThrow(() -> new EntityNotFoundException("There is no employee with this id"));
+        VisitType visitType = visitTypeRepository.findById(entryDto.getVisitTypeId()).orElseThrow(() -> new EntityNotFoundException("There is no visit type with this id"));
         Entry entryToSave = getEntityFromDto(entryDto);
         entryToSave.setVisitType(visitType);
         entryToSave.setEmployee(employee);
@@ -102,12 +102,11 @@ public class EntryService {
         patientRepository.save(patient);
 
         return entryToSave;
-    }
 
     @Transactional
     public Entry update(Long id, EntryDto entryDto) {
         Entry entryToUpdate = entryRepository.findById(id).orElseThrow(()
-                -> new EntityNotFoundException("there is no entoty in db with this id"));
+                -> new EntityNotFoundException("There is no entity with this id"));
         entryToUpdate = setFields(entryToUpdate, entryDto);
         entryRepository.save(entryToUpdate);
         return entryToUpdate;
