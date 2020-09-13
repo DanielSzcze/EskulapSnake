@@ -48,15 +48,15 @@ public class EntryController {
     }
 
     @GetMapping("/{id_employee}/{month_and_year}")
-    public  List<Entry> getAllByEmployeeAndDate(@PathVariable("id_employee") String identification,
-                                                  @PathVariable("month_and_year") String monthAndYear){
+    public List<Entry> getAllByEmployeeAndDate(@PathVariable("id_employee") String identification,
+                                               @PathVariable("month_and_year") String monthAndYear) {
         Long employeeId = Long.parseLong(identification);
         return entryService.findByEmployeeIdAndDate(employeeId, monthAndYear);
     }
 
     @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Entry post( @RequestBody EntryDto entryDto) {
+    public Entry post(@RequestBody EntryDto entryDto) {
         return entryService.createNew(entryDto);
     }
 
@@ -74,7 +74,7 @@ public class EntryController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.GONE)
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
     public void deleteById(@PathVariable("id") String identification) {
 
 

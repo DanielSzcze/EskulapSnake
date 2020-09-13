@@ -73,8 +73,7 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             Patient patient1 = new Patient();
             patient1.setFirstName("loki");
             patient1.setLastName("ppp");
-            patientRepository.save(patient);
-            patientRepository.save(patient1);
+
             WorkDay workDay = new WorkDay();
             WorkDay workDay1 = new WorkDay();
             workDay.setFromWorkTime(LocalDateTime.of(2020, 9, 8, 10, 00));
@@ -96,6 +95,10 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             workDayRepository.save(workDay1);
             entryRepository.save(entry);
             entryRepository.save(entry1);
+            patient.getEntries().add(entry);
+            patient1.getEntries().add(entry1);
+            patientRepository.save(patient);
+            patientRepository.save(patient1);
             Role role = new Role();
             role.setName("role "+ i);
             roleRepository.save(role);
