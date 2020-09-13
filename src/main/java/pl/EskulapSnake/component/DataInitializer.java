@@ -1,8 +1,6 @@
 package pl.EskulapSnake.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -22,16 +20,16 @@ import java.util.*;
 @Component
 public class DataInitializer implements ApplicationListener<ContextRefreshedEvent> {
 
-    boolean alreadySetup = false;
-    UserRepository userRepository;
-    RoleRepository roleRepository;
-    PasswordEncoder passwordEncoder;
-    EntryRepository entryRepository;
-    ApplicationContext applicationContext;
-    WorkDayRepository workDayRepository;
-    EmployeeRepository employeeRepository;
-    PatientRepository patientRepository;
-    VisitTypeRepository visitTypeRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EntryRepository entryRepository;
+    private final ApplicationContext applicationContext;
+    private final WorkDayRepository workDayRepository;
+    private final EmployeeRepository employeeRepository;
+    private final PatientRepository patientRepository;
+    private final VisitTypeRepository visitTypeRepository;
+    private boolean alreadySetup = false;
 
     @Autowired
     public DataInitializer(
@@ -44,8 +42,8 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             ApplicationContext applicationContext,
             WorkDayRepository workDayRepository,
             EmployeeRepository employeeRepository) {
-        this.visitTypeRepository=visitTypeRepository;
-        this.patientRepository=patientRepository;
+        this.visitTypeRepository = visitTypeRepository;
+        this.patientRepository = patientRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -54,8 +52,6 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         this.workDayRepository = workDayRepository;
         this.employeeRepository = employeeRepository;
     }
-
-
 
 
     @Override
@@ -69,6 +65,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         roles.add(createRoleIfNotFound("ROLE_RECORDER"));
         roles.add(createRoleIfNotFound("ROLE_PATIENT"));
         roles.add(createRoleIfNotFound("ROLE_EMPLOYEE"));
+
         List<Role> adminRoles = roleRepository.findAll();
         User user = new User();
         user.setUsername(applicationContext.getEnvironment().getProperty("admin.username"));
@@ -80,22 +77,21 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
 
         for (int i = 0; i < 10; i++) {
             Entry entry = new Entry();
-            entry.setRecommendations("bla");
-            entry.setExamination("lol");
+            entry.setRecommendations("bla" + i);
+            entry.setExamination("lol" + i);
             entry.setLocalDateTime(LocalDateTime.of(2020, 9, 8, 11, 15));
             Entry entry1 = new Entry();
-            entry1.setRecommendations("bla");
-            entry1.setExamination("lol");
+            entry1.setRecommendations("bla" + i);
+            entry1.setExamination("lol" + i);
             entry1.setLocalDateTime(LocalDateTime.of(2020, 6, 8, 11, 15));
 
 
             Patient patient = new Patient();
-            patient.setLastName("lool");
-            patient.setFirstName("kuba");
             Patient patient1 = new Patient();
-            patient1.setFirstName("loki");
-            patient1.setLastName("ppp");
-
+            patient.setFirstName("Patient name");
+            patient.setLastName("lastname" + i);
+            patient1.setFirstName("loki" + i);
+            patient1.setLastName("ppp" + i);
 
             WorkDay workDay = new WorkDay();
             WorkDay workDay1 = new WorkDay();
@@ -127,19 +123,16 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             entryRepository.save(entry);
             entryRepository.save(entry1);
 
+
             patient.getEntries().add(entry);
             patient1.getEntries().add(entry1);
             patientRepository.save(patient);
             patientRepository.save(patient1);
-           
+
             VisitType visitType = new VisitType();
             visitType.setName("VisitType" + " " + i);
             visitTypeRepository.save(visitType);
 
-
-            Patient patient = new Patient();
-            patient.setFirstName("Patient name");
-            patient.setLastName("lastname" + i);
             Set<Entry> entries = new HashSet<>();
             for (int j = 0; j < 5; j++) {
                 Entry e = new Entry();
@@ -156,8 +149,10 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             patientRepository.save(patient);
 
 
-        } alreadySetup = true;
+        }
+        alreadySetup = true;
     }
+
     private Role createRoleIfNotFound(String name) {
         Role role = roleRepository.findByName(name);
         if (role == null) {
