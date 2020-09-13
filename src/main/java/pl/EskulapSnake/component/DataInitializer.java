@@ -151,8 +151,6 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             patient.setPesel(String.valueOf(random.nextInt(10000000)) + String.valueOf(random.nextInt(100)));
             patientRepository.save(patient);
 
-        }
-    }
 
         }
         alreadySetup = true;
