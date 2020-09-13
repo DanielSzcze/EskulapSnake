@@ -88,6 +88,15 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             entry1.setExamination("lol");
             entry1.setLocalDateTime(LocalDateTime.of(2020, 6, 8, 11, 15));
 
+
+            Patient patient = new Patient();
+            patient.setLastName("lool");
+            patient.setFirstName("kuba");
+            Patient patient1 = new Patient();
+            patient1.setFirstName("loki");
+            patient1.setLastName("ppp");
+
+
             WorkDay workDay = new WorkDay();
             WorkDay workDay1 = new WorkDay();
             workDay.setFromWorkTime(LocalDateTime.of(2020, 9, 8, 10, 00));
@@ -118,7 +127,11 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             entryRepository.save(entry);
             entryRepository.save(entry1);
 
-
+            patient.getEntries().add(entry);
+            patient1.getEntries().add(entry1);
+            patientRepository.save(patient);
+            patientRepository.save(patient1);
+           
             VisitType visitType = new VisitType();
             visitType.setName("VisitType" + " " + i);
             visitTypeRepository.save(visitType);

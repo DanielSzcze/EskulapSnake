@@ -30,6 +30,4 @@ public class Entry {
     @OneToOne
     @JoinColumn
     private VisitType visitType;
-
-
 }
