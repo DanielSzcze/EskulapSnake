@@ -7,17 +7,18 @@
     <title>Title</title>
 </head>
 <body>
-( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°)<br>
-(ノಠ益ಠ)ノ彡┻━┻<br>
-┻━┻︵ \(°□°)/ ︵ ┻━┻<br>
-┏━┓┏━┓┏━┓ ︵ /(^.^/)<br>
+<h3>Welcome to EskulapSnake Application</h3>
 <div sec:authorize="isAnonymous()">
-    <button sec:authorize="isAnonymous()" type="button" onclick="location.href='/login'">Log in</button>
+    <h4>Please use button bellow to log in </h4>
+    <button  type="button" onclick="location.href='/login'">Log in</button>
 </div>
 <div sec:authorize="isFullyAuthenticated()">
-    User: <p sec:authentication="name"></p>
-    Role: <p sec:authentication="principal.authorities"></p>
+    You are logged as: <p sec:authentication="name"></p>
+    Your roles: <p sec:authentication="principal.authorities"></p>
     <button type="button" onclick="location.href='/logout'">Log out</button>
+</div>
+<div sec:authorize="hasRole('ADMIN') or hasRole('RECORDER')"  >
+    <button type="button" onclick="location.href='/recorder'">Schedule visit</button>
 </div>
 </body>
 </html>

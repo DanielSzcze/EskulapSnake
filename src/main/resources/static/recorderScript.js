@@ -1,4 +1,4 @@
-let adress = "http://localhost:8080/";
+let address ='http://' + window.location.hostname + ':' + window.location.port + '/';
 let findPatientForm = document.querySelector("#findPatientsForm");
 let findText = document.querySelector("#findText");
 let patientsList = document.querySelector("#patientsList");
@@ -36,7 +36,7 @@ findPatientForm.addEventListener("submit", function (event) {
 
 function setEmployeesList() {
 
-    let url = adress + "employees";
+    let url = address + "employees";
     fetch(url)
         .then(response => response.json())
         .then(employees => fillEmployeesList(employees));
@@ -52,7 +52,7 @@ function fillEmployeesList(employees) {
 
 function setVisTypeList() {
 
-    let url = adress + "visits";
+    let url = address + "visits";
     fetch(url)
         .then(response => response.json())
         .then(visitTypes => fillVisitTypeList(visitTypes));
@@ -69,7 +69,7 @@ function fillVisitTypeList(visitTypes) {
 
 function refreshPatientList() {
     patientsList.innerHTML = "";
-    let url = adress + "patients/" + findText.value;
+    let url = address + "patients/" + findText.value;
     fetch(url)
         .then(response => response.json())
         .then(patients => fillPatientsList(patients));
@@ -253,7 +253,7 @@ function fillCalenderByWorkDays() {
         });
     let employeeId = getEmployeeId();
     let date = String(month) + "." + String(year);
-    let url = adress + "workdays/" + employeeId + "/" + date;
+    let url = address + "workdays/" + employeeId + "/" + date;
     if (employeeId != "") fetch(url)
         .then(response => response.json())
         .then(workDays => addWorkDays(workDays));
@@ -316,7 +316,7 @@ function setIfWorkDay(div, fromWorkTimeDay, toWorkTimeDay, fromWorkTimeHour, toW
 function fillCalenderByEntries() {
     let employeeId = getEmployeeId();
     let date = String(month) + "." + String(year);
-    let url = adress + "entries/" + employeeId + "/" + date;
+    let url = address + "entries/" + employeeId + "/" + date;
     if (employeeId != "") fetch(url)
         .then(response => response.json())
         .then(entries => addEntries(entries));
@@ -404,6 +404,7 @@ function postEntry() {
     else if (patientId == "") alert("select patient");
     else if (selectedRadio == null) alert("select time");
     else if (vistTypeId == "") alert("select visit type");
+
     else {
         let day = selectedRadio.getAttribute("day");
         if (String(day).length == 1) day = "0" + day;
@@ -423,7 +424,7 @@ function postEntry() {
             + '"localDateTime": ' + '"' + dateTime + '"'
             + "}";
         console.log(json)
-        let url = adress + "entries"
+        let url = address + "entries"
         fetch(url, {
 
             method: "post",
