@@ -105,7 +105,7 @@ function findEmployeeByUserName(loggedUserName) {
     fetch(url)
         .then(response => response.json())
         .then(loggedEmployee => {
-            employeeId=loggedEmployee.id;
+            employeeId = loggedEmployee.id;
 
         });
     return employeeId;
@@ -128,7 +128,7 @@ function findPatientIdByUserName(loggedUserName) {
     fetch(url)
         .then(response => response.json())
         .then(loggedPatient => {
-            employeeId=loggedPatient.id;
+            employeeId = loggedPatient.id;
 
         });
     return employeeId;
@@ -272,7 +272,7 @@ function fillDayDivByHours(dayDiv) {
 
 }
 
-employeesSelect.addEventListener("change", function () {
+if (employeesSelect != null) employeesSelect.addEventListener("change", function () {
     fillCalenderByWorkDays();
     fillCalenderByEntries();
 });
@@ -290,7 +290,7 @@ function fillCalenderByWorkDays() {
     let employeeId = getEmployeeId();
     let date = String(month) + "." + String(year);
     let url = address + "workdays/" + employeeId + "/" + date;
-    if (employeeId != "") fetch(url)
+    if (employeeId != "" && employeeId != null) fetch(url)
         .then(response => response.json())
         .then(workDays => addWorkDays(workDays));
 
@@ -353,7 +353,7 @@ function fillCalenderByEntries() {
     let employeeId = getEmployeeId();
     let date = String(month) + "." + String(year);
     let url = address + "entries/" + employeeId + "/" + date;
-    if (employeeId != "") fetch(url)
+    if (employeeId != "" && employeeId != null) fetch(url)
         .then(response => response.json())
         .then(entries => addEntries(entries));
 }

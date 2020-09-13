@@ -11,14 +11,12 @@
 </head>
 
 
-
-
-
 <body>
+<button type="button" onclick="location.href='/logout'">Log out</button>
 <form hidden>
-<p type="text", id="loggedUserName" sec:authentication="name"/>
+    <p type="text" , id="loggedUserName" sec:authentication="name"/>
 </form>
-<form sec:authorize="!hasRole('PATIENT')" autocomplete="off" id="findPatientsForm" >
+<form sec:authorize="!hasRole('PATIENT')" autocomplete="off" id="findPatientsForm">
     <label for="findText">Find Patient by part of date</label><br>
     <input type="text" id="findText">
     <input type="submit" value="Refresh">
@@ -28,41 +26,44 @@
 <form autocomplete="off" id="addEntry">
     <br>
     <span sec:authorize="!hasRole('PHYSICIAN')">Select employee:</span>
-    <select  sec:authorize="!hasRole('PHYSICIAN')"id="employeesSelect">
-</select>
+    <select sec:authorize="!hasRole('PHYSICIAN')" id="employeesSelect">
+    </select>
     <br>
     Select visit type: <select id="visitTypesSelect">
 </select>
-</form><br>
+</form>
+<br>
 <div>
     <div style="float: left; text-align: center">
         <h3>Month</h3>
         <form>
-        <input type="button" id="minusMonth", value="-">
-        <input type="text", id="monthField" disabled size="1 px" style=" text-align:  center">
-        <input type="button" id="plusMonth", value="+">
-    </form>
+            <input type="button" id="minusMonth" , value="-">
+            <input type="text" , id="monthField" disabled size="1 px" style=" text-align:  center">
+            <input type="button" id="plusMonth" , value="+">
+        </form>
 
-</div >
+    </div>
     <div style="float: left; text-align: center">
         <h1 style="text-align: center">Calendar</h1>
     </div>
     <div style="float:  left; text-align: center">
         <h3 style="text-align: center">Year</h3>
         <form>
-        <input type="button" id="minusYear", value="-">
-        <input type="text", id="yearField" disabled size="2 px" style="text-align: center">
-        <input type="button" id="plusYear",   value="+">
-    </form></div>
+            <input type="button" id="minusYear" , value="-">
+            <input type="text" , id="yearField" disabled size="2 px" style="text-align: center">
+            <input type="button" id="plusYear" , value="+">
+        </form>
+    </div>
 </div>
 <br>
-<br><div style="clear: both;">
+<br>
+<div style="clear: both;">
     <button id="postEntryButton"><h2>Add entry</h2></button>
 </div>
 <div style="clear: both;"></div>
-    <table border="1">
-        <thead>
-        <tr>
+<table border="1">
+    <thead>
+    <tr>
         <th> Mo</th>
         <th> Tue</th>
         <th> Wed</th>
@@ -70,12 +71,12 @@
         <th> Fri</th>
         <th> Sat</th>
         <th> Sun</th>
-        </tr>
-        </thead>
-        <tbody>
+    </tr>
+    </thead>
+    <tbody>
 
-        </tbody>
-    </table>
+    </tbody>
+</table>
 
 <script src="recorderScript.js"></script>
 
