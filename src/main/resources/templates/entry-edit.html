@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edycja wpisu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h2>Formularz wpisu</h2><br>
+<form id="entryForm" >
+    <div>
+        <label for="entryDate">Data: </label> <br>
+        <input type="datetime-local" id="entryDate"><br><br>
+
+        <label for="patient">Pacjent:  </label><br>
+        <select id="patient" style="width: 50%;"></select><br><br>
+
+        <label for="examination">Opis badania: </label><br>
+        <input type="text" id="examination" style="width: 50%; height: 50px;"><br><br>
+
+        <label for="recommendations">Zalecenia: </label><br>
+        <input type="text" id="recommendations" style="width: 50%; height: 50px; vertical-align: text-top;"><br><br>
+
+        <label for="employee">Lekarz: </label><br>
+        <select id="employee" style="width: 50%;">
+        </select><br><br>
+
+        <label for="visitType">Typ wizyty: </label><br>
+        <select id="visitType" style="width: 50%;">
+        </select><br><br>
+
+    </div>
+    <input id="entrySaveBtn" type="submit" style="margin: 10px;" value="Zapisz">
+</form>
+<script src="../static/entry-edit.js"></script>
+
+</body>
+</html>

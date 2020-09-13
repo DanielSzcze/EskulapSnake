@@ -16,8 +16,10 @@ public class Entry {
     private Long id;
 
     private LocalDateTime localDateTime;
+
     @Lob
     private String examination;
+
     @Lob
     private String recommendations;
 

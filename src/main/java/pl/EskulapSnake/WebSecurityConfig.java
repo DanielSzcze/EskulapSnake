@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
 
@@ -50,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/" ,"/login","/login/error", "/logout").permitAll()
                 .antMatchers("/auth/**").anonymous()
                 .antMatchers("/database").hasRole("ADMIN")
+                .antMatchers("/patients").hasAnyRole("ADMIN","PHYSICIAN","RECORDER")
                 .antMatchers("/entries/**", "/roles/**", "/visits/**").hasAnyRole("ADMIN", "RECORDER")
                 .anyRequest().authenticated()
                 .and()
@@ -70,5 +73,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("POST", "PUT", "PATCH", "GET", "DELETE", "OPTIONS");
+            }
+        };
     }
 }

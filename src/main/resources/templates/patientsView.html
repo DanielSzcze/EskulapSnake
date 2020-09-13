@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista pacjentów</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h2>Lista pacjentów</h2><br>
+<form id="filterForm">
+    <label for="filter">Kryterium: </label>
+    <input type="text" id="filter">
+    <button type="submit" id="filterBtn" style="">Filtruj!</button>
+</form>
+<table>
+    <thead>
+    <tr>
+        <td style="width: 200px;">Imię i Nazwisko</td>
+        <td style="width: 200px;">Nazwisko</td>
+        <td style="width: 200px;">Pesel</td>
+        <td style="width: 80px;">Opcje</td>
+    </tr>
+    </thead>
+    <tbody id="tbodyPatients">
+    </tbody>
+</table>
+<br>
+
+
+<script src="../static/patients.js"></script>
+
+</body>
+</html>
