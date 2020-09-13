@@ -10,20 +10,20 @@ let patientsSelectionList = document.querySelector("#patient");
 let entryDate = document.querySelector("#entryDate");
 let exam = document.querySelector("#examination");
 let recom = document.querySelector("#recommendations");
-console.log(location.hash);
-
 
 function fillEmployeesSelectionList(employees) {
     employeesSelectionList.innerHTML = "";
     employeesSelectionList.appendChild(document.createElement("option"));
+    let role
     employees.forEach(employee => {
-            //TODO dodanie do listy tylko medyków
-            let option = document.createElement("option")
-            option.value = employee;
-            option.innerHTML = employee.id + " " + employee.firstName + " " + employee.lastName;
-            employeesSelectionList.appendChild(option);
-            // console.log(employee);
-        }
+            // if(employee.roles.contains("PHYSICIAN")) {
+                //TODO dodanie do listy tylko medyków
+                let option = document.createElement("option")
+                option.value = employee;
+                option.innerHTML = employee.id + " " + employee.firstName + " " + employee.lastName;
+                employeesSelectionList.appendChild(option);
+                // console.log(employee);
+            }
     );
 }
 
@@ -49,7 +49,7 @@ function updateVisitTypeList() {
     let url = address + "visits"
     fetch(url)
         .then(response => response.json())
-        .then(visitTypes => fillVisitTypeList(visitTypes));
+        .then(fillVisitTypeList);
 }
 
 function fillPatientList(patients) {
@@ -59,7 +59,7 @@ function fillPatientList(patients) {
             let option = document.createElement("option")
             // option.value = employee;
 
-            option.innerHTML = /*p.id + ". " + */p.firstName + " " + p.lastName;
+            option.innerHTML = p.id + ". " + p.firstName + " " + p.lastName;
             patientsSelectionList.appendChild(option);
         }
     );
@@ -92,7 +92,7 @@ entryForm.addEventListener("submit", function (event) {
 updateEmployeeList();
 updateVisitTypeList();
 updatePatientList()
-setEntryDate();
+// setEntryDate();
 
 //TODO zaciąganie się danych
 
@@ -101,17 +101,39 @@ function entryUpdate(){
         let url = address + "entries/" + entryId;
         fetch(url)
             .then(response => response.json())
-            .then(entry => console.log(entry))
             .then(entry => fillEntryForm(entry));
     }
 }
 
 function fillEntryForm(entry) {
-    // entryDate.innerHTML = entry.localDateTime;
-    exam.value = entry.examination;
-    // recom.innerHTML = entry.recommendations;
-    // employeesSelectionList.children.forEach
+    // console.log(entry.localDateTime);
+    // let date = entry.localDateTime.substring(0,16)
+    // console.log(entry);
+    entryDate.setAttribute("value", entry.localDateTime.substring(0,16));
+    exam.setAttribute("value", entry.examination);
+    recom.setAttribute("value", entry.recommendation);
+    // patientsSelectionList.setAttribute("placeholder", entry.patient.id + " " + entry.patient.firstName + " " + entry.patient.lastName);
+    // employeesSelectionList.setAttribute("placeholder", entry.employee.id + " " + entry.employee.firstName + " " + entry.employee.lastName);
+    // let e = entry.employee;
+    let employeesOptions = employeesSelectionList.children;
+
+
+
+
+    // let option = employeesOptions
+    //     .filter(option => findEmpl(option));
+    // console.log(option);
+    // function findEmpl (option) {
+    //     console.log(option)
+    //     if( option.innerHTML.includes(e.id) && option.innerHTML.includes(e.lastName)){
+    //         option.setAttribute("selected", true);
+    //         console.log(option);
+    //     }
+
 }
 
+
+
+
+
 entryUpdate();
-// console.log(entryDate.value);

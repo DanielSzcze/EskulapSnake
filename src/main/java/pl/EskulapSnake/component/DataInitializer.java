@@ -13,17 +13,14 @@ import pl.EskulapSnake.model.*;
 import pl.EskulapSnake.repository.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Tu możesz zainicializować dane do bazy by sprawdzić to w postmanie
  * Wstrzyknij swoje repo lub/i serwis i w run działaj do oporu
  */
 @Component
-public class DataInitializer implements ApplicationRunner, ApplicationListener<ContextRefreshedEvent> {
+public class DataInitializer implements ApplicationListener<ContextRefreshedEvent> {
 
     boolean alreadySetup = false;
     UserRepository userRepository;
@@ -47,8 +44,8 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             ApplicationContext applicationContext,
             WorkDayRepository workDayRepository,
             EmployeeRepository employeeRepository) {
-        this.visitTypeRepository=visitTypeRepository;
-        this.patientRepository=patientRepository;
+        this.visitTypeRepository = visitTypeRepository;
+        this.patientRepository = patientRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -58,10 +55,29 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
         this.employeeRepository = employeeRepository;
     }
 
+
+
+
     @Override
     @Transactional
-    public void run(ApplicationArguments args) {
-        for (int i = 0; i < 10; i++) {
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (alreadySetup) return;
+        createRoleIfNotFound("ROLE_ADMIN");
+        createRoleIfNotFound("ROLE_MANAGER");
+        createRoleIfNotFound("ROLE_PHYSICIAN");
+        createRoleIfNotFound("ROLE_RECORDER");
+        createRoleIfNotFound("ROLE_PATIENT");
+        createRoleIfNotFound("ROLE_EMPLOYEE");
+        List<Role> adminRoles = roleRepository.findAll();
+        User user = new User();
+        user.setUsername(applicationContext.getEnvironment().getProperty("admin.username"));
+        user.setPassword(passwordEncoder.encode(applicationContext.getEnvironment().getProperty("admin.passwd")));
+        user.setEmail("eskulapsnake@gmail.com");
+        user.setRoles(adminRoles);
+        user.setEnabled(true);
+        userRepository.save(user);
+
+        for (int i = 0; i < 6; i++) {
             Entry entry = new Entry();
             entry.setRecommendations("bla");
             entry.setExamination("lol");
@@ -78,14 +94,18 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             workDay.setToWorkTime((LocalDateTime.of(2020, 9, 8, 18, 00)));
             workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 8, 16, 00)));
 
-
+            List<Role> allRoles = roleRepository.findAll();
+            Random random = new Random();
+            List<Role> roles = new ArrayList<>();
+//            roles.add(roleRepository.findByName(allRoles.get(random.nextInt(6)).getName()));
 
             Employee employee = new Employee();
             employee.setFirstName("firstName" + i);
             employee.setLastName("lastName" + i);
             entry.setEmployee(employee);
             entry1.setEmployee(employee);
-
+//            employee.setRoles(roles);
+//
             workDay.setEmployee(employee);
             workDay1.setEmployee(employee);
             employeeRepository.save(employee);
@@ -93,9 +113,7 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
             workDayRepository.save(workDay1);
             entryRepository.save(entry);
             entryRepository.save(entry1);
-            Role role = new Role();
-            role.setName("role "+ i);
-            roleRepository.save(role);
+
 
             VisitType visitType = new VisitType();
             visitType.setName("VisitType" + " " + i);
@@ -116,32 +134,11 @@ public class DataInitializer implements ApplicationRunner, ApplicationListener<C
                 entries.add(e);
             }
             patient.setEntries(entries);
-            Random random = new Random();
-            patient.setPesel(String.valueOf(random.nextInt(10000000)) + String.valueOf(random.nextInt(100)));
+            patient.setPesel(String.valueOf("9" + random.nextInt(10000000)) + random.nextInt(100));
             patientRepository.save(patient);
 
-        }
-    }
 
-    @Override
-    @Transactional
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (alreadySetup) return;
-        createRoleIfNotFound("ROLE_ADMIN");
-        createRoleIfNotFound("ROLE_MANAGER");
-        createRoleIfNotFound("ROLE_PHYSICIAN");
-        createRoleIfNotFound("ROLE_RECORDER");
-        createRoleIfNotFound("ROLE_PATIENT");
-        createRoleIfNotFound("ROLE_EMPLOYEE");
-        List<Role> adminRoles = roleRepository.findAll();
-        User user = new User();
-        user.setUsername(applicationContext.getEnvironment().getProperty("admin.username"));
-        user.setPassword(passwordEncoder.encode(applicationContext.getEnvironment().getProperty("admin.passwd")));
-        user.setEmail("eskulapsnake@gmail.com");
-        user.setRoles(adminRoles);
-        user.setEnabled(true);
-        userRepository.save(user);
-        alreadySetup = true;
+        }alreadySetup = true;
     }
 
     private Role createRoleIfNotFound(String name) {
