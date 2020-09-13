@@ -1,6 +1,5 @@
 package pl.EskulapSnake.service;
 
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.EntryDto;
@@ -16,7 +15,6 @@ import pl.EskulapSnake.repository.VisitTypeRepository;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EntryService {
@@ -69,8 +67,8 @@ public class EntryService {
 
     @Transactional
     public void deleteAll() {
-t        entryRepository.deleteAll();
-    }t
+        entryRepository.deleteAll();
+    }
 
     @Transactional
     public void deleteById(Long id) {
@@ -81,11 +79,12 @@ t        entryRepository.deleteAll();
         patientRepository.save(owner);
         entryRepository.delete(entryToDelete);
     }
-//TODO  get this method to Patient repository and find by query
+
+    //TODO  get this method to Patient repository and find by query
     private Patient findOwnerOfEntryByEntry(Entry entry) {
         List<Patient> patients = patientRepository.findAll();
         return patients.stream()
-                .filter(p->p.getEntries().contains(entry))
+                .filter(p -> p.getEntries().contains(entry))
                 .findAny().get();
     }
 
@@ -102,6 +101,7 @@ t        entryRepository.deleteAll();
         patientRepository.save(patient);
 
         return entryToSave;
+    }
 
     @Transactional
     public Entry update(Long id, EntryDto entryDto) {

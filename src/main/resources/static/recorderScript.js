@@ -373,7 +373,7 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
 
 function cancelEntry(event, entryId) {
     event.preventDefault();
-    let url = adress + "entries/" + entryId;
+    let url = address + "entries/" + entryId;
     fetch(url, {
 
         method: "delete",
