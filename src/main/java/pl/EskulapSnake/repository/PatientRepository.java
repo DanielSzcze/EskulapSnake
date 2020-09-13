@@ -15,4 +15,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query("SELECT p FROM Patient p WHERE p.firstName LIKE CONCAT('%', :part, '%') OR p.lastName LIKE CONCAT('%', :part, '%')")
     public List<Patient> findByPartOfDate(@Param("part") String partOfDate);
 
+    @Query("SELECT  p FROM Patient p join p.user u WHERE u.username = :username")
+    Optional<Patient> findByUserName(String username);
 }

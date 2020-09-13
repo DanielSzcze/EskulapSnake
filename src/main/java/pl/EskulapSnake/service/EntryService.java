@@ -101,6 +101,8 @@ public class EntryService {
         patientRepository.save(patient);
 
         return entryToSave;
+
+
     }
 
     @Transactional
@@ -111,21 +113,22 @@ public class EntryService {
         entryToUpdate = setFields(entryToUpdate, entryDto);
         entryRepository.save(entryToUpdate);
         return entryToUpdate;
+
     }
 
-    private Entry setFields(Entry entryToUpdate, EntryDto entryDto) {
-        if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
-        if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
-        entryToUpdate.setLocalDateTime(LocalDateTime.now());
-        return entryToUpdate;
-    }
+        private Entry setFields (Entry entryToUpdate, EntryDto entryDto){
+            if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
+            if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
+            entryToUpdate.setLocalDateTime(LocalDateTime.now());
+            return entryToUpdate;
+        }
 
-    private Entry getEntityFromDto(EntryDto entryDto) {
-        Entry entryToUpdate = new Entry();
-        if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
-        if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
-        if (entryDto.getLocalDateTime() != null) entryToUpdate.setLocalDateTime(entryDto.getLocalDateTime());
-        return entryToUpdate;
-    }
+        private Entry getEntityFromDto (EntryDto entryDto){
+            Entry entryToUpdate = new Entry();
+            if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
+            if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
+            if (entryDto.getLocalDateTime() != null) entryToUpdate.setLocalDateTime(entryDto.getLocalDateTime());
+            return entryToUpdate;
+        }
 
-}
+    }

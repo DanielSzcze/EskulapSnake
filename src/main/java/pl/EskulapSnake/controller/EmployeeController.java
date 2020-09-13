@@ -22,32 +22,37 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAll(){
+    public List<Employee> getAll() {
         return employeeService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable("id") String id){
+    public Employee getEmployeeById(@PathVariable("id") String id) {
         long identification = Long.parseLong(id);
         return employeeService.findById(identification);
     }
 
+    @GetMapping("/user/{userName}")
+    public Employee getEmployeeByUserName(@PathVariable("id") String userName) {
+        return employeeService.findByUserName(userName);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee addEmployee ( @RequestBody EmployeeDto employeeDto ) {
+    public Employee addEmployee(@RequestBody EmployeeDto employeeDto) {
         return employeeService.createNew(employeeDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee updateEmployee ( @RequestBody EmployeeDto employeeDto, @PathVariable String id ) {
+    public Employee updateEmployee(@RequestBody EmployeeDto employeeDto, @PathVariable String id) {
         return employeeService.update(employeeDto, Long.parseLong(id));
     }
 
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.GONE)
-    public void deleteEmployeeById (@PathVariable("id") String id){
+    public void deleteEmployeeById(@PathVariable("id") String id) {
         employeeService.deleteById(Long.parseLong(id));
     }
 

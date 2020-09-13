@@ -62,4 +62,9 @@ public class PatientService {
         result.setPesel(patientDto.getPesel());
         return result;
     }
+
+    public Patient findByUserName(String username) {
+        return patientRepository.findByUserName(username).orElseThrow(()
+                ->new EntityNotFoundException("There is no employee with user of this username"));
+    }
 }

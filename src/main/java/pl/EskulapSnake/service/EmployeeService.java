@@ -50,28 +50,32 @@ public class EmployeeService {
         return employeeToUpdate.get();
     }
 
-    public Employee findByUser ( User user ) {
-        Optional<Employee > employee = employeeRepository.findByUser(user);
-        employee.orElseThrow(()-> new EntityNotFoundException("Employee not found!"));
+    public Employee findByUser(User user) {
+        Optional<Employee> employee = employeeRepository.findByUser(user);
+        employee.orElseThrow(() -> new EntityNotFoundException("Employee not found!"));
         return employee.get();
     }
 
     private Employee setFields(EmployeeDto employeeDto) {
         Employee employee = new Employee();
-        return  setFields(employee, employeeDto);
+        return setFields(employee, employeeDto);
     }
 
     private Employee setFields(Employee employee, EmployeeDto employeeDto) {
-        if(!employeeDto.getFirstName().isEmpty() && employeeDto.getFirstName() != null ){
+        if (!employeeDto.getFirstName().isEmpty() && employeeDto.getFirstName() != null) {
             employee.setFirstName(employeeDto.getFirstName());
         }
-        if(!employeeDto.getLastName().isEmpty() && employeeDto.getLastName() != null ){
+        if (!employeeDto.getLastName().isEmpty() && employeeDto.getLastName() != null) {
             employee.setLastName(employeeDto.getLastName());
         }
-        if(!employeeDto.getPesel().isEmpty() && employeeDto.getPesel() != null ){
+        if (!employeeDto.getPesel().isEmpty() && employeeDto.getPesel() != null) {
             employee.setPesel(employeeDto.getPesel());
         }
         return employee;
     }
 
+    public Employee findByUserName(String userName) {
+        return employeeRepository.findByUserName(userName).orElseThrow(()
+                -> new EntityNotFoundException("There is no employee with user of this username"));
+    }
 }
