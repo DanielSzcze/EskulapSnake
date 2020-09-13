@@ -1,11 +1,11 @@
 package pl.EskulapSnake.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,6 +33,7 @@ public class Employee {
     @Column
     private String pesel;
 
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-//    List<Role> roles;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    List<Role> roles;
 }
