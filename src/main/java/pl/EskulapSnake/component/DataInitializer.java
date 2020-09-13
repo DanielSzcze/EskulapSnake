@@ -122,6 +122,9 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             workDayRepository.save(workDay1);
             entryRepository.save(entry);
             entryRepository.save(entry1);
+            Role role = new Role();
+            role.setName("role "+ i);
+            roleRepository.save(role);
 
 
             patient.getEntries().add(entry);
@@ -148,6 +151,8 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             patient.setPesel(String.valueOf(random.nextInt(10000000)) + String.valueOf(random.nextInt(100)));
             patientRepository.save(patient);
 
+        }
+    }
 
         }
         alreadySetup = true;
