@@ -8,6 +8,8 @@ let employeesSelectionList = document.querySelector("#employee");
 let visitTypeSelectionList = document.querySelector("#visitType");
 let patientsSelectionList = document.querySelector("#patient");
 let entryDate = document.querySelector("#entryDate");
+let exam = document.querySelector("#examination");
+let recom = document.querySelector("#recommendations");
 console.log(location.hash);
 
 
@@ -91,6 +93,25 @@ updateEmployeeList();
 updateVisitTypeList();
 updatePatientList()
 setEntryDate();
+
 //TODO zaciąganie się danych
 
+function entryUpdate(){
+    if(entryId != null) {
+        let url = address + "entries/" + entryId;
+        fetch(url)
+            .then(response => response.json())
+            .then(entry => console.log(entry))
+            .then(entry => fillEntryForm(entry));
+    }
+}
+
+function fillEntryForm(entry) {
+    // entryDate.innerHTML = entry.localDateTime;
+    exam.value = entry.examination;
+    // recom.innerHTML = entry.recommendations;
+    // employeesSelectionList.children.forEach
+}
+
+entryUpdate();
 // console.log(entryDate.value);

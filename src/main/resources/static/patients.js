@@ -19,8 +19,9 @@ function fillPatientsTable(patients) {
         tr.innerHTML = "<td>" + patient.firstName + "</td>"
             + "<td>" + patient.lastName + ' ' + "</td>"
             + "<td>" + patient.pesel + "</td>"
-            + "<a class=\"button\" href=" + linkList + ">Lista wpisów</a>" + "<br>" +
-            + "<a class=\"button\" href=" + linkAdd + ">Dodaj wpis</a>"
+            + "<a class=\"button\" href=" + linkList + ">Entries list</a>";
+            // + "<br>" +
+            // + "<a class=\"button\" href=" + linkAdd + ">Dodaj wpis</a>"
             tbodyPatients.appendChild(tr);
     })
 }

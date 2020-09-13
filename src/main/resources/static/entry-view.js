@@ -9,7 +9,7 @@ let outEmployee = document.querySelector("#employeeEntry");
 let outExam= document.querySelector("#examinationEntry");
 let outRecom = document.querySelector("#recommendationsEntry");
 let entryEdit = document.querySelector("#entryEdit");
-// let outPatient = document.querySelector("#patientEntry");
+let outPatient = document.querySelector("#patientEntry");
 
 function updateOutputs (entry){
     let localDateTime = entry.localDateTime;
@@ -31,4 +31,12 @@ function getEntry() {
         .then(entry => updateOutputs(entry));
 }
 
+function getPatient() {
+    let url = address + "patients/" + patientId;
+    fetch( url )
+        .then(response => response.json())
+        .then(patient => outPatient.innerHTML = patient.firstName + " " + patient.lastName);
+}
+
 getEntry();
+getPatient();

@@ -4,35 +4,38 @@
     <meta charset="UTF-8">
     <title>Wpis</title>
 <!--    <link rel="stylesheet" href="styles.css">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
-<h2>Wpis</h2><br>
+<h2>Entry</h2><br>
 <form id="entryViewForm" >
     <div>
         <label for="entryDateEntry">Data: </label> <br>
         <output id="entryDateEntry"></output><br><br>
 
-<!--        <label for="patientEntry">Pacjent:  </label><br>-->
-<!--        <output id="patientEntry" style="width: 50%;" disabled></output><br><br>-->
+        <label for="patientEntry">Patient:  </label><br>
+        <output id="patientEntry" style="width: 50%;" disabled></output><br><br>
 
-        <label for="visitTypeEntry">Typ wizyty: </label><br>
+        <label for="visitTypeEntry">Visit type: </label><br>
         <output id="visitTypeEntry" style="width: 50%;"></output>
         <br><br>
 
-        <label for="examinationEntry">Opis badania: </label><br>
+        <label for="examinationEntry">Description of examination: </label><br>
         <output id="examinationEntry" style="width: 50%; height: 50px; " ></output><br><br>
 
-        <label for="recommendationsEntry">Zalecenia: </label><br>
+        <label for="recommendationsEntry">Recommendations: </label><br>
         <output id="recommendationsEntry" style="width: 50%; height: 50px; vertical-align: text-top;" ></output><br><br>
 
-        <label for="employeeEntry">Lekarz: </label><br>
+        <label for="employeeEntry">Physician: </label><br>
         <output id="employeeEntry" style="width: 50%;" ></output>
         <br><br>
 
     </div>
-    <a id="entryEdit">Edytuj</a>
+    <a id="entryEdit">Edit</a>
 </form>
 <script src="entry-view.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
 </html>
