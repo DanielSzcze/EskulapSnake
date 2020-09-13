@@ -44,8 +44,8 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             ApplicationContext applicationContext,
             WorkDayRepository workDayRepository,
             EmployeeRepository employeeRepository) {
-        this.visitTypeRepository = visitTypeRepository;
-        this.patientRepository = patientRepository;
+        this.visitTypeRepository=visitTypeRepository;
+        this.patientRepository=patientRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -62,12 +62,13 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup) return;
-        createRoleIfNotFound("ROLE_ADMIN");
-        createRoleIfNotFound("ROLE_MANAGER");
-        createRoleIfNotFound("ROLE_PHYSICIAN");
-        createRoleIfNotFound("ROLE_RECORDER");
-        createRoleIfNotFound("ROLE_PATIENT");
-        createRoleIfNotFound("ROLE_EMPLOYEE");
+        List<Role> roles = new ArrayList<>();
+        roles.add(createRoleIfNotFound("ROLE_ADMIN"));
+        roles.add(createRoleIfNotFound("ROLE_MANAGER"));
+        roles.add(createRoleIfNotFound("ROLE_PHYSICIAN"));
+        roles.add(createRoleIfNotFound("ROLE_RECORDER"));
+        roles.add(createRoleIfNotFound("ROLE_PATIENT"));
+        roles.add(createRoleIfNotFound("ROLE_EMPLOYEE"));
         List<Role> adminRoles = roleRepository.findAll();
         User user = new User();
         user.setUsername(applicationContext.getEnvironment().getProperty("admin.username"));
@@ -77,7 +78,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         user.setEnabled(true);
         userRepository.save(user);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 10; i++) {
             Entry entry = new Entry();
             entry.setRecommendations("bla");
             entry.setExamination("lol");
@@ -87,6 +88,15 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             entry1.setExamination("lol");
             entry1.setLocalDateTime(LocalDateTime.of(2020, 6, 8, 11, 15));
 
+
+            Patient patient = new Patient();
+            patient.setLastName("lool");
+            patient.setFirstName("kuba");
+            Patient patient1 = new Patient();
+            patient1.setFirstName("loki");
+            patient1.setLastName("ppp");
+
+
             WorkDay workDay = new WorkDay();
             WorkDay workDay1 = new WorkDay();
             workDay.setFromWorkTime(LocalDateTime.of(2020, 9, 8, 10, 00));
@@ -94,18 +104,21 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             workDay.setToWorkTime((LocalDateTime.of(2020, 9, 8, 18, 00)));
             workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 8, 16, 00)));
 
-            List<Role> allRoles = roleRepository.findAll();
-            Random random = new Random();
-            List<Role> roles = new ArrayList<>();
-//            roles.add(roleRepository.findByName(allRoles.get(random.nextInt(6)).getName()));
+            User dummyUser = new User();
+            dummyUser.setUsername("user" + i);
+            dummyUser.setPassword(passwordEncoder.encode("password" + i));
+            dummyUser.setEmail("email" + i);
+            dummyUser.setEnabled(true);
+            dummyUser.setRoles(roles);
 
             Employee employee = new Employee();
             employee.setFirstName("firstName" + i);
             employee.setLastName("lastName" + i);
+            employee.setUser(dummyUser);
             entry.setEmployee(employee);
             entry1.setEmployee(employee);
-//            employee.setRoles(roles);
-//
+
+
             workDay.setEmployee(employee);
             workDay1.setEmployee(employee);
             employeeRepository.save(employee);
@@ -113,7 +126,14 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             workDayRepository.save(workDay1);
             entryRepository.save(entry);
             entryRepository.save(entry1);
+            Role role = new Role();
+            role.setName("role "+ i);
+            roleRepository.save(role);
 
+            patient.getEntries().add(entry);
+            patient1.getEntries().add(entry1);
+            patientRepository.save(patient);
+            patientRepository.save(patient1);
 
             VisitType visitType = new VisitType();
             visitType.setName("VisitType" + " " + i);
@@ -134,11 +154,14 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 entries.add(e);
             }
             patient.setEntries(entries);
-            patient.setPesel(String.valueOf("9" + random.nextInt(10000000)) + random.nextInt(100));
+            Random random = new Random();
+            patient.setPesel(String.valueOf(random.nextInt(10000000)) + String.valueOf(random.nextInt(100)));
             patientRepository.save(patient);
 
+        }
+    }
 
-        }alreadySetup = true;
+        } alreadySetup = true;
     }
 
     private Role createRoleIfNotFound(String name) {
