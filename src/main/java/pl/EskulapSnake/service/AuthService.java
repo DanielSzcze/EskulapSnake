@@ -60,7 +60,7 @@ public class AuthService {
                 user.getEmail(),
                 "Hey " + user.getUsername() + ", thanks for joining our app! \n" +
                         "Please click the link below to confirm your e-mail: \b" +
-                        "http://" + applicationContext.getEnvironment().getProperty("server.address") +
+                        "http://" + applicationContext.getEnvironment().getProperty("connection.address") +
                         ":" + applicationContext.getEnvironment().getProperty("server.port") +
                         "/auth/verifyAccount/" + code.getCode()
         ));

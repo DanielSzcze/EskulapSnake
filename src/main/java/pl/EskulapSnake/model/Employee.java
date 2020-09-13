@@ -33,6 +33,6 @@ public class Employee {
     @Column
     private String pesel;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Role> roles;
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    List<Role> roles;
 }

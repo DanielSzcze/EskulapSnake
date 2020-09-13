@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Entry edit</title>
+<!--    <link rel="stylesheet" href="styles.css">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+<h2>Entry form</h2><br>
+<form id="entryForm" >
+    <div>
+        <label for="entryDate">Date: </label> <br>
+        <input type="datetime-local" id="entryDate"><br><br>
+
+        <label for="patient">Patient:  </label><br>
+        <select id="patient" style="width: 50%;"></select><br><br>
+
+        <label for="examination">Description of examination: </label><br>
+        <input type="text" id="examination" style="width: 50%; height: 50px;"><br><br>
+
+        <label for="recommendations">Recommendations: </label><br>
+        <input type="text" id="recommendations" style="width: 50%; height: 50px; vertical-align: text-top;"><br><br>
+
+        <label for="employee">Physician: </label><br>
+        <select id="employee" style="width: 50%;">
+        </select><br><br>
+
+        <label for="visitType">Visit type: </label><br>
+        <select id="visitType" style="width: 50%;">
+        </select><br><br>
+
+    </div>
+    <input id="entrySaveBtn" type="submit" style="margin: 10px;" value="Save">
+</form>
+<script src="entry-edit.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,6 +1,5 @@
 package pl.EskulapSnake.service;
 
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.EntryDto;
@@ -16,7 +15,6 @@ import pl.EskulapSnake.repository.VisitTypeRepository;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EntryService {
@@ -103,6 +101,19 @@ public class EntryService {
         patientRepository.save(patient);
 
         return entryToSave;
+
+
+    }
+
+    @Transactional
+    public Entry update(Long id, EntryDto entryDto) {
+        Entry entryToUpdate = entryRepository.findById(id).orElseThrow(()
+
+                -> new EntityNotFoundException("There is no entity with this id"));
+        entryToUpdate = setFields(entryToUpdate, entryDto);
+        entryRepository.save(entryToUpdate);
+        return entryToUpdate;
+
     }
 
         @Transactional

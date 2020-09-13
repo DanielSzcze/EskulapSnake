@@ -11,8 +11,7 @@ import pl.EskulapSnake.model.*;
 import pl.EskulapSnake.repository.*;
 
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.*;import java.util.stream.Collectors;
 
 /**
  * Tu możesz zainicializować dane do bazy by sprawdzić to w postmanie
@@ -106,6 +105,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             dummyUser.setPassword(passwordEncoder.encode("password" + i));
             dummyUser.setEmail("email" + i);
             dummyUser.setEnabled(true);
+
             if (i == 1) dummyUser.setRoles(roles.stream()
                     .filter(role -> role.getName().equals("ROLE_PATIENT"))
                     .collect(Collectors.toList()));
@@ -115,7 +115,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             if (i > 2 && i < 7) dummyUser.setRoles(roles.stream()
                     .filter(role -> role.getName().equals("ROLE_EMPLOYEE"))
                     .collect(Collectors.toList()));
-
+            dummyUser.setRoles(roles);
 
             Employee employee = new Employee();
             employee.setFirstName("firstName" + i);
@@ -134,6 +134,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             entryRepository.save(entry1);
             Role role = new Role();
             role.setName("role " + i);
+
             roleRepository.save(role);
 
 
