@@ -4,8 +4,7 @@ let tbodyPatients = document.querySelector("#tbodyPatients");
 
 function updatePatientTable() {
     let url = address + "patients";
-    console.log(url);
-    fetch(url)
+       fetch(url)
         .then(response => response.json())
         .then(patients => filterPatients(patients))
         .then(patients => fillPatientsTable(patients))
