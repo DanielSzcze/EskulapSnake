@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**").anonymous()
                 .antMatchers("/database").hasRole("ADMIN")
                 .antMatchers("/entries/**", "/roles/**", "/visits/**", "patients/**", "/employees/**", "/workdays", "patients/**")
-                .hasAnyRole("ADMIN", "RECORDER", "EMPLOYEE", "PATIENT")
+                .hasAnyRole("ADMIN", "RECORDER", "EMPLOYEE")
                 .antMatchers("/patients").hasAnyRole("ADMIN","PHYSICIAN","RECORDER")
                 .antMatchers("/entries/**", "/roles/**", "/visits/**").hasAnyRole("ADMIN", "RECORDER", "PATIENT", "EMPLOYEE")
                 .antMatchers("**").hasRole("ADMIN")

@@ -1,4 +1,5 @@
 let address = 'http://' + window.location.hostname + ':' + window.location.port + '/';
+let patients;
 let findPatientForm = document.querySelector("#findPatientsForm");
 let loggedUserName = document.querySelector("#loggedUserName").textContent;
 console.log(loggedUserName);
@@ -22,6 +23,7 @@ let plusYearButton = document.querySelector("#plusYear");
 let tbody = document.querySelector("tbody");
 setLists();
 setCalender();
+setPatients();
 
 function setLists() {
     setEmployeesList();
@@ -69,24 +71,36 @@ function fillVisitTypeList(visitTypes) {
 }
 
 
-function refreshPatientList() {
-    patientsList.innerHTML = "";
-    let url = address + "patients/" + findText.value;
+function setPatients(){
+    let url = address + "patients"
     fetch(url)
         .then(response => response.json())
-        .then(patients => fillPatientsList(patients));
+        .then(patientsFromDB => {
+            patients = patientsFromDB;
+        } );
+}
+
+function refreshPatientList() {
+    patientsList.innerHTML=""
+    let value =  findText.value;
+    patients.forEach(patient => {
+        if(String(patient.firstName).includes(value)
+            || String(patient.lastName).includes(value)){
+            addToPatientsList(patient)
+        }
+    });
+
+
 
 }
 
-function fillPatientsList(patients) {
+function addToPatientsList(patient) {
 
-    patients.forEach(patient => {
         let option = document.createElement("option");
         option.innerHTML = patient.id + ". " + patient.firstName + "\ " + patient.lastName + " " + patient.pesel;
         patientsList.appendChild(option);
-    });
+    }
 
-}
 
 function getEmployeeId() {
     let employeeId

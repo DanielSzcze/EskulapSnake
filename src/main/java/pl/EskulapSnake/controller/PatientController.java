@@ -38,15 +38,10 @@ public class PatientController {
         return patientService.findById(id);
     }
 
-    @GetMapping("/user/{username}")
+    @GetMapping("/user/{username[a-z]+}")
     @ResponseStatus(value = HttpStatus.OK)
     public Patient findByUsername(@PathVariable("username") String username) {
        return patientService.findByUserName(username);
-    }
-    @GetMapping("/{partOfDate:[a-z]+}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public  List<Patient> getPapientsByPartOfDate(@PathVariable("partOfDate")String partOfdate) {
-        return patientService.findByPartOfDate(partOfdate);
     }
 
     @PostMapping

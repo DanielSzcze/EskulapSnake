@@ -16,19 +16,19 @@
 <form hidden>
     <p type="text" , id="loggedUserName" sec:authentication="name"/>
 </form>
-<form sec:authorize="!hasRole('PATIENT')" autocomplete="off" id="findPatientsForm">
+<form sec:authorize="!hasRole('PATIENT') or hasRole('ADMIN')" autocomplete="off" id="findPatientsForm">
     <label for="findText">Find Patient by part of date</label><br>
     <input type="text" id="findText">
     <input type="submit" value="Refresh">
     <br>
-    <select  name="selectList" type="" id="patientsList"></select>
+    <select id="patientsList" size="10" onselect="getWorkDays()"></select>
 </form>
 <br>
 
 <form autocomplete="off" id="addEntry">
     <br>
-    <span sec:authorize="!hasRole('PHYSICIAN')">Select employee:</span>
-    <select sec:authorize="!hasRole('PHYSICIAN')" id="employeesSelect">
+    <span sec:authorize="!hasRole('PHYSICIAN') or hasRole('ADMIN')">Select employee:</span>
+    <select sec:authorize="!hasRole('PHYSICIAN') or hasRole('ADMIN')" id="employeesSelect">
     </select>
     <br>
     Select visit type: <select id="visitTypesSelect">
