@@ -33,7 +33,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/user/{userName}")
-    public Employee getEmployeeByUserName(@PathVariable("id") String userName) {
+    public Employee getEmployeeByUserName(@PathVariable("userName") String userName) {
         return employeeService.findByUserName(userName);
     }
 

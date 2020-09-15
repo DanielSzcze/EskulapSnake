@@ -25,7 +25,7 @@ setCalender();
 
 function setLists() {
     setEmployeesList();
-    setVisTypeList();
+    setVisitTypeList();
 }
 
 if (findText != null) findText.addEventListener("input", function (event) {
@@ -48,11 +48,11 @@ function fillEmployeesList(employees) {
     employees.forEach(emp => {
         let option = document.createElement("option");
         option.innerHTML = emp.id + ". " + (emp.firstName) + " " + emp.lastName;
-        employeesSelect.appendChild(option);
+        if(employeesSelect !=null) employeesSelect.appendChild(option);
     });
 }
 
-function setVisTypeList() {
+function setVisitTypeList() {
 
     let url = address + "visits";
     fetch(url)

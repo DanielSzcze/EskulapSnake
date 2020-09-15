@@ -106,16 +106,17 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             dummyUser.setEmail("email" + i);
             dummyUser.setEnabled(true);
 
-            if (i == 1) dummyUser.setRoles(roles.stream()
+            if (i == 1) dummyUser.getRoles().addAll(roles.stream()
                     .filter(role -> role.getName().equals("ROLE_PATIENT"))
                     .collect(Collectors.toList()));
-            if (i == 2) dummyUser.setRoles(roles.stream()
-                    .filter(role -> role.getName().equals("ROLE_PHYSICIAN"))
+            if (i == 2) dummyUser.getRoles().addAll(roles.stream()
+                    .filter(role -> role.getName().equals("ROLE_PHYSICIAN") ||
+                            role.getName().equals("ROLE_EMPLOYEE"))
                     .collect(Collectors.toList()));
-            if (i > 2 && i < 7) dummyUser.setRoles(roles.stream()
+            if (i > 2 && i < 7) dummyUser.getRoles().addAll(roles.stream()
                     .filter(role -> role.getName().equals("ROLE_EMPLOYEE"))
                     .collect(Collectors.toList()));
-            dummyUser.setRoles(roles);
+            //dummyUser.setRoles(roles);
 
             Employee employee = new Employee();
             employee.setFirstName("firstName" + i);
