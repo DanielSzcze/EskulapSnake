@@ -38,7 +38,7 @@ public class PatientController {
         return patientService.findById(id);
     }
 
-    @GetMapping("/user/{username[a-z]+}")
+    @GetMapping("/user/{username}")
     @ResponseStatus(value = HttpStatus.OK)
     public Patient findByUsername(@PathVariable("username") String username) {
        return patientService.findByUserName(username);

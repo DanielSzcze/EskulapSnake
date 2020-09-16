@@ -105,20 +105,21 @@ function addToPatientsList(patient) {
 function getEmployeeId() {
     let employeeId
     if (employeesSelect != null) {
-        employee = employeesSelect.value;
-        let employeeId = employee.substr(0, employee.indexOf('.'));
+        let employee = employeesSelect.value;
+        employeeId = employee.substr(0, employee.indexOf('.'));
     } else {
-        employeeId = findEmployeeByUserName(loggedUserName);
+         employeeId = findEmployeeIdByUserName(loggedUserName);
+
     }
     return employeeId;
 }
 
-function findEmployeeByUserName(loggedUserName) {
+function findEmployeeIdByUserName(loggedUserName) {
     let url = address + "employees/user/" + loggedUserName;
     let employeeId = null;
     fetch(url)
         .then(response => response.json())
-        .then(loggedEmployee => {
+        .forEach(loggedEmployee => {
             employeeId = loggedEmployee.id;
 
         });
@@ -131,7 +132,8 @@ function getPatientId() {
         let patient = patientsList.value;
         patientId = patient.substr(0, patient.indexOf('.'));
     } else {
-        patientId = findPatientIdByUserName(loggedUserName)
+         patientId = findPatientIdByUserName(loggedUserName)
+
     }
     return patientId;
 }

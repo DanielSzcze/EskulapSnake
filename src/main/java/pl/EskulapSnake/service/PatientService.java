@@ -26,9 +26,6 @@ public class PatientService {
                 .orElseThrow(() -> new EntityNotFoundException("In db is no Patient with this id"));
 
     }
-    public  List<Patient> findByPartOfDate(String partOfDate) {
-        return patientRepository.findByPartOfDate(partOfDate);
-    }
 
     @Transactional
     public void deleteAll() {
