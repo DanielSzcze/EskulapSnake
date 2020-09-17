@@ -139,16 +139,18 @@ function getPatientId() {
 }
 
 function findPatientIdByUserName(loggedUserName) {
-    let url = address + "patients/user/" + loggedUserName;
-    let employeeId = null;
-    fetch(url)
+    let url = address+"patients/user/"+loggedUserName
+    let loggedPatientId =null
+   return  fetch(url)
         .then(response => response.json())
-        .then(loggedPatient => {
-            employeeId = loggedPatient.id;
+        .then((loggedPatient) => {
 
+    loggedPatientId= loggedPatient.id;
+    return loggedPatientId;
         });
-    return employeeId;
+
 }
+
 
 function getVisitTypeId() {
     let visitType = visitTypesSelect.value;

@@ -41,7 +41,8 @@ public class PatientController {
     @GetMapping("/user/{username}")
     @ResponseStatus(value = HttpStatus.OK)
     public Patient findByUsername(@PathVariable("username") String username) {
-       return patientService.findByUserName(username);
+        Patient patientByUserName = patientService.findByUserName(username);
+        return patientByUserName;
     }
 
     @PostMapping

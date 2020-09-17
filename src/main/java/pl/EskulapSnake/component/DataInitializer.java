@@ -87,7 +87,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
 
             User dummyUser = new User();
             dummyUser.setUsername("user" + i);
-            dummyUser.setPassword(passwordEncoder.encode("password" + i));
+            dummyUser.setPassword(passwordEncoder.encode("p"));
             dummyUser.setEmail("email" + i);
             dummyUser.setEnabled(true);
 
