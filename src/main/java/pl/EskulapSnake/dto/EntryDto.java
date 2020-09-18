@@ -12,6 +12,8 @@ public class EntryDto {
     private long visitTypeId;
     private String examination;
     private String recommendations;
+    private  String userNameOfPatient;
+    private  String userNameOfEmployee;
 
 
 }

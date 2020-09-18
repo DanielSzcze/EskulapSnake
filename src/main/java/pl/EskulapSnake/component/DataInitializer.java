@@ -11,7 +11,8 @@ import pl.EskulapSnake.model.*;
 import pl.EskulapSnake.repository.*;
 
 import java.time.LocalDateTime;
-import java.util.*;import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Tu możesz zainicializować dane do bazy by sprawdzić to w postmanie
@@ -79,7 +80,9 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             Entry entry = new Entry();
             entry.setRecommendations("bla" + i);
             entry.setExamination("lol" + i);
-            entry.setLocalDateTime(LocalDateTime.of(2020, 9, 8, 11, 15));
+            int h = 10+i*15/60;
+            int min = (15+i*15)%60;
+            entry.setLocalDateTime(LocalDateTime.of(2020, 9, 8,  h, min));
             Entry entry1 = new Entry();
             entry1.setRecommendations("..." + i);
             entry1.setExamination("..." + i);
@@ -94,7 +97,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
 
             Patient patient = new Patient();
             Patient patient1 = new Patient();
-            if(i==1) patient.setUser(dummyUser);
+            if (i == 1 || i == 3) patient.setUser(dummyUser);
             patient.setFirstName("Patient name");
             patient.setLastName("lastname" + i);
             patient1.setFirstName("loki" + i);
@@ -108,8 +111,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 8, 16, 00)));
 
 
-
-            if (i == 1) dummyUser.getRoles().addAll(roles.stream()
+            if (i == 1 || i == 3) dummyUser.getRoles().addAll(roles.stream()
                     .filter(role -> role.getName().equals("ROLE_PATIENT"))
                     .collect(Collectors.toList()));
             if (i == 2) dummyUser.getRoles().addAll(roles.stream()
@@ -121,7 +123,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                     .collect(Collectors.toList()));
 
             Employee employee = new Employee();
-            if(i>1) employee.setUser(user);
+            if (i > 1) employee.setUser(dummyUser);
             employee.setFirstName("firstName" + i);
             employee.setLastName("lastName" + i);
             employee.setUser(dummyUser);
@@ -151,7 +153,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             visitType.setName("VisitType " + i);
             visitTypeRepository.save(visitType);
 
-
+            userRepository.save(dummyUser);
 
 
         }
@@ -163,6 +165,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         if (role == null) {
             role = new Role(name);
             roleRepository.save(role);
+
         }
         return role;
     }

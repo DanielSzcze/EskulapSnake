@@ -1,5 +1,7 @@
 let address = 'http://' + window.location.hostname + ':' + window.location.port + '/';
 let patients;
+let entriesOfLoggedPatient = new  Array();
+
 let findPatientForm = document.querySelector("#findPatientsForm");
 let loggedUserName = document.querySelector("#loggedUserName").textContent;
 console.log(loggedUserName);
@@ -8,7 +10,11 @@ let patientsList = document.querySelector("#patientsList");
 let employeesSelect = document.querySelector("#employeesSelect");
 let visitTypesSelect = document.querySelector("#visitTypesSelect");
 let addEntryButton = document.querySelector("#postEntryButton");
-
+let patientId;
+setPatientId();
+let employeeId;
+setEmployeeId();
+setEntriesOfLoggedPatient();
 
 let year = new Date().getFullYear();
 let month = new Date().getMonth() + 1;
@@ -24,6 +30,23 @@ let tbody = document.querySelector("tbody");
 setLists();
 setCalender();
 setPatients();
+
+function setEntriesOfLoggedPatient() {
+    entriesOfLoggedPatient = new  Array();
+    let url = address + "entries/id/" + loggedUserName;
+    fetch(url)
+        .then(response => response.json())
+        .then(ids => addToArray(ids))
+}
+function addToArray(ids){
+          ids.forEach(id=>{
+
+          entriesOfLoggedPatient.push(id);
+
+
+    console.log(entriesOfLoggedPatient)
+})
+}
 
 function setLists() {
     setEmployeesList();
@@ -50,7 +73,7 @@ function fillEmployeesList(employees) {
     employees.forEach(emp => {
         let option = document.createElement("option");
         option.innerHTML = emp.id + ". " + (emp.firstName) + " " + emp.lastName;
-        if(employeesSelect !=null) employeesSelect.appendChild(option);
+        if (employeesSelect != null) employeesSelect.appendChild(option);
     });
 }
 
@@ -71,84 +94,50 @@ function fillVisitTypeList(visitTypes) {
 }
 
 
-function setPatients(){
+function setPatients() {
     let url = address + "patients"
     fetch(url)
         .then(response => response.json())
         .then(patientsFromDB => {
             patients = patientsFromDB;
-        } );
+        });
 }
 
 function refreshPatientList() {
-    patientsList.innerHTML=""
-    let value =  findText.value;
+    patientsList.innerHTML = ""
+    let value = findText.value;
     patients.forEach(patient => {
-        if(String(patient.firstName).includes(value)
-            || String(patient.lastName).includes(value)){
+        if (String(patient.firstName).includes(value)
+            || String(patient.lastName).includes(value)) {
             addToPatientsList(patient)
         }
     });
-
 
 
 }
 
 function addToPatientsList(patient) {
 
-        let option = document.createElement("option");
-        option.innerHTML = patient.id + ". " + patient.firstName + "\ " + patient.lastName + " " + patient.pesel;
-        patientsList.appendChild(option);
-    }
+    let option = document.createElement("option");
+    option.innerHTML = patient.id + ". " + patient.firstName + "\ " + patient.lastName + " " + patient.pesel;
+    patientsList.appendChild(option);
+}
 
 
-function getEmployeeId() {
-    let employeeId
+function setEmployeeId() {
+
     if (employeesSelect != null) {
         let employee = employeesSelect.value;
         employeeId = employee.substr(0, employee.indexOf('.'));
-    } else {
-         employeeId = findEmployeeIdByUserName(loggedUserName);
 
     }
-    return employeeId;
 }
 
-function findEmployeeIdByUserName(loggedUserName) {
-    let url = address + "employees/user/" + loggedUserName;
-    let employeeId = null;
-    fetch(url)
-        .then(response => response.json())
-        .forEach(loggedEmployee => {
-            employeeId = loggedEmployee.id;
-
-        });
-    return employeeId;
-}
-
-function getPatientId() {
-    let patientId
+async function setPatientId() {
     if (patientsList != null) {
         let patient = patientsList.value;
         patientId = patient.substr(0, patient.indexOf('.'));
-    } else {
-         patientId = findPatientIdByUserName(loggedUserName)
-
     }
-    return patientId;
-}
-
-function findPatientIdByUserName(loggedUserName) {
-    let url = address+"patients/user/"+loggedUserName
-    let loggedPatientId =null
-   return  fetch(url)
-        .then(response => response.json())
-        .then((loggedPatient) => {
-
-    loggedPatientId= loggedPatient.id;
-    return loggedPatientId;
-        });
-
 }
 
 
@@ -305,10 +294,12 @@ function fillCalenderByWorkDays() {
             button.remove();
 
         });
-    let employeeId = getEmployeeId();
+    setEmployeeId();
     let date = String(month) + "." + String(year);
-    let url = address + "workdays/" + employeeId + "/" + date;
-    if (employeeId != "" && employeeId != null) fetch(url)
+    let url
+    if (employeeId != "") url = address + "workdays/employeeId/" + employeeId + "/" + date;
+    else url = address + "workdays/userName/" + loggedUserName + "/" + date;
+    fetch(url)
         .then(response => response.json())
         .then(workDays => addWorkDays(workDays));
 
@@ -367,11 +358,12 @@ function setIfWorkDay(div, fromWorkTimeDay, toWorkTimeDay, fromWorkTimeHour, toW
 
 //========================================ENTRIES=========================
 
-function fillCalenderByEntries() {
-    let employeeId = getEmployeeId();
+async function fillCalenderByEntries() {
     let date = String(month) + "." + String(year);
-    let url = address + "entries/" + employeeId + "/" + date;
-    if (employeeId != "" && employeeId != null) fetch(url)
+    let url
+    if (employeeId != "") url = address + "entries/employeeId/" + employeeId + "/" + date;
+    else url = address + "entries/userName/" + loggedUserName + "/" + date;
+    fetch(url)
         .then(response => response.json())
         .then(entries => addEntries(entries));
 }
@@ -410,19 +402,30 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
 
     if (isEntryTime) {
         let radio = div.querySelector("input");
-
-        let cancelButton = document.createElement("button");
-        cancelButton.innerText = "cancel";
-        cancelButton.addEventListener("click", function (event) {
-            confirm("Are you sure to delete it?");
-            cancelEntry(event, entryId);
-
-        });
-        cancelButton.name = "cancelButton";
-        div.appendChild(cancelButton);
         if (radio != null) radio.remove();
-        div.style = "background-color:red;";
+        if (hasPermission(entryId)) {
+
+            let cancelButton = document.createElement("button");
+            cancelButton.innerText = "cancel";
+            cancelButton.addEventListener("click", function (event) {
+                confirm("Are you sure to delete it?");
+                cancelEntry(event, entryId);
+
+            });
+            cancelButton.name = "cancelButton";
+            if (patientsList != null) div.appendChild()
+            div.appendChild(cancelButton);
+
+        }
+    div.style = "background-color:red"
+
     }
+}
+function  hasPermission(id) {
+
+    let result =entriesOfLoggedPatient.includes(id)
+    || patientsList!=null;
+    return result;
 }
 
 function cancelEntry(event, entryId) {
@@ -450,8 +453,8 @@ addEntryButton.addEventListener("click", function () {
 
 function postEntry() {
     event.preventDefault();
-    let employeeId = getEmployeeId();
-    let patientId = getPatientId();
+    setEmployeeId();
+    setPatientId();
     let selectedRadio = document.querySelector("input[name=EntryRadio]:checked");
     let vistTypeId = getVisitTypeId();
     if (employeeId == "") alert("select employee");
@@ -472,11 +475,13 @@ function postEntry() {
         let dateTime = year + "-" + localMonth + "-" + day + "T" + hour + ":" + minutes + ":00"
         console.log(dateTime);
         let json = "{" +
-            '"patientId": ' + patientId + ","
-            + '"visitTypeId": ' + vistTypeId + ","
-            + '"employeeId": ' + employeeId + ","
-            + '"localDateTime": ' + '"' + dateTime + '"'
-            + "}";
+            '"visitTypeId": ' + vistTypeId + ","
+            + '"localDateTime": ' + '"' + dateTime + '"';
+        if (patientId == null) json += ', "userNameOfPatient":' + '"' + loggedUserName + '"' + ",";
+        else json += '"patientId": ' + patientId + ",";
+        if (employeeId == null) json += ', "userNameOfEmployee":' + '"' + loggedUserName + '"';
+        else json += '"employeeId": ' + employeeId
+        json += "}"
         console.log(json)
         let url = address + "entries"
         fetch(url, {
@@ -497,4 +502,7 @@ function postEntry() {
                 }
             });
     }
+    setEntriesOfLoggedPatient();
 }
+
+

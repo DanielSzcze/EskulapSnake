@@ -12,6 +12,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findByUser(User user);
 
-    @Query("SELECT  e FROM Employee e join e.user u WHERE u.username LIKE :username")
+    @Query("SELECT  e FROM Employee e join e.user u WHERE u.username = :username")
     Optional<Employee> findByUserName(@Param("username") String username);
 }

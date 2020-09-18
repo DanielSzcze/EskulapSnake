@@ -3,34 +3,36 @@ package pl.EskulapSnake.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.EntryDto;
-import pl.EskulapSnake.model.Employee;
-import pl.EskulapSnake.model.Entry;
-import pl.EskulapSnake.model.Patient;
-import pl.EskulapSnake.model.VisitType;
-import pl.EskulapSnake.repository.EmployeeRepository;
-import pl.EskulapSnake.repository.EntryRepository;
-import pl.EskulapSnake.repository.PatientRepository;
-import pl.EskulapSnake.repository.VisitTypeRepository;
+import pl.EskulapSnake.model.*;
+import pl.EskulapSnake.repository.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EntryService {
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
     private EntryRepository entryRepository;
     private PatientRepository patientRepository;
     private VisitTypeRepository visitTypeRepository;
+    private UserRepository userRepository;
+    private PatientService patientService;
 
     public EntryService(EntryRepository entryRepository,
-                        EmployeeRepository employeeRepository,
+                        EmployeeService employeeService,
                         PatientRepository patientRepository,
-                        VisitTypeRepository visitTypeRepository) {
+                        VisitTypeRepository visitTypeRepository,
+                        UserRepository userRepository,
+                        PatientService patientService) {
         this.entryRepository = entryRepository;
-        this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
         this.patientRepository = patientRepository;
         this.visitTypeRepository = visitTypeRepository;
+        this.userRepository = userRepository;
+        this.patientService = patientService;
+
     }
 
     public List<Entry> findAll() {
@@ -53,6 +55,11 @@ public class EntryService {
         return entryRepository.getByEmpIdAndTimeInterval(employeeId, beginOfMonth, endOfMonth);
     }
 
+    public List<Entry> findByUserNameAndDate(String userName, String monthAndYear) {
+        Employee employee = employeeService.findByUserName(userName);
+        return this.findByEmployeeIdAndDate(employee.getId(), monthAndYear);
+    }
+
     private LocalDateTime getBeginOfMonth(Integer month, Integer year) {
         LocalDateTime minDateOfMonth = LocalDateTime.of(year, month, 1, 00, 00);
         return minDateOfMonth;
@@ -73,7 +80,7 @@ public class EntryService {
     @Transactional
     public void deleteById(Long id) {
         Entry entryToDelete = entryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("There is no entry with this id"));
-        Patient owner = this.findOwnerOfEntryByEntry(entryToDelete);
+        Patient owner = patientService.findOwnerOfEntry(entryToDelete);
 
         owner.getEntries().remove(entryToDelete);
         patientRepository.save(owner);
@@ -81,18 +88,20 @@ public class EntryService {
     }
 
     //TODO  get this method to Patient repository and find by query
-    private Patient findOwnerOfEntryByEntry(Entry entry) {
-        List<Patient> patients = patientRepository.findAll();
-        return patients.stream()
-                .filter(p -> p.getEntries().contains(entry))
-                .findAny().get();
-    }
+
 
     @Transactional
     public Entry createNew(EntryDto entryDto) {
-        Patient patient = patientRepository.findById(entryDto.getPatientId()).orElseThrow(() -> new EntityNotFoundException("There is no patient with this id"));
-        Employee employee = employeeRepository.findById(entryDto.getEmployeeId()).orElseThrow(() -> new EntityNotFoundException("There is no employee with this id"));
-        VisitType visitType = visitTypeRepository.findById(entryDto.getVisitTypeId()).orElseThrow(() -> new EntityNotFoundException("There is no visit type with this id"));
+        Patient patient;
+        Employee employee;
+        if (entryDto.getPatientId() != 0) patient = patientRepository.findById(entryDto.getPatientId()).orElseThrow(()
+                -> new EntityNotFoundException("There is no patient with this id"));
+        else patient = patientRepository.findByUserName(entryDto.getUserNameOfPatient()).orElseThrow(()
+                -> new EntityNotFoundException("There is no patient with this userName"));
+        if (entryDto.getEmployeeId() != 0) employee = employeeService.findById(entryDto.getEmployeeId());
+        else employee = employeeService.findByUserName(entryDto.getUserNameOfEmployee());
+        VisitType visitType = visitTypeRepository.findById(entryDto.getVisitTypeId()).orElseThrow(()
+                -> new EntityNotFoundException("There is no visit type with this id"));
         Entry entryToSave = getEntityFromDto(entryDto);
         entryToSave.setVisitType(visitType);
         entryToSave.setEmployee(employee);
@@ -116,19 +125,33 @@ public class EntryService {
 
     }
 
-        private Entry setFields (Entry entryToUpdate, EntryDto entryDto){
-            if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
-            if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
-            entryToUpdate.setLocalDateTime(LocalDateTime.now());
-            return entryToUpdate;
-        }
-
-        private Entry getEntityFromDto (EntryDto entryDto){
-            Entry entryToUpdate = new Entry();
-            if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
-            if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
-            if (entryDto.getLocalDateTime() != null) entryToUpdate.setLocalDateTime(entryDto.getLocalDateTime());
-            return entryToUpdate;
-        }
-
+    private Entry setFields(Entry entryToUpdate, EntryDto entryDto) {
+        if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
+        if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
+        entryToUpdate.setLocalDateTime(LocalDateTime.now());
+        return entryToUpdate;
     }
+
+    private Entry getEntityFromDto(EntryDto entryDto) {
+        Entry entryToUpdate = new Entry();
+        if (entryDto.getExamination() != null) entryToUpdate.setExamination(entryDto.getExamination());
+        if (entryDto.getRecommendations() != null) entryToUpdate.setRecommendations(entryDto.getRecommendations());
+        if (entryDto.getLocalDateTime() != null) entryToUpdate.setLocalDateTime(entryDto.getLocalDateTime());
+        return entryToUpdate;
+    }
+
+
+    public Set<Entry> findEntriesByPatientId(long patientId) {
+        return (patientRepository.findById(patientId).orElseThrow(()
+                -> new EntityNotFoundException("There is no patient with this id"))).getEntries();
+    }
+
+    public long[] findEntriesIdByPatientsUserName(String username) {
+        Patient patient = patientService.findByUserName(username);
+        long[] result = patient.getEntries().stream()
+                .map(entry -> entry.getId())
+                .mapToLong(e->e)
+                .toArray();
+        return  result;
+    }
+}
