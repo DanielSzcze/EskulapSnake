@@ -32,11 +32,13 @@ setCalender();
 setPatients();
 
 function setEntriesOfLoggedPatient() {
-    entriesOfLoggedPatient = new  Array();
-    let url = address + "entries/id/" + loggedUserName;
-    fetch(url)
-        .then(response => response.json())
-        .then(ids => addToArray(ids))
+   if(patientsList==null) {
+        entriesOfLoggedPatient = new Array();
+        let url = address + "entries/id/" + loggedUserName;
+        fetch(url)
+            .then(response => response.json())
+            .then(ids => addToArray(ids))
+    }
 }
 function addToArray(ids){
           ids.forEach(id=>{
@@ -280,6 +282,7 @@ function fillDayDivByHours(dayDiv) {
 }
 
 if (employeesSelect != null) employeesSelect.addEventListener("change", function () {
+    setEntriesOfLoggedPatient();
     fillCalenderByWorkDays();
     fillCalenderByEntries();
 });
@@ -297,7 +300,7 @@ function fillCalenderByWorkDays() {
     setEmployeeId();
     let date = String(month) + "." + String(year);
     let url
-    if (employeeId != "") url = address + "workdays/employeeId/" + employeeId + "/" + date;
+    if (employeeId != ""&& employeeId!=null) url = address + "workdays/employeeId/" + employeeId + "/" + date;
     else url = address + "workdays/userName/" + loggedUserName + "/" + date;
     fetch(url)
         .then(response => response.json())
@@ -361,7 +364,7 @@ function setIfWorkDay(div, fromWorkTimeDay, toWorkTimeDay, fromWorkTimeHour, toW
 async function fillCalenderByEntries() {
     let date = String(month) + "." + String(year);
     let url
-    if (employeeId != "") url = address + "entries/employeeId/" + employeeId + "/" + date;
+    if (employeeId != ""&& employeeId!=null) url = address + "entries/employeeId/" + employeeId + "/" + date;
     else url = address + "entries/userName/" + loggedUserName + "/" + date;
     fetch(url)
         .then(response => response.json())
@@ -417,7 +420,8 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
             div.appendChild(cancelButton);
 
         }
-    div.style = "background-color:red"
+    div.style = "background-color:red;";
+        div.parentNode.style="background-color:red;";
 
     }
 }
@@ -495,6 +499,12 @@ function postEntry() {
             json
         })
             .then(response => {
+               response.json().then(entry=>{
+                    console.log(entry.id)
+                   entriesOfLoggedPatient.push(entry.id)
+                })
+
+
                 if (response.ok) {
                     setCalender();
                 } else {
