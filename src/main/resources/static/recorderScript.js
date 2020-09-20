@@ -416,7 +416,7 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
 
             });
             cancelButton.name = "cancelButton";
-            if (patientsList != null) div.appendChild()
+            if (patientsList != null)
             div.appendChild(cancelButton);
 
         }
@@ -480,10 +480,10 @@ function postEntry() {
         console.log(dateTime);
         let json = "{" +
             '"visitTypeId": ' + vistTypeId + ","
-            + '"localDateTime": ' + '"' + dateTime + '"';
+            + '"localDateTime": ' + '"' + dateTime + '"'+",";
         if (patientId == null) json += ', "userNameOfPatient":' + '"' + loggedUserName + '"' + ",";
         else json += '"patientId": ' + patientId + ",";
-        if (employeeId == null) json += ', "userNameOfEmployee":' + '"' + loggedUserName + '"';
+        if (employeeId == null) json += ' "userNameOfEmployee":' + '"' + loggedUserName + '"';
         else json += '"employeeId": ' + employeeId
         json += "}"
         console.log(json)
