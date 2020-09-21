@@ -56,7 +56,7 @@ return workDayService.findByEmployeeIdAndDate(employeeId, monthAndYear);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.GONE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteWorkDayById (@PathVariable("id") String id){
         workDayService.deleteByWorkDayId(Long.parseLong(id));
     }

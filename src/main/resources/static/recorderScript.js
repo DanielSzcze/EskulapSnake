@@ -383,7 +383,7 @@ function addEntryToCalender(entry) {
 
 
     let entryHour = entryLocalDateTime.substr(11, 2);
-    if (entryHour.startsWith("0")) enryHour.substr(1, 1);
+    if (entryHour.startsWith("0")) entryHour.substr(1, 1);
     let entryMinutes = entryLocalDateTime.substr(14, 2);
     let entryId = entry.id
 
@@ -416,7 +416,6 @@ function setIfEntry(div, entryDay, entryHour, entryMinutes, entryId) {
 
             });
             cancelButton.name = "cancelButton";
-            if (patientsList != null)
             div.appendChild(cancelButton);
 
         }
@@ -481,7 +480,7 @@ function postEntry() {
         let json = "{" +
             '"visitTypeId": ' + vistTypeId + ","
             + '"localDateTime": ' + '"' + dateTime + '"'+",";
-        if (patientId == null) json += ', "userNameOfPatient":' + '"' + loggedUserName + '"' + ",";
+        if (patientId == null) json += ' "userNameOfPatient":' + '"' + loggedUserName + '"' + ",";
         else json += '"patientId": ' + patientId + ",";
         if (employeeId == null) json += ' "userNameOfEmployee":' + '"' + loggedUserName + '"';
         else json += '"employeeId": ' + employeeId

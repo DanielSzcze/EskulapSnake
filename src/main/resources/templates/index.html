@@ -19,6 +19,8 @@
 </div>
 <div sec:authorize="hasRole('ADMIN') or hasRole('RECORDER') or hasRole('PATIENT') or hasRole('PHYSICIAN')"  >
     <button type="button" onclick="location.href='/recorder'">Schedule visit</button>
+    <div sec:authorize="hasRole('ADMIN')"  >
+        <button type="button" onclick="location.href='/timetable'">Schedule work time</button>
 </div>
 </body>
 </html>

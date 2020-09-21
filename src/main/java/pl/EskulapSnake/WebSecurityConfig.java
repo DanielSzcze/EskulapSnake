@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .and()
                 .authorizeRequests()
+                .antMatchers( "/timetable", "/timetableScript.js").hasAnyRole("ADMIN")
                 .antMatchers("/" ,"/login","/login/error", "/logout", "/recorder", "/recorderScript.js").permitAll()
                 .antMatchers("/auth/**").anonymous()
                 .antMatchers("/database").hasRole("ADMIN")

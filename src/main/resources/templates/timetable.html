@@ -5,8 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>MedicalRecorder</title>
-
+    <title>Timetable</title>
 
 
 </head>
@@ -15,26 +14,15 @@
 <body>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <button type="button" onclick="location.href='/logout'">Log out</button>
-<form hidden>
-    <p type="text" , id="loggedUserName" sec:authentication="name"/>
-</form>
-<form sec:authorize="!hasRole('PATIENT') or hasRole('ADMIN')" autocomplete="off" id="findPatientsForm">
-    <label for="findText">Find Patient by part of date</label><br>
-    <input type="text" id="findText">
-    <input type="submit" value="Refresh">
-    <br>
-    <select id="patientsList" size="10" onselect="getWorkDays()"></select>
-</form>
+
 <br>
 
-<form autocomplete="off" id="addEntry">
+<form autocomplete="off" id="addWorkDay">
     <br>
-    <span sec:authorize="!hasRole('PHYSICIAN') or hasRole('ADMIN')">Select employee:</span>
-    <select sec:authorize="!hasRole('PHYSICIAN') or hasRole('ADMIN')" id="employeesSelect">
-    </select>
+    <span >Select employee:</span>
+    <select  id="employeesSelect"></select>
     <br>
-    Select visit type: <select id="visitTypesSelect">
-</select>
+
 </form>
 <br>
 <div>
@@ -59,10 +47,18 @@
         </form>
     </div>
 </div>
+<div>
+    Day
+    <select id="daySelect"></select>
+    Hour from
+    <select id="hourFromSelect"></select>
+    Hour to
+    <select id="hourToSelect"></select>
+</div>
 <br>
 <br>
 <div style="clear: both;">
-    <button id="postEntryButton"><h2>Add entry</h2></button>
+    <button id="postWorkDayButton"><h2>Add work day</h2></button>
 </div>
 <div style="clear: both;"></div>
 <table border="1">
@@ -82,7 +78,7 @@
     </tbody>
 </table>
 
-<script src="recorderScript.js"></script>
+<script src="timetableScript.js"></script>
 
 </body>
 </html>

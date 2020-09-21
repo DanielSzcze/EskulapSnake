@@ -94,6 +94,10 @@ public class WorkDayService {
         if (workDayDto.getEmployee() != null && employeeService.findById(workDayDto.getEmployee().getId())  != null){
             workDay.setEmployee(workDayDto.getEmployee());
         }
+        else if(workDayDto.getEmployeeId() !=null) {
+            Employee employee = employeeService.findById(workDayDto.getEmployeeId());
+            workDay.setEmployee(employee);
+        }
         return workDay;
     }
 
