@@ -31,4 +31,6 @@ public class ViewController {
     @GetMapping("/entry-view")
     public String getEntryView(){ return "entry-view"; }
 
+    @GetMapping("/timetable")
+    public String getTimetable(){ return "timetable"; }
 }

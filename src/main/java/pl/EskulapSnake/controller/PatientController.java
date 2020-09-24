@@ -41,12 +41,8 @@ public class PatientController {
     @GetMapping("/user/{username}")
     @ResponseStatus(value = HttpStatus.OK)
     public Patient findByUsername(@PathVariable("username") String username) {
-       return patientService.findByUserName(username);
-    }
-    @GetMapping("/{partOfDate:[a-z]+}")
-    @ResponseStatus(value = HttpStatus.OK)
-    public  List<Patient> getPapientsByPartOfDate(@PathVariable("partOfDate")String partOfdate) {
-        return patientService.findByPartOfDate(partOfdate);
+        Patient patientByUserName = patientService.findByUserName(username);
+        return patientByUserName;
     }
 
     @PostMapping

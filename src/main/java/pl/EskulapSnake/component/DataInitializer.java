@@ -11,7 +11,8 @@ import pl.EskulapSnake.model.*;
 import pl.EskulapSnake.repository.*;
 
 import java.time.LocalDateTime;
-import java.util.*;import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Tu możesz zainicializować dane do bazy by sprawdzić to w postmanie
@@ -79,15 +80,24 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             Entry entry = new Entry();
             entry.setRecommendations("bla" + i);
             entry.setExamination("lol" + i);
-            entry.setLocalDateTime(LocalDateTime.of(2020, 9, 8, 11, 15));
+            int h = 10+i*15/60;
+            int min = (15+i*15)%60;
+            entry.setLocalDateTime(LocalDateTime.of(2020, 9, 8,  h, min));
             Entry entry1 = new Entry();
-            entry1.setRecommendations("bla" + i);
-            entry1.setExamination("lol" + i);
+            entry1.setRecommendations("..." + i);
+            entry1.setExamination("..." + i);
             entry1.setLocalDateTime(LocalDateTime.of(2020, 6, 8, 11, 15));
+
+            User dummyUser = new User();
+            dummyUser.setUsername("user" + i);
+            dummyUser.setPassword(passwordEncoder.encode("p"));
+            dummyUser.setEmail("email" + i);
+            dummyUser.setEnabled(true);
 
 
             Patient patient = new Patient();
             Patient patient1 = new Patient();
+            if (i == 1 || i == 3) patient.setUser(dummyUser);
             patient.setFirstName("Patient name");
             patient.setLastName("lastname" + i);
             patient1.setFirstName("loki" + i);
@@ -100,24 +110,20 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             workDay.setToWorkTime((LocalDateTime.of(2020, 9, 8, 18, 00)));
             workDay1.setToWorkTime((LocalDateTime.of(2020, 6, 8, 16, 00)));
 
-            User dummyUser = new User();
-            dummyUser.setUsername("user" + i);
-            dummyUser.setPassword(passwordEncoder.encode("password" + i));
-            dummyUser.setEmail("email" + i);
-            dummyUser.setEnabled(true);
 
-            if (i == 1) dummyUser.setRoles(roles.stream()
+            if (i == 1 || i == 3) dummyUser.getRoles().addAll(roles.stream()
                     .filter(role -> role.getName().equals("ROLE_PATIENT"))
                     .collect(Collectors.toList()));
-            if (i == 2) dummyUser.setRoles(roles.stream()
-                    .filter(role -> role.getName().equals("ROLE_PHYSICIAN"))
+            if (i == 2) dummyUser.getRoles().addAll(roles.stream()
+                    .filter(role -> role.getName().equals("ROLE_PHYSICIAN") ||
+                            role.getName().equals("ROLE_EMPLOYEE"))
                     .collect(Collectors.toList()));
-            if (i > 2 && i < 7) dummyUser.setRoles(roles.stream()
+            if (i > 2 && i < 7) dummyUser.getRoles().addAll(roles.stream()
                     .filter(role -> role.getName().equals("ROLE_EMPLOYEE"))
                     .collect(Collectors.toList()));
-            dummyUser.setRoles(roles);
 
             Employee employee = new Employee();
+            if (i > 1) employee.setUser(dummyUser);
             employee.setFirstName("firstName" + i);
             employee.setLastName("lastName" + i);
             employee.setUser(dummyUser);
@@ -144,23 +150,10 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
             patientRepository.save(patient1);
 
             VisitType visitType = new VisitType();
-            visitType.setName("VisitType" + " " + i);
+            visitType.setName("VisitType " + i);
             visitTypeRepository.save(visitType);
 
-            Set<Entry> entries = new HashSet<>();
-            for (int j = 0; j < 5; j++) {
-                Entry e = new Entry();
-                e.setLocalDateTime(LocalDateTime.now());
-                e.setExamination("zdfgdfgdfg" + j);
-                e.setRecommendations("sdnjfhsdjfsdkf" + j);
-                e.setEmployee(employee);
-                e.setVisitType(visitType);
-                entries.add(e);
-            }
-            patient.setEntries(entries);
-            Random random = new Random();
-            patient.setPesel(String.valueOf(random.nextInt(10000000)) + String.valueOf(random.nextInt(100)));
-            patientRepository.save(patient);
+            userRepository.save(dummyUser);
 
 
         }
@@ -172,6 +165,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
         if (role == null) {
             role = new Role(name);
             roleRepository.save(role);
+
         }
         return role;
     }

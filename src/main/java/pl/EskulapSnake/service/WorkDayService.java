@@ -3,6 +3,7 @@ package pl.EskulapSnake.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.WorkDayDto;
+import pl.EskulapSnake.model.Employee;
 import pl.EskulapSnake.model.WorkDay;
 import pl.EskulapSnake.repository.WorkDayRepository;
 
@@ -37,6 +38,13 @@ public class WorkDayService {
         LocalDateTime beginOfMonth = this.getBeginOfMonth(month, year);
         LocalDateTime endOfMonth = this.getEndOfMonth(month, year);
         return workDayRepository.getByEmpIdAndTimeInterval(employeeId, beginOfMonth, endOfMonth);
+
+
+    }
+    public List<WorkDay> findByUserNameAndDate(String userName, String monthAndYear) {
+        Employee employee = employeeService.findByUserName(userName);
+        return this.findByEmployeeIdAndDate(employee.getId(), monthAndYear);
+
 
     }
     private LocalDateTime getBeginOfMonth(Integer month, Integer year) {
@@ -86,7 +94,12 @@ public class WorkDayService {
         if (workDayDto.getEmployee() != null && employeeService.findById(workDayDto.getEmployee().getId())  != null){
             workDay.setEmployee(workDayDto.getEmployee());
         }
+        else if(workDayDto.getEmployeeId() !=null) {
+            Employee employee = employeeService.findById(workDayDto.getEmployeeId());
+            workDay.setEmployee(employee);
+        }
         return workDay;
     }
+
 
 }

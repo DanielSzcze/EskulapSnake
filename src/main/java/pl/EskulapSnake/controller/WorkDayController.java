@@ -30,11 +30,17 @@ public class WorkDayController {
         return workDayService.findByEmployee(Long.parseLong(idEmployee));
     }
 
-    @GetMapping("/{id_employee}/{month_and_year}")
+    @GetMapping("/employeeId/{id_employee}/{month_and_year}")
     public  List<WorkDay> getAllByEmployeeAndDate(@PathVariable("id_employee") String identification,
                                                   @PathVariable("month_and_year") String monthAndYear){
 Long employeeId = Long.parseLong(identification);
 return workDayService.findByEmployeeIdAndDate(employeeId, monthAndYear);
+    }
+
+    @GetMapping("/userName/{userName}/{month_and_year}")
+    public  List<WorkDay> getAllByUserNameAndDate(@PathVariable("userName") String userName,
+                                                  @PathVariable("month_and_year") String monthAndYear){
+        return workDayService.findByUserNameAndDate(userName, monthAndYear);
     }
 
     @PostMapping
@@ -50,7 +56,7 @@ return workDayService.findByEmployeeIdAndDate(employeeId, monthAndYear);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.GONE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteWorkDayById (@PathVariable("id") String id){
         workDayService.deleteByWorkDayId(Long.parseLong(id));
     }

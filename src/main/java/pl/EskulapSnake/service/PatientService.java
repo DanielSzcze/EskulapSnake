@@ -3,6 +3,7 @@ package pl.EskulapSnake.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.EskulapSnake.dto.PatientDto;
+import pl.EskulapSnake.model.Entry;
 import pl.EskulapSnake.model.Patient;
 import pl.EskulapSnake.repository.PatientRepository;
 
@@ -25,9 +26,6 @@ public class PatientService {
         return patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("In db is no Patient with this id"));
 
-    }
-    public  List<Patient> findByPartOfDate(String partOfDate) {
-        return patientRepository.findByPartOfDate(partOfDate);
     }
 
     @Transactional
@@ -65,6 +63,13 @@ public class PatientService {
 
     public Patient findByUserName(String username) {
         return patientRepository.findByUserName(username).orElseThrow(()
-                ->new EntityNotFoundException("There is no employee with user of this username"));
+                -> new EntityNotFoundException("There is no employee with user of this username"));
+    }
+
+    public Patient findOwnerOfEntry(Entry entry) {
+        List<Patient> patients = patientRepository.findAll();
+        return patients.stream()
+                .filter(p -> p.getEntries().contains(entry))
+                .findAny().get();
     }
 }

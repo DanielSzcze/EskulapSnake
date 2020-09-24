@@ -53,18 +53,33 @@ public class EntryController {
         return entryService.findById(id);
     }
 
-    @GetMapping("/{id_employee}/{month_and_year}")
-    public List<Entry> getAllByEmployeeAndDate(@PathVariable("id_employee") String identification,
-                                               @PathVariable("month_and_year") String monthAndYear) {
+    @GetMapping("/employeeId/{id_employee}/{month_and_year}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Entry> getAllByEmployeeIdAndDate(@PathVariable("id_employee") String identification,
+                                                 @PathVariable("month_and_year") String monthAndYear) {
         Long employeeId = Long.parseLong(identification);
         return entryService.findByEmployeeIdAndDate(employeeId, monthAndYear);
     }
 
+    @GetMapping("/userName/{employeeUserName}/{month_and_year}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Entry> getAllByEmployeeUserNameAndDate(@PathVariable("employeeUserName") String userName,
+                                               @PathVariable("month_and_year") String monthAndYear) {
+        return entryService.findByUserNameAndDate(userName, monthAndYear);
+    }
+
     @GetMapping("/patient/{patient_id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Set<Entry> findPatientEntries(@PathVariable("patient_id") String identification){
-        return patientService.findById(Long.parseLong(identification)).getEntries();
+    public Set<Entry> findPatientEntries(@PathVariable("patient_id") String identification) {
+        long patientId = Long.parseLong(identification);
+        return entryService.findEntriesByPatientId(patientId);
     }
+    @GetMapping("/id/{userName}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public long[] findIdsOfEntriesByPatientsUserName(@PathVariable("userName") String userName) {
+        return entryService.findEntriesIdByPatientsUserName(userName);
+    }
+
     @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
     public Entry post(@RequestBody EntryDto entryDto) {
